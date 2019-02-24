@@ -76,6 +76,11 @@ void UninitDebugWindow(int num)
 void UpdateDebugWindow(void)
 {
 #ifdef USE_DEBUGFUNC
+	if (GetKeyboardTrigger(DIK_D))
+	{
+		enableDraw = !enableDraw;
+	}
+
 	ImGui_ImplWin32_NewFrame();
 	ImGui_ImplDX9_NewFrame();
 	ImGui::NewFrame();
@@ -338,6 +343,16 @@ void DebugInputVector3(const char* label, D3DXVECTOR3 *vec)
 {
 #ifdef USE_DEBUGFUNC
 	ImGui::InputFloat3(label, (float*)vec);
+#endif
+}
+
+/*************************************
+3次元ベクトルスライダー入力処理
+***************************************/
+void DebugSliderVector3(const char* label, D3DXVECTOR3 *vec, float min, float max)
+{
+#ifdef USE_DEBUGFUNC
+	ImGui::SliderFloat3(label, (float*)vec, min, max);
 #endif
 }
 

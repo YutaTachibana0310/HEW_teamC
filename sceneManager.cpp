@@ -73,6 +73,7 @@ void UpdateSceneManager(void)
 
 }
 
+#include "collider.h"
 /**************************************
 ï`âÊèàóù
 ***************************************/
@@ -86,11 +87,11 @@ void DrawSceneManager(void)
 ***************************************/
 void SetScene(DefineScene sceneId)
 {
-	nextScene = sceneId;
-	UninitScene(1);
-	*currentSceneId = sceneId;
-	InitGUIManager(1);
-	InitScene(1);
+	//nextScene = sceneId;
+	//UninitScene(1);
+	//*currentSceneId = sceneId;
+	//InitGUIManager(1);
+	//InitScene(1);
 }
 
 /**************************************

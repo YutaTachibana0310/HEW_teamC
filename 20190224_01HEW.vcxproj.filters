@@ -25,6 +25,48 @@
     <Filter Include="ヘッダー ファイル\System\ImGui">
       <UniqueIdentifier>{95e2803f-0273-45dd-bdec-1fe67c24d6f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Tachibana">
+      <UniqueIdentifier>{20536ff3-a50d-4038-b88d-73505c68c1d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Tachibana">
+      <UniqueIdentifier>{7594781b-3315-4c28-93d1-7e213ef3b9ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Sangmin">
+      <UniqueIdentifier>{69859e23-6b2a-4a1e-bf43-38a65c0d4b7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Sangmin">
+      <UniqueIdentifier>{53836cdf-133d-4be1-93a5-18f4c31af6b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Sakaino">
+      <UniqueIdentifier>{07d435f8-5519-4e49-9ae4-a3f038d23c1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Sakaino">
+      <UniqueIdentifier>{c5ebf304-b6da-49e7-97b3-7f36ced29d4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Horiuchi">
+      <UniqueIdentifier>{479c3c19-06e5-43a4-b2c4-97480be490fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Horiuchi">
+      <UniqueIdentifier>{ec833e66-a966-4c07-9d12-99e1e9df7a73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System\Sound">
+      <UniqueIdentifier>{13ea8d15-33cd-4386-b018-c39a5e1d5799}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\System\Sound">
+      <UniqueIdentifier>{ebed22fe-ad6d-4476-a1c4-1bd931343315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System\Library">
+      <UniqueIdentifier>{de7b9b49-44b6-42f6-ae5f-2023cc42a241}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\System\Library">
+      <UniqueIdentifier>{a4048429-abfe-49a5-882f-46aabf4c0946}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System\Tools">
+      <UniqueIdentifier>{332a5e6e-5da3-471b-8809-6a5d82ba121e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\System\Tools">
+      <UniqueIdentifier>{8290311a-2efc-4ad4-8672-a3368f02a291}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
@@ -39,16 +81,7 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
-    <ClCompile Include="bgmManager.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
     <ClCompile Include="collider.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="debugTimer.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="debugWindow.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
     <ClCompile Include="GUIManager.cpp">
@@ -61,21 +94,6 @@
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
     <ClCompile Include="screenBG.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="sound.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="soundEffectManager.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="MyLibrary.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="EasingVector.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="Easing.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_demo.cpp">
@@ -96,6 +114,30 @@
     <ClCompile Include="imgui\imgui.cpp">
       <Filter>ソース ファイル\System\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="bgmManager.cpp">
+      <Filter>ソース ファイル\System\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>ソース ファイル\System\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="soundEffectManager.cpp">
+      <Filter>ソース ファイル\System\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Easing.cpp">
+      <Filter>ソース ファイル\System\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="EasingVector.cpp">
+      <Filter>ソース ファイル\System\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="MyLibrary.cpp">
+      <Filter>ソース ファイル\System\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="debugWindow.cpp">
+      <Filter>ソース ファイル\System\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="debugTimer.cpp">
+      <Filter>ソース ファイル\System\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -110,16 +152,7 @@
     <ClInclude Include="main.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
-    <ClInclude Include="bgmManager.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
     <ClInclude Include="collider.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
-    <ClInclude Include="debugTimer.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
-    <ClInclude Include="debugWindow.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
     <ClInclude Include="GUIManager.h">
@@ -132,21 +165,6 @@
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
     <ClInclude Include="screenBG.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
-    <ClInclude Include="sound.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
-    <ClInclude Include="soundEffectManager.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
-    <ClInclude Include="MyLibrary.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Easing.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
-    <ClInclude Include="EasingVector.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imstb_rectpack.h">
@@ -172,6 +190,30 @@
     </ClInclude>
     <ClInclude Include="imgui\imgui_internal.h">
       <Filter>ヘッダー ファイル\System\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="bgmManager.h">
+      <Filter>ヘッダー ファイル\System\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="soundEffectManager.h">
+      <Filter>ヘッダー ファイル\System\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>ヘッダー ファイル\System\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Easing.h">
+      <Filter>ヘッダー ファイル\System\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="EasingVector.h">
+      <Filter>ヘッダー ファイル\System\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLibrary.h">
+      <Filter>ヘッダー ファイル\System\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="debugWindow.h">
+      <Filter>ヘッダー ファイル\System\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="debugTimer.h">
+      <Filter>ヘッダー ファイル\System\Tools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -25,32 +25,21 @@
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
-D3DXVECTOR3		cameraPos;				// カメラの視点
-D3DXVECTOR3		cameraAt;				// カメラの注視点
-D3DXVECTOR3		g_posCameraU;				// カメラの上方向
-D3DXVECTOR3		g_posCameraPDest;			// カメラの視点の目的位置
-D3DXVECTOR3		g_posCameraRDest;			// カメラの注視点の目的位置
-D3DXVECTOR3		g_rotCamera;				// カメラの回転
-float			g_fLengthIntervalCamera;	// カメラの視点と注視点の距離
-D3DXMATRIX		g_mtxView;					// ビューマトリックス
-D3DXMATRIX		g_mtxProjection;			// プロジェクションマトリックス
+CAMERA camera;
 
 //=============================================================================
 // カメラの初期化
 //=============================================================================
 HRESULT InitCamera(void)
 {
-	cameraPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	cameraAt = D3DXVECTOR3(0.0f, 0.0f, 200.0f);
-	g_posCameraU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	g_posCameraPDest = D3DXVECTOR3(0.0f, 200.0f, -200.0f);
-	g_posCameraRDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	g_rotCamera = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	camera.pos = D3DXVECTOR3(0.0f, 0.0f, -50.0f);
+	camera.target = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	camera.up = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	camera.destPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	camera.destTarget = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	camera.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-	float vx,vz;
-	vx = cameraPos.x - cameraAt.x;
-	vz = cameraPos.z - cameraAt.z;
-	g_fLengthIntervalCamera = sqrtf(vx * vx + vz * vz);
+	SetCamera();
 
 	return S_OK;
 }
@@ -78,30 +67,30 @@ void SetCamera(void)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	// ビューマトリックスの初期化
-	D3DXMatrixIdentity(&g_mtxView);
+	D3DXMatrixIdentity(&camera.view);
 
 	// ビューマトリックスの作成
-	D3DXMatrixLookAtLH(&g_mtxView, 
-						&cameraPos,		// カメラの視点
-						&cameraAt,		// カメラの注視点
-						&g_posCameraU);		// カメラの上方向
+	D3DXMatrixLookAtLH(&camera.view, 
+						&camera.pos,		// カメラの視点
+						&camera.target,		// カメラの注視点
+						&camera.up);		// カメラの上方向
 
 	// ビューマトリックスの設定
-	pDevice->SetTransform(D3DTS_VIEW, &g_mtxView);
+	pDevice->SetTransform(D3DTS_VIEW, &camera.view);
 
 
 	// プロジェクションマトリックスの初期化
-	D3DXMatrixIdentity(&g_mtxProjection);
+	D3DXMatrixIdentity(&camera.projection);
 
 	// プロジェクションマトリックスの作成
-	D3DXMatrixPerspectiveFovLH(&g_mtxProjection,
+	D3DXMatrixPerspectiveFovLH(&camera.projection,
 								VIEW_ANGLE,			// 視野角
 								VIEW_ASPECT,		// アスペクト比
 								VIEW_NEAR_Z,		// ビュー平面のNearZ値
 								VIEW_FAR_Z);		// ビュー平面のFarZ値
 
 	// プロジェクションマトリックスの設定
-	pDevice->SetTransform(D3DTS_PROJECTION, &g_mtxProjection);
+	pDevice->SetTransform(D3DTS_PROJECTION, &camera.projection);
 }
 
 //=============================================================================
@@ -109,7 +98,7 @@ void SetCamera(void)
 //=============================================================================
 D3DXVECTOR3 GetRotCamera(void)
 {
-	return g_rotCamera;
+	return camera.rot;
 }
 
 //=============================================================================
@@ -117,7 +106,10 @@ D3DXVECTOR3 GetRotCamera(void)
 //=============================================================================
 D3DXMATRIX GetMtxView(void)
 {
-	return g_mtxView;
+	D3DXMATRIX view;
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	pDevice->GetTransform(D3DTS_VIEW, &view);
+	return view;
 }
 
 //=============================================================================
@@ -125,7 +117,10 @@ D3DXMATRIX GetMtxView(void)
 //=============================================================================
 D3DXMATRIX GetMtxProjection(void)
 {
-	return g_mtxProjection;
+	D3DXMATRIX projection;
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	pDevice->GetTransform(D3DTS_PROJECTION, &projection);
+	return projection;
 }
 
 //=============================================================================
@@ -133,33 +128,35 @@ D3DXMATRIX GetMtxProjection(void)
 //=============================================================================
 void GetInvCameraRotMtx(D3DXMATRIX *mtx, const D3DXVECTOR3* objPos)
 {
-	
-	D3DXMATRIX inv;
-	D3DXMatrixIdentity(&inv);
-	D3DXMatrixLookAtLH(&inv, &cameraPos, objPos, &g_posCameraU);
-	D3DXMatrixInverse(&inv, NULL, &inv);
-	inv._41 = 0.0f;
-	inv._42 = 0.0f;
-	inv._43 = 0.0f;
-	
+	if (objPos != NULL)
+	{
+		D3DXMATRIX inv;
+		D3DXMatrixIdentity(&inv);
+		D3DXMatrixLookAtLH(&inv, &camera.pos, objPos, &camera.up);
+		D3DXMatrixInverse(&inv, NULL, &inv);
+		inv._41 = 0.0f;
+		inv._42 = 0.0f;
+		inv._43 = 0.0f;
+	}
+	else
+	{
+		mtx->_11 = camera.view._11;
+		mtx->_12 = camera.view._21;
+		mtx->_13 = camera.view._31;
 
-	/*
-	mtx->_11 = g_mtxView._11;
-	mtx->_12 = g_mtxView._21;
-	mtx->_13 = g_mtxView._31;
+		mtx->_21 = camera.view._12;
+		mtx->_22 = camera.view._22;
+		mtx->_23 = camera.view._32;
 
-	mtx->_21 = g_mtxView._12;
-	mtx->_22 = g_mtxView._22;
-	mtx->_23 = g_mtxView._32;
+		mtx->_31 = camera.view._13;
+		mtx->_32 = camera.view._23;
+		mtx->_33 = camera.view._33;
 
-	mtx->_31 = g_mtxView._13;
-	mtx->_32 = g_mtxView._23;
-	mtx->_33 = g_mtxView._33;
+		mtx->_41 = 0.0f;
+		mtx->_42 = 0.0f;
+		mtx->_43 = 0.0f;
+	}
 
-	mtx->_41 = 0.0f;
-	mtx->_42 = 0.0f;
-	mtx->_43 = 0.0f;
-	*/
 }
 
 //=============================================================================
@@ -167,5 +164,13 @@ void GetInvCameraRotMtx(D3DXMATRIX *mtx, const D3DXVECTOR3* objPos)
 //=============================================================================
 D3DXVECTOR3 GetCameraPos(void)
 {
-	return cameraPos;
+	return camera.pos;
+}
+
+//=============================================================================
+// カメラアドレス取得処理
+//=============================================================================
+CAMERA *GetCameraAdr(void)
+{
+	return &camera;
 }
