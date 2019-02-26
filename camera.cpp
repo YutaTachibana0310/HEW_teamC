@@ -10,7 +10,7 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define	VIEW_ANGLE			(D3DXToRadian(45.0f))	// 視野角
+#define	VIEW_ANGLE			(D3DXToRadian(60.0f))	// 視野角
 #define	VIEW_ASPECT			((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT)	// ビュー平面のアスペクト比
 #define	VIEW_NEAR_Z			(50.0f)					// ビュー平面のNearZ値
 #define	VIEW_FAR_Z			(20000.0f)				// ビュー平面のFarZ値
@@ -68,7 +68,7 @@ void SetCamera(int targetPlayerID)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//一旦、座標を仮設定
-	D3DXVECTOR3 pos = (targetPlayerID == 0) ? D3DXVECTOR3(0.0f, 50.0f, -100.0f) : D3DXVECTOR3(0.0f, 0.0f, -100.0f);
+	D3DXVECTOR3 pos = (targetPlayerID == 0) ? D3DXVECTOR3(0.0f, 0.0f, -100.0f) : D3DXVECTOR3(0.0f, 0.0f, -100.0f);
 	camera.pos = pos;
 
 	// ビューマトリックスの初期化

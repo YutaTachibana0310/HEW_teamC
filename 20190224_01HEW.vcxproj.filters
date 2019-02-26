@@ -156,6 +156,9 @@
     <ClCompile Include="speedGage.cpp">
       <Filter>ソース ファイル\Horiuchi</Filter>
     </ClCompile>
+    <ClCompile Include="rainbowLane.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="speedGage.h">
       <Filter>ヘッダー ファイル\Horiuchi</Filter>
+    </ClInclude>
+    <ClInclude Include="rainbowLane.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
