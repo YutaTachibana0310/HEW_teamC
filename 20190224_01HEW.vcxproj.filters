@@ -152,6 +152,7 @@
     </ClCompile>
     <ClCompile Include="player.cpp">
       <Filter>ソース ファイル\Sakaino</Filter>
+    </ClCompile>
     <ClCompile Include="speedGage.cpp">
       <Filter>ソース ファイル\Horiuchi</Filter>
     </ClCompile>
@@ -240,6 +241,7 @@
     </ClInclude>
     <ClInclude Include="player.h">
       <Filter>ヘッダー ファイル\Sakaino</Filter>
+    </ClInclude>
     <ClInclude Include="speedGage.h">
       <Filter>ヘッダー ファイル\Horiuchi</Filter>
     </ClInclude>
