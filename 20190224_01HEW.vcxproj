@@ -39,6 +39,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="meshCylinder.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="postEffectManager.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="screenBG.cpp" />
@@ -68,6 +69,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="meshCylinder.h" />
     <ClInclude Include="MyLibrary.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="postEffectManager.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="screenBG.h" />

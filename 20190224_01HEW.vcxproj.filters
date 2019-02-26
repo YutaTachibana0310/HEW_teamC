@@ -150,6 +150,9 @@
     <ClCompile Include="meshCylinder.cpp">
       <Filter>ソース ファイル\Tachibana</Filter>
     </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>ソース ファイル\Sakaino</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="meshCylinder.h">
       <Filter>ヘッダー ファイル\Tachibana</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>ヘッダー ファイル\Sakaino</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
