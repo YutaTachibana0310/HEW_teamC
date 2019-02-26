@@ -1,11 +1,11 @@
 //=====================================
 //
-//シーンマネージャヘッダ[sceneManager.h]
+//ゲームシーンヘッダ[gameScene.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _SCENEMANAGER_H_
-#define _SCENEMANAGER_H_
+#ifndef _GAMESCENE_H_
+#define _GAMESCENE_H_
 
 #include "main.h"
 
@@ -16,27 +16,13 @@
 /**************************************
 構造体定義
 ***************************************/
-enum DefineScene
-{
-	GameScene,
-	DefineSceneMax
-};
-
-enum SceneResult
-{
-	SceneRunning,
-	SceneFinished,
-	SceneResultMax
-};
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitSceneManager(int* ptr);
-void UninitSceneManager(int num);
-void UninitScene(int num);
-void UpdateSceneManager(void);
-void DrawSceneManager(void);
-void SetScene(DefineScene sceneId);
-int GetNextScene(void);
+HRESULT InitGameScene(int num);
+void UninitGameScene(int num);
+void UpdateGameScene(void);
+void DrawGameScene(void);
+
 #endif

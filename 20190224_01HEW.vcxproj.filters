@@ -67,6 +67,12 @@
     <Filter Include="ヘッダー ファイル\System\Tools">
       <UniqueIdentifier>{8290311a-2efc-4ad4-8672-a3368f02a291}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\System\Scene">
+      <UniqueIdentifier>{42aa4af2-bf04-44b4-ab2e-f612fa53b9e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\System\Scene">
+      <UniqueIdentifier>{a5063766-d4f5-4ce8-97ad-ef76a347b15b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
@@ -137,6 +143,12 @@
     </ClCompile>
     <ClCompile Include="debugTimer.cpp">
       <Filter>ソース ファイル\System\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="gameScene.cpp">
+      <Filter>ソース ファイル\System\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="meshCylinder.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +226,12 @@
     </ClInclude>
     <ClInclude Include="debugTimer.h">
       <Filter>ヘッダー ファイル\System\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="gameScene.h">
+      <Filter>ヘッダー ファイル\System\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="meshCylinder.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

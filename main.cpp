@@ -453,6 +453,8 @@ void Draw(void)
 ;	g_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), backColor, 1.0f, 0);
 	if (SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{
+		SetCamera();
+
 		DrawScreenBG();
 
 		DrawSceneManager();

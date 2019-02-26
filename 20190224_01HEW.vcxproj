@@ -26,6 +26,7 @@
     <ClCompile Include="debugWindow.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="EasingVector.cpp" />
+    <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="meshCylinder.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="postEffectManager.cpp" />
     <ClCompile Include="sceneManager.cpp" />
@@ -51,6 +53,7 @@
     <ClInclude Include="debugWindow.h" />
     <ClInclude Include="Easing.h" />
     <ClInclude Include="EasingVector.h" />
+    <ClInclude Include="gameScene.h" />
     <ClInclude Include="GUIManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -63,6 +66,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="meshCylinder.h" />
     <ClInclude Include="MyLibrary.h" />
     <ClInclude Include="postEffectManager.h" />
     <ClInclude Include="sceneManager.h" />

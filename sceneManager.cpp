@@ -7,6 +7,9 @@
 #include "sceneManager.h"
 #include "GUIManager.h"
 
+#include "gameScene.h"
+
+
 /**************************************
 マクロ定義
 ***************************************/
@@ -23,6 +26,26 @@ typedef void(*SceneUninit)(int num);	//シーンの終了処理の関数ポインタ定義
 ***************************************/
 static int* currentSceneId;
 static int nextScene;
+
+//初期化処理テーブル
+static SceneInit Init[DefineSceneMax] = {
+	InitGameScene,
+};
+
+//終了処理テーブル
+static SceneUninit Uninit[DefineSceneMax] = {
+	UninitGameScene,
+};
+
+//更新処理テーブル
+static SceneFunc Update[DefineSceneMax] = {
+	UpdateGameScene,
+};
+
+//描画処理テーブル
+static SceneFunc Draw[DefineSceneMax] = {
+	DrawGameScene
+};
 
 /**************************************
 プロトタイプ宣言
@@ -47,6 +70,7 @@ void InitSceneManager(int* ptr)
 ***************************************/
 void InitScene(int num)
 {
+	Init[*currentSceneId](num);
 }
 
 /**************************************
@@ -54,7 +78,7 @@ void InitScene(int num)
 ***************************************/
 void UninitSceneManager(int num)
 {
-
+	Uninit[*currentSceneId](num);
 }
 
 /**************************************
@@ -70,16 +94,15 @@ void UninitScene(int num)
 ***************************************/
 void UpdateSceneManager(void)
 {
-
+	Update[*currentSceneId]();
 }
 
-#include "collider.h"
 /**************************************
 描画処理
 ***************************************/
 void DrawSceneManager(void)
 {
-
+	Draw[*currentSceneId]();
 }
 
 /**************************************
@@ -87,11 +110,11 @@ void DrawSceneManager(void)
 ***************************************/
 void SetScene(DefineScene sceneId)
 {
-	//nextScene = sceneId;
-	//UninitScene(1);
-	//*currentSceneId = sceneId;
+	nextScene = sceneId;
+	UninitScene(1);
+	*currentSceneId = sceneId;
 	//InitGUIManager(1);
-	//InitScene(1);
+	InitScene(1);
 }
 
 /**************************************
