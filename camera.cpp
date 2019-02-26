@@ -33,7 +33,7 @@ CAMERA camera;
 HRESULT InitCamera(void)
 {
 	camera.pos = D3DXVECTOR3(0.0f, 0.0f, -50.0f);
-	camera.target = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	camera.target = D3DXVECTOR3(0.0f, 20.0f, 0.0f);
 	camera.up = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	camera.destPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	camera.destTarget = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -68,7 +68,7 @@ void SetCamera(int targetPlayerID)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//一旦、座標を仮設定
-	D3DXVECTOR3 pos = (targetPlayerID == 0) ? D3DXVECTOR3(0.0f, 50.0f, -100.0f) : D3DXVECTOR3(0.0f, 0.0f, -100.0f);
+	D3DXVECTOR3 pos = (targetPlayerID == 0) ? D3DXVECTOR3(0.0f, 30.0f, -100.0f) : D3DXVECTOR3(0.0f, 80.0f, -100.0f);
 	camera.pos = pos;
 
 	// ビューマトリックスの初期化

@@ -41,6 +41,7 @@
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="postEffectManager.cpp" />
+    <ClCompile Include="rainbowLane.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="screenBG.cpp" />
     <ClCompile Include="sound.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="MyLibrary.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="postEffectManager.h" />
+    <ClInclude Include="rainbowLane.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="screenBG.h" />
     <ClInclude Include="sound.h" />
