@@ -152,6 +152,8 @@
     </ClCompile>
     <ClCompile Include="player.cpp">
       <Filter>ソース ファイル\Sakaino</Filter>
+    <ClCompile Include="speedGage.cpp">
+      <Filter>ソース ファイル\Horiuchi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +240,8 @@
     </ClInclude>
     <ClInclude Include="player.h">
       <Filter>ヘッダー ファイル\Sakaino</Filter>
+    <ClInclude Include="speedGage.h">
+      <Filter>ヘッダー ファイル\Horiuchi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
