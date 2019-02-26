@@ -156,6 +156,9 @@
     <ClCompile Include="speedGage.cpp">
       <Filter>ソース ファイル\Horiuchi</Filter>
     </ClCompile>
+    <ClCompile Include="effect.cpp">
+      <Filter>ソース ファイル\Horiuchi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -243,6 +246,9 @@
       <Filter>ヘッダー ファイル\Sakaino</Filter>
     </ClInclude>
     <ClInclude Include="speedGage.h">
+      <Filter>ヘッダー ファイル\Horiuchi</Filter>
+    </ClInclude>
+    <ClInclude Include="effect.h">
       <Filter>ヘッダー ファイル\Horiuchi</Filter>
     </ClInclude>
   </ItemGroup>

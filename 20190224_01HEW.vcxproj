@@ -26,6 +26,7 @@
     <ClCompile Include="debugWindow.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="EasingVector.cpp" />
+    <ClCompile Include="effect.cpp" />
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -55,6 +56,7 @@
     <ClInclude Include="debugWindow.h" />
     <ClInclude Include="Easing.h" />
     <ClInclude Include="EasingVector.h" />
+    <ClInclude Include="effect.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="GUIManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
