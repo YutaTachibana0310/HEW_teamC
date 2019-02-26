@@ -105,6 +105,9 @@ void DrawRainbowLane(void)
 
 	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
 
+	//回転でレーンの明るさが変わらないようにライティングはオフに
+	pDevice->SetRenderState(D3DRS_LIGHTING, false);
+
 	for (int i = 0; i < RAINBOWLANE_NUM_MAX; i++)
 	{
 		D3DXMatrixIdentity(&mtxWorld);
@@ -123,6 +126,9 @@ void DrawRainbowLane(void)
 		//描画
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 	}
+
+	//ライティングをもとに戻す
+	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 }
 
 /**************************************
