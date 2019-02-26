@@ -39,7 +39,7 @@ HRESULT InitCamera(void)
 	camera.destTarget = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	camera.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-	SetCamera();
+	SetCamera(0);
 
 	return S_OK;
 }
@@ -59,12 +59,17 @@ void UpdateCamera(void)
 {
 
 }
+
 //=============================================================================
 // カメラの設定処理
 //=============================================================================
-void SetCamera(void)
+void SetCamera(int targetPlayerID)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+	//一旦、座標を仮設定
+	D3DXVECTOR3 pos = (targetPlayerID == 0) ? D3DXVECTOR3(0.0f, 50.0f, -100.0f) : D3DXVECTOR3(0.0f, 0.0f, -100.0f);
+	camera.pos = pos;
 
 	// ビューマトリックスの初期化
 	D3DXMatrixIdentity(&camera.view);
@@ -92,6 +97,10 @@ void SetCamera(void)
 	// プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &camera.projection);
 }
+
+//=============================================================================
+// ウィンドウ全体用カメラの設定処理
+//=============================================================================
 
 //=============================================================================
 // カメラの向きの取得

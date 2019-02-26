@@ -27,7 +27,7 @@ enum DEFINE_POSTEFFECT {
 void InitPostEffectManager(int num);
 void UninitPostEffectManager(int num);
 void UpdatePostEffectManager(void);
-void DrawPostEffectManager(LPDIRECT3DTEXTURE9 tex[2], LPDIRECT3DSURFACE9 suf[2], LPDIRECT3DSURFACE9 back);
+void DrawPostEffectManager(LPDIRECT3DTEXTURE9 tex[2], LPDIRECT3DSURFACE9 suf[2], LPDIRECT3DSURFACE9 back, int targetID);
 
 bool CheckActivePostEffect(char effect);
 bool SetPostEffectUse(char effect, bool state);
