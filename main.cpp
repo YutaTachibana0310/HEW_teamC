@@ -61,12 +61,9 @@ static int currentScene = 0;
 
 //各ビューポート
 static D3DVIEWPORT9 viewPort[TARGETPLAYER_MAX] = {
-	{0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT, 0.0f, 1.0f },
-	{SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT, 0.0f, 1.0f}
+	{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 1.0f },
+	{SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 1.0f}
 };
-
-//デフォルトビューポート
-static D3DVIEWPORT9 defaultViewPort;
 
 //=============================================================================
 // メイン関数
@@ -240,8 +237,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	// デバイスのプレゼンテーションパラメータの設定
 	ZeroMemory(&d3dpp, sizeof(d3dpp));							// ワークをゼロクリア
 	d3dpp.BackBufferCount = 1;						// バックバッファの数
-	d3dpp.BackBufferWidth = SCREEN_WIDTH;				// ゲーム画面サイズ(幅)
-	d3dpp.BackBufferHeight = SCREEN_HEIGHT;			// ゲーム画面サイズ(高さ)
+	d3dpp.BackBufferWidth = WINDOW_WIDTH;				// ゲーム画面サイズ(幅)
+	d3dpp.BackBufferHeight = WINDOW_HEIGHT;			// ゲーム画面サイズ(高さ)
 	d3dpp.BackBufferFormat = d3ddm.Format;				// カラーモードの指定
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;	// 映像信号に同期してフリップする
 	d3dpp.Windowed = bWindow;					// ウィンドウモード
@@ -342,9 +339,6 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 			NULL);
 		fullScreenTexture[i]->GetSurfaceLevel(0, &fullScreenSurface[i]);
 	}
-
-	//ビューポートの初期状態を取得
-	g_pD3DDevice->GetViewport(&defaultViewPort);
 
 	// 入力処理の初期化
 	InitInput(hInstance, hWnd);
@@ -483,8 +477,6 @@ void Draw(void)
 		}
 
 		DrawDebugWindowMain();
-
-
 		DrawDebugWindow();
 
 		g_pD3DDevice->EndScene();
