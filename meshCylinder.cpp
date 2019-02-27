@@ -6,6 +6,7 @@
 //=============================================================================
 #include "meshCylinder.h"
 #include "input.h"
+#include "gameParameter.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -34,17 +35,16 @@ static int numVertex;
 static int numPolygon;
 static int numIndex;
 static float sizeBlockX, sizeBlockZ;
-static float offset[MESHCYLINDER_TEXMAX];
+static int cntFrame;
 
-static float offsetSpeed[MESHCYLINDER_TEXMAX] = { 0.0015f, 0.0017f, 0.002f};
-static float speedMagni = 2.0f;
+static float offsetSpeed[MESHCYLINDER_TEXMAX] = { 0.003f, 0.0034f, 0.004f};
 
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
 void SetVertexBufferCylinder(void);
 void SetIndexBufferCylinder(void);
-void SetTextureOffsetMeshCylinder(float offset);
+void SetTextureOffsetMeshCylinder(int n, int texID);
 
 //*****************************************************************************
 // 初期化処理
@@ -103,20 +103,13 @@ void UninitMeshCylinder(int num)
 //*****************************************************************************
 void UpdateMeshCylinder(void)
 {
-	for (int i = 0; i < MESHCYLINDER_TEXMAX; i++)
-	{
-		offset[i] += offsetSpeed[i] * speedMagni;
-		if (offset[i] > 1.0f)
-		{
-			offset[i] -= 1.0f;
-		}
-	}	
+	cntFrame++;
 }
 
 //*****************************************************************************
 // 描画処理
 //*****************************************************************************
-void DrawMeshCylinder(void)
+void DrawMeshCylinder(int n)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -140,18 +133,18 @@ void DrawMeshCylinder(void)
 	pDevice->SetTexture(0, texture[0]);
 
 	//描画
-	SetTextureOffsetMeshCylinder(offset[0]);
+	SetTextureOffsetMeshCylinder(n, 0);
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, numVertex, 0, numPolygon);
 
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
 	pDevice->SetTexture(0, texture[1]);
-	SetTextureOffsetMeshCylinder(offset[1]);
+	SetTextureOffsetMeshCylinder(n, 1);
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, numVertex, 0, numPolygon);
 
 	pDevice->SetTexture(0, texture[2]);
-	SetTextureOffsetMeshCylinder(offset[2]);
+	SetTextureOffsetMeshCylinder(n, 2);
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, numVertex, 0, numPolygon);
 
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -284,11 +277,14 @@ void SetIndexBufferCylinder(void)
 //*****************************************************************************
 // テクスチャオフセット処理
 //*****************************************************************************
-void SetTextureOffsetMeshCylinder(float offset)
+void SetTextureOffsetMeshCylinder(int n, int texID)
 {
 	VERTEX_3D *pVtx;
+	GAMEPARAMETER *param = GetGameParameterAdr(n);
 
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	float offset = cntFrame * offsetSpeed[texID] * param->speed;
 
 	for (int z = 0; z < (numBlockZ + 1); z++)
 	{

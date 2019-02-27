@@ -18,7 +18,6 @@
 void InitMeshCylinder(int num);
 void UninitMeshCylinder(int num);
 void UpdateMeshCylinder(void);
-void DrawMeshCylinder(void);
-
+void DrawMeshCylinder(int n);
 
 #endif

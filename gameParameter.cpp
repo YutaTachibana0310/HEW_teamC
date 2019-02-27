@@ -1,13 +1,10 @@
 //=====================================
 //
-//GUIマネージャ処理[GUIManager.cpp]
+//ゲームパラメータ処理[gameParameter.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#include "GUIManager.h"
-#include "sceneManager.h"
-#include "Easing.h"
-#include "debugWindow.h"
+#include "gameParameter.h"
 
 /**************************************
 マクロ定義
@@ -16,28 +13,31 @@
 /**************************************
 構造体定義
 ***************************************/
-typedef void(*FuncGUI)(void);
+
+/**************************************
+グローバル変数
+***************************************/
+static GAMEPARAMETER param[TARGETPLAYER_MAX];
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
 
 /**************************************
-グローバル変数
-***************************************/
-
-/**************************************
 初期化処理
 ***************************************/
-void InitGUIManager(int num)
+void InitGameParameter(int num)
 {
-
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		param[i].speed = 1.0f;
+	}
 }
 
 /**************************************
 終了処理
 ***************************************/
-void UninitGUIManager(int num)
+void UninitGameParameter(int num)
 {
 
 }
@@ -45,14 +45,23 @@ void UninitGUIManager(int num)
 /**************************************
 更新処理
 ***************************************/
-void UpdateGUIManager(void)
+void UpdateGameParameter(void)
 {
+
 }
 
 /**************************************
 描画処理
 ***************************************/
-void DrawGUIManager(int n)
+void DrawGameParameter(void)
 {
 
+}
+
+/**************************************
+ゲームパラメータアドレス取得処理
+***************************************/
+GAMEPARAMETER *GetGameParameterAdr(int n)
+{
+	return &param[n];
 }

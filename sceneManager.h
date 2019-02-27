@@ -36,7 +36,7 @@ void InitSceneManager(int* ptr);
 void UninitSceneManager(int num);
 void UninitScene(int num);
 void UpdateSceneManager(void);
-void DrawSceneManager(void);
+void DrawSceneManager(int n);
 void SetScene(DefineScene sceneId);
 int GetNextScene(void);
 #endif
