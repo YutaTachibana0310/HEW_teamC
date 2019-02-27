@@ -20,6 +20,7 @@
 typedef void(*SceneFunc)(void);			//シーンの各処理の関数ポインタ定義
 typedef HRESULT(*SceneInit)(int num);	//シーンの初期化処理の関数ポインタ定義
 typedef void(*SceneUninit)(int num);	//シーンの終了処理の関数ポインタ定義
+typedef void(*SceneDraw)(int n);		//シーンの描画処理の関数ポインタ定義
 
 /**************************************
 グローバル変数
@@ -43,7 +44,7 @@ static SceneFunc Update[DefineSceneMax] = {
 };
 
 //描画処理テーブル
-static SceneFunc Draw[DefineSceneMax] = {
+static SceneDraw Draw[DefineSceneMax] = {
 	DrawGameScene
 };
 
@@ -100,9 +101,9 @@ void UpdateSceneManager(void)
 /**************************************
 描画処理
 ***************************************/
-void DrawSceneManager(void)
+void DrawSceneManager(int n)
 {
-	Draw[*currentSceneId]();
+	Draw[*currentSceneId](n);
 }
 
 /**************************************

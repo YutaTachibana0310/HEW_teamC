@@ -23,6 +23,6 @@
 HRESULT InitGameScene(int num);
 void UninitGameScene(int num);
 void UpdateGameScene(void);
-void DrawGameScene(void);
+void DrawGameScene(int n);
 
 #endif

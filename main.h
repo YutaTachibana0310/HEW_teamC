@@ -54,6 +54,8 @@
 
 #define SAFE_RELEASE(p) {if(p){p->Release(); p = NULL;}}
 
+#define TARGETPLAYER_MAX	(2)	//一度に参加できるプレイヤーの最大数
+
 // 上記２Ｄポリゴン頂点フォーマットに合わせた構造体を定義
 typedef struct
 {

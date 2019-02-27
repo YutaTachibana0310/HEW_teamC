@@ -23,6 +23,6 @@
 void InitRainbowLane(int num);
 void UninitRainbowLane(int num);
 void UpdateRainbowLane(void);
-void DrawRainbowLane(void);
+void DrawRainbowLane(int n);
 
 #endif

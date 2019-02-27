@@ -8,6 +8,7 @@
 
 #include "meshCylinder.h"
 #include "rainbowLane.h"
+#include "gameParameter.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -30,6 +31,8 @@
 ***************************************/
 HRESULT InitGameScene(int num)
 {
+	InitGameParameter(num);
+
 	InitMeshCylinder(num);
 	InitRainbowLane(num);
 	return S_OK;
@@ -40,6 +43,8 @@ HRESULT InitGameScene(int num)
 ***************************************/
 void UninitGameScene(int num)
 {
+	UninitGameParameter(num);
+
 	UninitMeshCylinder(num);
 	UninitRainbowLane(num);
 }
@@ -49,6 +54,8 @@ void UninitGameScene(int num)
 ***************************************/
 void UpdateGameScene(void)
 {
+	UpdateGameParameter();
+
 	UpdateMeshCylinder();
 	UpdateRainbowLane();
 }
@@ -56,8 +63,8 @@ void UpdateGameScene(void)
 /**************************************
 ï`âÊèàóù
 ***************************************/
-void DrawGameScene(void)
+void DrawGameScene(int n)
 {
-	DrawMeshCylinder();
-	DrawRainbowLane();
+	DrawMeshCylinder(n);
+	DrawRainbowLane(n);
 }

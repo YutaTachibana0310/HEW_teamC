@@ -25,7 +25,6 @@
 //*****************************************************************************
 #define CLASS_NAME		"AppClass"		// ウインドウのクラス名
 #define WINDOW_NAME		"CYBERIDE -サイバライド-"		// ウインドウのキャプション名
-#define TARGETPLAYER_MAX	(2)
 
 //*****************************************************************************
 // 構造体定義
@@ -468,11 +467,11 @@ void Draw(void)
 
 			DrawScreenBG();
 
-			DrawSceneManager();
+			DrawSceneManager(i);
 
 			//DrawPostEffectManager(fullScreenTexture, fullScreenSurface, oldSurface, i);
 
-			DrawGUIManager();
+			DrawGUIManager(i);
 
 		}
 

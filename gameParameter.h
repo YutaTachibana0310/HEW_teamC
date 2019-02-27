@@ -1,11 +1,11 @@
 //=====================================
 //
-//GUIマネージャヘッダ[GUIManager.h]
+//ゲームパラメータヘッダ[gameParameter.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _TEMPLATE_H_
-#define _TEMPLATE_H_
+#ifndef _GAMEPARAMETER_H_
+#define _GAMEPARAMETER_H_
 
 #include "main.h"
 
@@ -16,20 +16,17 @@
 /**************************************
 構造体定義
 ***************************************/
-enum GUI_NUMTEXTURE
-{
-	GUI_NUMSCORE,
-	GUI_NUMLOCKON,
-	GUI_NUMBONUSTIME,
-	GUI_NUMRANKING,
-	GUI_NUMTEX_MAX
-};
+typedef struct {
+	float speed;		//プレイヤーのスピード
+
+}GAMEPARAMETER;
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitGUIManager(int num);
-void UninitGUIManager(int num);
-void UpdateGUIManager(void);
-void DrawGUIManager(int n);
+void InitGameParameter(int num);
+void UninitGameParameter(int num);
+void UpdateGameParameter(void);
+void DrawGameParameter(void);
+GAMEPARAMETER *GetGameParameterAdr(int n);
 
 #endif

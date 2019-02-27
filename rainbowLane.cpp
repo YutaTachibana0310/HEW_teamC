@@ -5,6 +5,7 @@
 //
 //=====================================
 #include "rainbowLane.h"
+#include "gameParameter.h"
 
 /**************************************
 マクロ定義
@@ -50,7 +51,7 @@ static D3DXVECTOR3 laneRot[RAINBOWLANE_NUM_MAX] = {
 プロトタイプ宣言
 ***************************************/
 void SetVertexRainbowLane(void);			//頂点設定処理
-void ScrollRainbowLane(void);				//スクロール処理
+void ScrollRainbowLane(int n);				//スクロール処理
 
 /**************************************
 初期化処理
@@ -88,13 +89,12 @@ void UninitRainbowLane(int num)
 void UpdateRainbowLane(void)
 {
 	cntFrame++;
-	ScrollRainbowLane();
 }
 
 /**************************************
 描画処理
 ***************************************/
-void DrawRainbowLane(void)
+void DrawRainbowLane(int n)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	D3DXMATRIX mtxWorld, mtxTranslate, mtxRot;
@@ -104,6 +104,9 @@ void DrawRainbowLane(void)
 	pDevice->SetTexture(0, texture);
 
 	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
+
+	//テクスチャをスクロール
+	ScrollRainbowLane(n);
 
 	//回転でレーンの明るさが変わらないようにライティングはオフに
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
@@ -170,14 +173,15 @@ void SetVertexRainbowLane(void)
 /**************************************
 スクロール処理
 ***************************************/
-void ScrollRainbowLane(void)
+void ScrollRainbowLane(int n)
 {
 	VERTEX_3D *pVtx;
+	GAMEPARAMETER *param = GetGameParameterAdr(n);
 
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	//UV座標のオフセットを計算
-	float offset = cntFrame * RAINBOWLANE_SCROLLSPEED;
+	float offset = cntFrame * RAINBOWLANE_SCROLLSPEED * param->speed;
 
 	pVtx[0].tex = D3DXVECTOR2(0.0f, offset);
 	pVtx[1].tex = D3DXVECTOR2(1.0f, offset);
