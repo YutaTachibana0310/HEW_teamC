@@ -26,6 +26,7 @@
     <ClCompile Include="debugWindow.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="EasingVector.cpp" />
+    <ClCompile Include="gameParameter.cpp" />
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -41,6 +42,7 @@
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="postEffectManager.cpp" />
+    <ClCompile Include="rainbowLane.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="screenBG.cpp" />
     <ClCompile Include="sound.cpp" />
@@ -55,6 +57,7 @@
     <ClInclude Include="debugWindow.h" />
     <ClInclude Include="Easing.h" />
     <ClInclude Include="EasingVector.h" />
+    <ClInclude Include="gameParameter.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="GUIManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -72,6 +75,7 @@
     <ClInclude Include="MyLibrary.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="postEffectManager.h" />
+    <ClInclude Include="rainbowLane.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="screenBG.h" />
     <ClInclude Include="sound.h" />

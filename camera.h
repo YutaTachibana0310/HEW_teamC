@@ -31,7 +31,7 @@ HRESULT InitCamera(void);
 void UninitCamera(void);
 void UpdateCamera(void);
 
-void SetCamera(void);
+void SetCamera(int targetPlayerID);
 
 D3DXVECTOR3 GetRotCamera(void);
 D3DXMATRIX GetMtxView(void);

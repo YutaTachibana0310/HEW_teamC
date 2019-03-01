@@ -1,62 +1,76 @@
 //=====================================
 //
-//ƒQ[ƒ€ƒV[ƒ“ˆ—[gameScene.cpp]
-//Author:GP11A341 21 —§‰Ô—Y‘¾
+//ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³å‡¦ç†[gameScene.cpp]
+//Author:GP11A341 21 ç«‹èŠ±é›„å¤ª
 //
 //=====================================
 #include "gameScene.h"
 
 #include "meshCylinder.h"
 #include "player.h"
+#include "rainbowLane.h"
+#include "gameParameter.h"
+
 /**************************************
-ƒ}ƒNƒ’è‹`
+ãƒã‚¯ãƒ­å®šç¾©
 ***************************************/
 
 /**************************************
-\‘¢‘Ì’è‹`
+æ§‹é€ ä½“å®šç¾©
 ***************************************/
 
 /**************************************
-ƒOƒ[ƒoƒ‹•Ï”
+ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
 ***************************************/
 
 /**************************************
-ƒvƒƒgƒ^ƒCƒvéŒ¾
+ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
 ***************************************/
 
 /**************************************
-‰Šú‰»ˆ—
+åˆæœŸåŒ–å‡¦ç†
 ***************************************/
 HRESULT InitGameScene(int num)
 {
+	InitGameParameter(num);
+
 	InitMeshCylinder(num);
 	InitPlayer();
+	InitRainbowLane(num);
 	return S_OK;
 }
 
 /**************************************
-I—¹ˆ—
+çµ‚äº†å‡¦ç†
 ***************************************/
 void UninitGameScene(int num)
 {
+	UninitGameParameter(num);
+
 	UninitMeshCylinder(num);
 	UninitPlayer();
+	UninitRainbowLane(num);
 }
 
 /**************************************
-XVˆ—
+æ›´æ–°å‡¦ç†
 ***************************************/
 void UpdateGameScene(void)
 {
+	UpdateGameParameter();
+
 	UpdateMeshCylinder();
 	UpdatePlayer();
+	UpdateRainbowLane();
 }
 
 /**************************************
-•`‰æˆ—
+æç”»å‡¦ç†
 ***************************************/
-void DrawGameScene(void)
+void DrawGameScene(int n)
 {
 	DrawMeshCylinder();
 	DrawPlayer();
+	DrawMeshCylinder(n);
+	DrawRainbowLane(n);
 }

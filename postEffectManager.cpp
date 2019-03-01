@@ -25,6 +25,7 @@ static char activeEffect = 0;
 /**************************************
 プロトタイプ宣言
 ***************************************/
+void SetVertexPostEffect(int targetID);
 
 /**************************************
 初期化処理
@@ -52,9 +53,9 @@ void InitPostEffectManager(int num)
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	pVtx[0].vtx = D3DXVECTOR3(0.0, 0.0f, 0.0f);
-	pVtx[1].vtx = D3DXVECTOR3((float)SCREEN_WIDTH, 0.0f, 0.0f);
+	pVtx[1].vtx = D3DXVECTOR3((float)SCREEN_WIDTH / 2.0f, 0.0f, 0.0f);
 	pVtx[2].vtx = D3DXVECTOR3(0.0, (float)SCREEN_HEIGHT, 0.0f);
-	pVtx[3].vtx = D3DXVECTOR3((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 0.0f);
+	pVtx[3].vtx = D3DXVECTOR3((float)SCREEN_WIDTH / 2.0f, (float)SCREEN_HEIGHT, 0.0f);
 
 	pVtx[0].rhw =
 		pVtx[1].rhw =
@@ -98,7 +99,7 @@ void UpdatePostEffectManager(void)
 /**************************************
 描画処理
 ***************************************/
-void DrawPostEffectManager(LPDIRECT3DTEXTURE9 tex[2], LPDIRECT3DSURFACE9 suf[2], LPDIRECT3DSURFACE9 back)
+void DrawPostEffectManager(LPDIRECT3DTEXTURE9 tex[2], LPDIRECT3DSURFACE9 suf[2], LPDIRECT3DSURFACE9 back, int targetID)
 {
 	int cntDraw = 0;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -114,6 +115,8 @@ void DrawPostEffectManager(LPDIRECT3DTEXTURE9 tex[2], LPDIRECT3DSURFACE9 suf[2],
 	//結果をバックバッファへ描画
 	pDevice->SetRenderTarget(0, back);
 	SAFE_RELEASE(back);
+
+	SetVertexPostEffect(targetID);
 	pDevice->SetTexture(0, tex[cntDraw % 2]);
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 
@@ -163,4 +166,22 @@ bool SetPostEffectUse(char effect, bool state)
 		activeEffect &= set;
 		return true;
 	}
+}
+
+/**************************************
+頂点座標設定処理
+***************************************/
+void SetVertexPostEffect(int targetID)
+{
+	D3DXVECTOR3 pos = D3DXVECTOR3(targetID * SCREEN_WIDTH / 2.0f, 0.0f, 0.0f);
+
+	VERTEX_2D *pVtx = NULL;
+	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	pVtx[0].vtx = pos + D3DXVECTOR3(0.0, 0.0f, 0.0f);
+	pVtx[1].vtx = pos + D3DXVECTOR3((float)SCREEN_WIDTH / 2.0f, 0.0f, 0.0f);
+	pVtx[2].vtx = pos + D3DXVECTOR3(0.0, (float)SCREEN_HEIGHT, 0.0f);
+	pVtx[3].vtx = pos + D3DXVECTOR3((float)SCREEN_WIDTH / 2.0f, (float)SCREEN_HEIGHT, 0.0f);
+
+	vtxBuff->Unlock();
 }
