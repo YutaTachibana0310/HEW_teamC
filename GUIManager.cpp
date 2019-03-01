@@ -9,6 +9,8 @@
 #include "Easing.h"
 #include "debugWindow.h"
 
+#include "progressGauge.h"
+
 /**************************************
 ƒ}ƒNƒ’è‹`
 ***************************************/
@@ -31,7 +33,7 @@ typedef void(*FuncGUI)(void);
 ***************************************/
 void InitGUIManager(int num)
 {
-
+	InitProgressGauge(num);
 }
 
 /**************************************
@@ -39,7 +41,7 @@ void InitGUIManager(int num)
 ***************************************/
 void UninitGUIManager(int num)
 {
-
+	UninitProgressGauge(num);
 }
 
 /**************************************
@@ -47,6 +49,7 @@ void UninitGUIManager(int num)
 ***************************************/
 void UpdateGUIManager(void)
 {
+	UpdateProgressGauge();
 }
 
 /**************************************
@@ -54,5 +57,9 @@ void UpdateGUIManager(void)
 ***************************************/
 void DrawGUIManager(int n)
 {
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
+	pDevice->SetFVF(FVF_VERTEX_2D);
+
+	DrawProgressGauge();
 }
