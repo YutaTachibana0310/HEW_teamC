@@ -8,6 +8,7 @@
 
 #include "meshCylinder.h"
 
+#include "effect.h"
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
@@ -30,7 +31,9 @@
 HRESULT InitGameScene(int num)
 {
 	InitMeshCylinder(num);
+	InitEffect();
 	return S_OK;
+
 }
 
 /**************************************
@@ -39,6 +42,8 @@ HRESULT InitGameScene(int num)
 void UninitGameScene(int num)
 {
 	UninitMeshCylinder(num);
+
+	UninitEffect();
 }
 
 /**************************************
@@ -47,6 +52,8 @@ void UninitGameScene(int num)
 void UpdateGameScene(void)
 {
 	UpdateMeshCylinder();
+
+	UpdateEffect();
 }
 
 /**************************************
@@ -55,4 +62,6 @@ void UpdateGameScene(void)
 void DrawGameScene(void)
 {
 	DrawMeshCylinder();
+
+	DrawEffect();
 }
