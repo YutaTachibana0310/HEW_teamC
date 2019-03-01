@@ -16,8 +16,9 @@
 /**************************************
 構造体定義
 ***************************************/
-typedef struct {
-	float speed;		//プレイヤーのスピード
+typedef struct _GAMEPARAMETER{
+	float playerSpeed;			//プレイヤーのスピード
+	float playerMoveDist;		//プレイヤーの移動距離
 
 }GAMEPARAMETER;
 /**************************************

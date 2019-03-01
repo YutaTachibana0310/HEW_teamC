@@ -284,7 +284,7 @@ void SetTextureOffsetMeshCylinder(int n, int texID)
 
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	float offset = cntFrame * offsetSpeed[texID] * param->speed;
+	float offset = cntFrame * offsetSpeed[texID] * param->playerSpeed;
 
 	for (int z = 0; z < (numBlockZ + 1); z++)
 	{

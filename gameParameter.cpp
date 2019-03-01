@@ -30,7 +30,7 @@ void InitGameParameter(int num)
 {
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
-		param[i].speed = 1.0f;
+		param[i].playerSpeed = 1.0f;
 	}
 }
 
