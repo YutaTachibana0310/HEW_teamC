@@ -181,7 +181,7 @@ void ScrollRainbowLane(int n)
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	//UV座標のオフセットを計算
-	float offset = cntFrame * RAINBOWLANE_SCROLLSPEED * param->speed;
+	float offset = cntFrame * RAINBOWLANE_SCROLLSPEED * param->playerSpeed;
 
 	pVtx[0].tex = D3DXVECTOR2(0.0f, offset);
 	pVtx[1].tex = D3DXVECTOR2(1.0f, offset);
