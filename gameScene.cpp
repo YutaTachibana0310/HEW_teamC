@@ -7,7 +7,7 @@
 #include "gameScene.h"
 
 #include "meshCylinder.h"
-
+#include "player.h"
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
@@ -30,6 +30,7 @@
 HRESULT InitGameScene(int num)
 {
 	InitMeshCylinder(num);
+	InitPlayer();
 	return S_OK;
 }
 
@@ -39,6 +40,7 @@ HRESULT InitGameScene(int num)
 void UninitGameScene(int num)
 {
 	UninitMeshCylinder(num);
+	UninitPlayer();
 }
 
 /**************************************
@@ -47,6 +49,7 @@ void UninitGameScene(int num)
 void UpdateGameScene(void)
 {
 	UpdateMeshCylinder();
+	UpdatePlayer();
 }
 
 /**************************************
@@ -55,4 +58,5 @@ void UpdateGameScene(void)
 void DrawGameScene(void)
 {
 	DrawMeshCylinder();
+	DrawPlayer();
 }

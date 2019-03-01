@@ -18,7 +18,7 @@
 #define	VALUE_ROTATE_PLAYER	(D3DX_PI * 0.025f)			// 回転速度
 #define	RATE_ROTATE_PLAYER	(0.10f)						// 回転慣性係数
 #define	VALUE_MOVE_BULLET	(7.5f)						// 弾の移動速度
-
+#define PLAYER_MOVE_BORDER	(80.0f)
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
@@ -115,13 +115,13 @@ void UpdatePlayer(void)
 	
 	// これ以上は行けないという処理
 	// マジックナンバー注意
-	if (player.pos.x <= -79.9999695f)
+	if (player.pos.x <= -PLAYER_MOVE_BORDER)
 	{
-		player.pos.x = -79.9999695f;
+		player.pos.x = -PLAYER_MOVE_BORDER;
 	}
-	if (player.pos.x >= 79.9999695f)
+	if (player.pos.x >= PLAYER_MOVE_BORDER)
 	{
-		player.pos.x = 79.9999695f;
+		player.pos.x = PLAYER_MOVE_BORDER;
 	}
 
 	// 移動量に慣性をかける
