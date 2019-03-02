@@ -51,10 +51,6 @@ int					g_nCountFPS;			// FPSカウンタ
 bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;
 
-//スクリーン全体を覆うテクスチャ
-static LPDIRECT3DTEXTURE9 fullScreenTexture[2];
-static LPDIRECT3DSURFACE9 fullScreenSurface[2];
-
 //現在のシーン
 static int currentScene = 0;
 
@@ -325,20 +321,6 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	}
 #endif
 
-	//描画用のフルスクリーンテクスチャを作成しサーフェイスを取得
-	for (int i = 0; i < 2; i++)
-	{
-		g_pD3DDevice->CreateTexture(SCREEN_WIDTH,
-			SCREEN_HEIGHT,
-			1,
-			D3DUSAGE_RENDERTARGET,
-			D3DFMT_A8R8G8B8,
-			D3DPOOL_DEFAULT,
-			&fullScreenTexture[i],
-			NULL);
-		fullScreenTexture[i]->GetSurfaceLevel(0, &fullScreenSurface[i]);
-	}
-
 	// 入力処理の初期化
 	InitInput(hInstance, hWnd);
 
@@ -392,11 +374,6 @@ void Uninit(void)
 		g_pD3D->Release();
 		g_pD3D = NULL;
 	}
-
-	SAFE_RELEASE(fullScreenSurface[0]);
-	SAFE_RELEASE(fullScreenSurface[1]);
-	SAFE_RELEASE(fullScreenTexture[0]);
-	SAFE_RELEASE(fullScreenTexture[1]);
 
 	// 入力処理の終了処理
 	UninitInput();
@@ -454,8 +431,6 @@ void Update(void)
 void Draw(void)
 {
 	LPDIRECT3DSURFACE9 oldSurface = NULL;
-	//g_pD3DDevice->GetRenderTarget(0, &oldSurface);
-	//g_pD3DDevice->SetRenderTarget(0, fullScreenSurface[0]);
 	g_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), backColor, 1.0f, 0);
 	if (SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{
@@ -465,14 +440,9 @@ void Draw(void)
 
 			SetCamera(i);
 
-			DrawScreenBG();
-
 			DrawSceneManager(i);
 
-			//DrawPostEffectManager(fullScreenTexture, fullScreenSurface, oldSurface, i);
-
 			DrawGUIManager(i);
-
 		}
 
 		DrawDebugWindowMain();
