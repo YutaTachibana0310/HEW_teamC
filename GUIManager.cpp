@@ -8,8 +8,10 @@
 #include "sceneManager.h"
 #include "Easing.h"
 #include "debugWindow.h"
+#include "gameParameter.h"
 
 #include "progressGauge.h"
+#include "progressMarker.h"
 
 /**************************************
 マクロ定義
@@ -34,6 +36,7 @@ typedef void(*FuncGUI)(void);
 void InitGUIManager(int num)
 {
 	InitProgressGauge(num);
+	InitProgressMarker(num);
 }
 
 /**************************************
@@ -42,6 +45,7 @@ void InitGUIManager(int num)
 void UninitGUIManager(int num)
 {
 	UninitProgressGauge(num);
+	UninitProgressMarker(num);
 }
 
 /**************************************
@@ -50,6 +54,7 @@ void UninitGUIManager(int num)
 void UpdateGUIManager(void)
 {
 	UpdateProgressGauge();
+	UpdateProgressMarker();
 }
 
 /**************************************
@@ -61,5 +66,15 @@ void DrawGUIManager(int n)
 
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
+	//プログレスゲージ描画
 	DrawProgressGauge();
+
+	//プログレスマーカー描画
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		GAMEPARAMETER *param = GetGameParameterAdr(i);
+		float progress = param->playerMoveDist / GAMEPARAMETER_MOVEDIST_MAX;
+		SetProgressMarker(i, progress);
+		DrawProgressMarker();
+	}
 }
