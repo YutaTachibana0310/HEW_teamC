@@ -60,6 +60,9 @@ static D3DVIEWPORT9 viewPort[TARGETPLAYER_MAX] = {
 	{SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 1.0f}
 };
 
+//デフォルトビューポート
+static D3DVIEWPORT9 defaultViewPort = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 1.0f };
+
 //=============================================================================
 // メイン関数
 //=============================================================================
@@ -430,27 +433,34 @@ void Update(void)
 //=============================================================================
 void Draw(void)
 {
-	LPDIRECT3DSURFACE9 oldSurface = NULL;
 	g_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), backColor, 1.0f, 0);
+
+	D3DVIEWPORT9 defViewPort;
+	g_pD3DDevice->GetViewport(&defViewPort);
+
+	//オブジェクトをそれぞれのビューポートで描画
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		g_pD3DDevice->SetViewport(&viewPort[i]);
+		if (SUCCEEDED(g_pD3DDevice->BeginScene()))
+		{
+			SetCamera(i);
+			DrawSceneManager(i);
+			g_pD3DDevice->EndScene();
+		}
+	}
+
+	//GUIを描画
+	g_pD3DDevice->SetViewport(&defViewPort);
 	if (SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{
-		for (int i = 0; i < TARGETPLAYER_MAX; i++)
-		{
-			g_pD3DDevice->SetViewport(&viewPort[i]);
-
-			SetCamera(i);
-
-			DrawSceneManager(i);
-
-			DrawGUIManager(i);
-		}
-
+		DrawGUIManager(0);
 		DrawDebugWindowMain();
 		DrawDebugWindow();
-
 		g_pD3DDevice->EndScene();
 	}
 
+	//バックバッファとフロントバッファを入れ替え
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 }
 
