@@ -42,6 +42,8 @@
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="postEffectManager.cpp" />
+    <ClCompile Include="progressGauge.cpp" />
+    <ClCompile Include="progressMarker.cpp" />
     <ClCompile Include="rainbowLane.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="screenBG.cpp" />
@@ -75,6 +77,8 @@
     <ClInclude Include="MyLibrary.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="postEffectManager.h" />
+    <ClInclude Include="progressGauge.h" />
+    <ClInclude Include="progressMarker.h" />
     <ClInclude Include="rainbowLane.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="screenBG.h" />

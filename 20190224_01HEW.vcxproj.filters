@@ -162,6 +162,12 @@
     <ClCompile Include="gameParameter.cpp">
       <Filter>ソース ファイル\Tachibana</Filter>
     </ClCompile>
+    <ClCompile Include="progressGauge.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
+    </ClCompile>
+    <ClCompile Include="progressMarker.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -255,6 +261,12 @@
       <Filter>ヘッダー ファイル\Tachibana</Filter>
     </ClInclude>
     <ClInclude Include="gameParameter.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
+    </ClInclude>
+    <ClInclude Include="progressGauge.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
+    </ClInclude>
+    <ClInclude Include="progressMarker.h">
       <Filter>ヘッダー ファイル\Tachibana</Filter>
     </ClInclude>
   </ItemGroup>
