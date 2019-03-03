@@ -192,6 +192,9 @@
     <ClCompile Include="entryGUI.cpp">
       <Filter>ソース ファイル\Tachibana\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="sceneFade.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -301,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="entryGUI.h">
       <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneFade.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

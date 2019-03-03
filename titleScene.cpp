@@ -6,6 +6,7 @@
 //=====================================
 #include "titleScene.h"
 #include "input.h"
+#include "sceneFade.h"
 
 #include "meshCylinder.h"
 #include "rainbowLane.h"
@@ -22,11 +23,12 @@
 /**************************************
 グローバル変数
 ***************************************/
-static bool isEntryCompleted[TARGETPLAYER_MAX];
+static bool entryState[TARGETPLAYER_MAX];	//エントリー状態
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
+bool IsCompleteEntry(void);		//エントリー完了判定処理
 
 /**************************************
 初期化処理
@@ -36,7 +38,7 @@ HRESULT InitTitleScene(int num)
 	//エントリー状態を初期化
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
-		isEntryCompleted[i] = false;
+		entryState[i] = false;
 	}
 
 	InitGameParameter(num);
@@ -74,14 +76,18 @@ void UpdateTitleScene(void)
 			continue;
 
 		//入力があればエントリー完了状態へ遷移
-		isEntryCompleted[i] = true;
+		entryState[i] = true;
 	}
 
 	//テスト機能
 	if (GetKeyboardTrigger(DIK_O))
-		isEntryCompleted[0] = true;
+		entryState[0] = true;
 	if (GetKeyboardTrigger(DIK_P))
-		isEntryCompleted[1] = true;
+		entryState[1] = true;
+
+	//エントリーが完了したらシーン遷移
+	if(IsCompleteEntry())
+		SetSceneFade(GameScene);
 }
 
 /**************************************
@@ -96,7 +102,21 @@ void DrawTitleScene(int i)
 /**************************************
 エントリー状態取得処理
 ***************************************/
-bool IsEntryCompleted(int playerID)
+bool GetEntryState(int playerID)
 {
-	return isEntryCompleted[playerID];
+	return entryState[playerID];
+}
+
+/**************************************
+エントリー完了判定処理
+***************************************/
+bool IsCompleteEntry(void)
+{
+	if (!entryState[0])
+		return false;
+
+	if (!entryState[1])
+		return false;
+
+	return true;
 }

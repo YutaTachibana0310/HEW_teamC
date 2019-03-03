@@ -64,7 +64,7 @@ void DrawTitleSceneGUI(void)
 	//ƒGƒ“ƒgƒŠ[GUI‚ğ‚»‚ê‚¼‚ê•`‰æ
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
-		bool state = IsEntryCompleted(i);
+		bool state = GetEntryState(i);
 		SetEntryGUI(i, state);
 		DrawEntryGUI();
 	}

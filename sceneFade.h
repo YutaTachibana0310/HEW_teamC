@@ -1,13 +1,14 @@
 //=====================================
 //
-//タイトルシーンヘッダ[titleScene.h]
+//シーンフェードヘッダ[sceneFade.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _TITLESCENE_H_
-#define _TITLESCENE_H_
+#ifndef _SCENEFADE_H_
+#define _SCENEFADE_H_
 
 #include "main.h"
+#include "sceneManager.h"
 
 /**************************************
 マクロ定義
@@ -16,15 +17,23 @@
 /**************************************
 構造体定義
 ***************************************/
+enum SceneFadeState
+{
+	SceneFadeIn,
+	SceneFadeWait,
+	SceneFadeOut,
+	SceneFadeNone,
+	SceneFadeStateMax
+};
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
-HRESULT InitTitleScene(int num);
-void UninitTitleScene(int num);
-void UpdateTitleScene(void);
-void DrawTitleScene(int i);
+void InitSceneFade(int num);
+void UninitSceneFade(int num);
+void UpdateSceneFade(void);
+void DrawSceneFade(void);
 
-bool GetEntryState(int playerID);	//エントリー取得処理
-
+void ChangeStateSceneFade(SceneFadeState state);
+void SetSceneFade(DefineScene next);
 #endif

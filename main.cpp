@@ -19,6 +19,7 @@
 #include "postEffectManager.h"
 #include "screenBG.h"
 #include "GUIManager.h"
+#include "sceneFade.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -52,7 +53,7 @@ bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;
 
 //現在のシーン
-static int currentScene = 0;
+static int currentScene = GameScene;
 
 //各ビューポート
 static D3DVIEWPORT9 viewPort[TARGETPLAYER_MAX] = {
@@ -347,16 +348,16 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//ポストエフェクト初期化
 	InitPostEffectManager(0);
 
-	//GUIマネージャ初期化
-	InitGUIManager(0);
-
 	//シーンマネージャ初期化
 	InitSceneManager(&currentScene);
 
 	//デバッグウィンドウ初期化
 	InitDebugWindow(hWnd, g_pD3DDevice);
 
-	SetScene((DefineScene)0);
+	//シーンフェード初期化
+	InitSceneFade(0);
+
+	SetScene((DefineScene)currentScene);
 
 	return S_OK;
 }
@@ -401,8 +402,8 @@ void Uninit(void)
 	//ポストエフェクト終了処理
 	UninitPostEffectManager(0);
 
-	//GUIマネージャ終了処理
-	UninitGUIManager(0);
+	//シーンフェード終了処理
+	UninitSceneFade(0);
 
 #ifdef USE_DEBUGWINDOW
 	UninitDebugWindow(0);
@@ -425,7 +426,9 @@ void Update(void)
 	UpdateLight();
 	UpdateSceneManager();
 	UpdatePostEffectManager();
-	UpdateGUIManager();
+	UpdateGUIManager(currentScene);
+
+	UpdateSceneFade();
 }
 
 //=============================================================================
@@ -454,9 +457,10 @@ void Draw(void)
 	g_pD3DDevice->SetViewport(&defViewPort);
 	if (SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{
-		DrawGUIManager(0);
+		DrawGUIManager(currentScene);
 		DrawDebugWindowMain();
 		DrawDebugWindow();
+		DrawSceneFade();
 		g_pD3DDevice->EndScene();
 	}
 
