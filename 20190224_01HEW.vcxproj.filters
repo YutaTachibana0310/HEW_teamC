@@ -168,6 +168,9 @@
     <ClCompile Include="progressMarker.cpp">
       <Filter>ソース ファイル\Tachibana</Filter>
     </ClCompile>
+    <ClCompile Include="titleScene.cpp">
+      <Filter>ソース ファイル\System\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -268,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="progressMarker.h">
       <Filter>ヘッダー ファイル\Tachibana</Filter>
+    </ClInclude>
+    <ClInclude Include="titleScene.h">
+      <Filter>ヘッダー ファイル\System\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@
 #include "GUIManager.h"
 
 #include "gameScene.h"
-
+#include "titleScene.h"
 
 /**************************************
 マクロ定義
@@ -31,21 +31,25 @@ static int nextScene;
 //初期化処理テーブル
 static SceneInit Init[DefineSceneMax] = {
 	InitGameScene,
+	InitTitleScene
 };
 
 //終了処理テーブル
 static SceneUninit Uninit[DefineSceneMax] = {
 	UninitGameScene,
+	UninitTitleScene
 };
 
 //更新処理テーブル
 static SceneFunc Update[DefineSceneMax] = {
 	UpdateGameScene,
+	UpdateTitleScene
 };
 
 //描画処理テーブル
 static SceneDraw Draw[DefineSceneMax] = {
-	DrawGameScene
+	DrawGameScene,
+	DrawTitleScene
 };
 
 /**************************************
@@ -57,12 +61,6 @@ static SceneDraw Draw[DefineSceneMax] = {
 ***************************************/
 void InitSceneManager(int* ptr)
 {
-
-	/*for (int i = 0; i < DefineSceneMax; i++)
-	{
-		Init[i](num);
-	}*/
-
 	currentSceneId = ptr;
 }
 
