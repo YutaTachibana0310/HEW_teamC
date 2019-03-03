@@ -79,5 +79,8 @@ void UpdateGUIManager(int currentScene)
 ***************************************/
 void DrawGUIManager(int currentScene)
 {
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	pDevice->SetFVF(FVF_VERTEX_2D);
+
 	Draw[currentScene]();
 }

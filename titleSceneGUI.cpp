@@ -6,6 +6,9 @@
 //=====================================
 #include "GUIManager.h"
 
+#include "titleLogo.h"
+#include "entryGUI.h"
+
 /**************************************
 マクロ定義
 ***************************************/
@@ -27,7 +30,8 @@
 ***************************************/
 void InitTitleSceneGUI(void)
 {
-
+	InitTitleLogo(0);
+	InitEntryGUI(0);
 }
 
 /**************************************
@@ -35,7 +39,8 @@ void InitTitleSceneGUI(void)
 ***************************************/
 void UninitTitleSceneGUI(void)
 {
-
+	UninitTitleLogo(0);
+	UninitEntryGUI(0);
 }
 
 /**************************************
@@ -43,7 +48,8 @@ void UninitTitleSceneGUI(void)
 ***************************************/
 void UpdateTitleSceneGUI(void)
 {
-
+	UpdateTitleLogo();
+	UpdateEntryGUI();
 }
 
 /**************************************
@@ -51,5 +57,13 @@ void UpdateTitleSceneGUI(void)
 ***************************************/
 void DrawTitleSceneGUI(void)
 {
+	//ロゴ描画
+	DrawTitleLogo();
 
+	//エントリーGUIをそれぞれ描画
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		SetEntryGUI(i, false);
+		DrawEntryGUI();
+	}
 }
