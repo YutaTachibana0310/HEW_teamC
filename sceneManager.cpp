@@ -110,10 +110,17 @@ void DrawSceneManager(int n)
 void SetScene(DefineScene sceneId)
 {
 	nextScene = sceneId;
+
+	//現在のシーンを終了
 	UninitScene(1);
+	UninitGUIManager(*currentSceneId);
+
+	//シーンを切り替え
 	*currentSceneId = sceneId;
-	//InitGUIManager(1);
+
+	//シーン初期化
 	InitScene(1);
+	InitGUIManager(*currentSceneId);
 }
 
 /**************************************

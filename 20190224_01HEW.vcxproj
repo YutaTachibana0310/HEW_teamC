@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="gameSceneGUI.cpp" />
     <ClCompile Include="bgmManager.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="collider.cpp" />
@@ -51,6 +52,7 @@
     <ClCompile Include="soundEffectManager.cpp" />
     <ClCompile Include="speedGage.cpp" />
     <ClCompile Include="titleScene.cpp" />
+    <ClCompile Include="titleSceneGUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bgmManager.h" />

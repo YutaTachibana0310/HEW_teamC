@@ -1,14 +1,10 @@
 //=====================================
 //
-//GUIマネージャ処理[GUIManager.cpp]
+//タイトルシーンGUI処理[titleSceneGUI.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
 #include "GUIManager.h"
-#include "sceneManager.h"
-#include "Easing.h"
-#include "debugWindow.h"
-#include "gameParameter.h"
 
 /**************************************
 マクロ定義
@@ -17,67 +13,43 @@
 /**************************************
 構造体定義
 ***************************************/
-typedef void(*FuncGUI)(void);
+
+/**************************************
+グローバル変数
+***************************************/
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
 
 /**************************************
-グローバル変数
-***************************************/
-//初期化処理テーブル
-static FuncGUI Init[DefineSceneMax] = {
-	InitGameSceneGUI,
-	InitTitleSceneGUI,
-};
-
-//終了処理テーブル
-static FuncGUI Uninit[DefineSceneMax] = {
-	UninitGameSceneGUI,
-	UninitTitleSceneGUI
-};
-
-//更新処理テーブル
-static FuncGUI Update[DefineSceneMax] = {
-	UpdateGameSceneGUI,
-	UpdateTitleSceneGUI,
-};
-
-//描画処理テーブル
-static FuncGUI Draw[DefineSceneMax] = {
-	DrawGameSceneGUI,
-	DrawTitleSceneGUI
-};
-
-/**************************************
 初期化処理
 ***************************************/
-void InitGUIManager(int currentScene)
+void InitTitleSceneGUI(void)
 {
-	Init[currentScene]();
+
 }
 
 /**************************************
 終了処理
 ***************************************/
-void UninitGUIManager(int currentScene)
+void UninitTitleSceneGUI(void)
 {
-	Uninit[currentScene]();
+
 }
 
 /**************************************
 更新処理
 ***************************************/
-void UpdateGUIManager(int currentScene)
+void UpdateTitleSceneGUI(void)
 {
-	Update[currentScene]();
+
 }
 
 /**************************************
 描画処理
 ***************************************/
-void DrawGUIManager(int currentScene)
+void DrawTitleSceneGUI(void)
 {
-	Draw[currentScene]();
+
 }

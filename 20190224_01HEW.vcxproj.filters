@@ -73,6 +73,12 @@
     <Filter Include="ヘッダー ファイル\System\Scene">
       <UniqueIdentifier>{a5063766-d4f5-4ce8-97ad-ef76a347b15b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Tachibana\GUI">
+      <UniqueIdentifier>{cbf6e534-8698-448b-a570-d7a22db28e10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Tachibana\GUI\State">
+      <UniqueIdentifier>{a8b0bce3-8fae-463d-a0d4-48cc551d97cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
@@ -162,14 +168,20 @@
     <ClCompile Include="gameParameter.cpp">
       <Filter>ソース ファイル\Tachibana</Filter>
     </ClCompile>
-    <ClCompile Include="progressGauge.cpp">
-      <Filter>ソース ファイル\Tachibana</Filter>
-    </ClCompile>
-    <ClCompile Include="progressMarker.cpp">
-      <Filter>ソース ファイル\Tachibana</Filter>
-    </ClCompile>
     <ClCompile Include="titleScene.cpp">
       <Filter>ソース ファイル\System\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="gameSceneGUI.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI\State</Filter>
+    </ClCompile>
+    <ClCompile Include="titleSceneGUI.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI\State</Filter>
+    </ClCompile>
+    <ClCompile Include="progressGauge.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="progressMarker.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
