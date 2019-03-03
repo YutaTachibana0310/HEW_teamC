@@ -10,7 +10,7 @@
 マクロ定義
 ***************************************/
 #define ENTRYGUI_TEXTURE_NAME		"data/TEXTURE/UI/entryGUI.png"
-#define ENTRYGUI_SIZE_X				(600.0f)
+#define ENTRYGUI_SIZE_X				(700.0f)
 #define ENTRYGUI_SIZE_Y				(ENTRYGUI_SIZE_X / 8.0f)
 #define ENTRYGUI_POS				(D3DXVECTOR3(WINDOW_CENTER_X, WINDOW_HEIGHT - 200.0f, 0.0f))
 #define ENTRYGUI_OFFSET_X			(SCREEN_WIDTH / 2.0f)
@@ -95,6 +95,7 @@ void MakeVertexEntryGUI(void)
 ***************************************/
 void SetEntryGUI(int playerID, bool isCompleted)
 {
+	//UV座標設定
 	float sizeY = 1.0f / ENTRYGUI_TEXTURE_INDEX_MAX;
 	int y = isCompleted ? ENTRYGUI_TEXTURE_COMPLETE_ENTRY : ENTRYGUI_TEXTURE_WAITINPUT;
 
@@ -103,6 +104,8 @@ void SetEntryGUI(int playerID, bool isCompleted)
 	vtxWk[2].tex = D3DXVECTOR2(0.0f, sizeY * (y + 1));
 	vtxWk[3].tex = D3DXVECTOR2(1.0f, sizeY * (y + 1));
 
+
+	//頂点座標設定
 	float offsetX = playerID == 0 ? -ENTRYGUI_OFFSET_X : ENTRYGUI_OFFSET_X;
 	D3DXVECTOR3 pos = ENTRYGUI_POS;
 	pos.x += offsetX;

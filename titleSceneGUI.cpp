@@ -5,6 +5,7 @@
 //
 //=====================================
 #include "GUIManager.h"
+#include "titleScene.h"
 
 #include "titleLogo.h"
 #include "entryGUI.h"
@@ -63,7 +64,8 @@ void DrawTitleSceneGUI(void)
 	//ƒGƒ“ƒgƒŠ[GUI‚ğ‚»‚ê‚¼‚ê•`‰æ
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
-		SetEntryGUI(i, false);
+		bool state = IsEntryCompleted(i);
+		SetEntryGUI(i, state);
 		DrawEntryGUI();
 	}
 }

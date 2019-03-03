@@ -25,4 +25,6 @@ void UninitTitleScene(int num);
 void UpdateTitleScene(void);
 void DrawTitleScene(int i);
 
+bool IsEntryCompleted(int playerID);	//ƒGƒ“ƒgƒŠ[æ“¾ˆ—
+
 #endif
