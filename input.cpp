@@ -75,103 +75,161 @@ static int		axisYRepeatCnt[GAMEPADMAX];
 //=============================================================================
 // 水平方向の入力の取得
 //=============================================================================
-int GetHorizontalInputPress(void)
+int GetHorizontalInputPress(int i)
 {
-	if (GetKeyboardPress(DIK_LEFT) || IsButtonPressed(0, BUTTON_LEFT))
+	//0番のプレイヤーのみキーボードでも操作可能
+	if (i == 0)
 	{
-		return -1;
-	}
+		if (GetKeyboardPress(DIK_LEFT) || IsButtonPressed(0, BUTTON_LEFT))
+		{
+			return -1;
+		}
 
-	if (GetKeyboardPress(DIK_RIGHT) || IsButtonPressed(0, BUTTON_RIGHT))
+		if (GetKeyboardPress(DIK_RIGHT) || IsButtonPressed(0, BUTTON_RIGHT))
+		{
+			return 1;
+		}
+		return 0;
+	}
+	//それ以外はゲームパッドでの操作のみ
+	else
 	{
-		return 1;
-	}
+		if (IsButtonPressed(i, BUTTON_LEFT))
+			return -1;
+		
+		if (IsButtonPressed(i, BUTTON_RIGHT))
+			return 1;
 
-	return 0;
+		return 0;
+	}
 }
 
 //=============================================================================
 // 垂直方向の入力の取得
 //=============================================================================
-int GetVerticalInputPress(void)
+int GetVerticalInputPress(int i)
 {
-	if (GetKeyboardPress(DIK_UP) || IsButtonPressed(0, BUTTON_UP))
+	//0番のプレイヤーのみキーボードでも操作可能
+	if (i == 0)
 	{
-		return 1;
-	}
+		if (GetKeyboardPress(DIK_UP) || IsButtonPressed(0, BUTTON_UP))
+		{
+			return 1;
+		}
 
-	if (GetKeyboardPress(DIK_DOWN) || IsButtonPressed(0, BUTTON_DOWN))
+		if (GetKeyboardPress(DIK_DOWN) || IsButtonPressed(0, BUTTON_DOWN))
+		{
+			return -1;
+		}
+		return 0;
+	}
+	//それ以外はゲームパッドでのみ操作可能
+	else
 	{
-		return -1;
-	}
+		if (IsButtonPressed(i, BUTTON_UP))
+			return 1;
+		
+		if (IsButtonPressed(i, BUTTON_DOWN))
+			return -1;
 
-	return 0;
+		return 0;
+	}
 }
 
 //=============================================================================
 // 水平方向の入力の取得
 //=============================================================================
-int GetHorizontalInputRepeat(void)
+int GetHorizontalInputRepeat(int i)
 {
-	if (padAxisXRepeat[0] != 0)
-		return padAxisXRepeat[0];
+	//0番のプレイヤーのみキーボードでも操作可能
+	if (i == 0)
+	{
+		if (padAxisXRepeat[0] != 0)
+			return padAxisXRepeat[0];
 
-	if (GetKeyboardRepeat(DIK_LEFT))
-		return -1;
+		if (GetKeyboardRepeat(DIK_LEFT))
+			return -1;
 
-	if (GetKeyboardRepeat(DIK_RIGHT))
-		return 1;
+		if (GetKeyboardRepeat(DIK_RIGHT))
+			return 1;
 
-	return 0;
+		return 0;
+	}
+	//それ以外はゲームパッドでのみ操作可能
+	else
+	{
+		return padAxisXRepeat[i];
+	}
 }
 
 //=============================================================================
 // 垂直方向の入力の取得
 //=============================================================================
-int GetVerticalInputRepeat(void)
+int GetVerticalInputRepeat(int i)
 {
-	if (padAxisYRepeat[0] != 0)
-		return padAxisYRepeat[0];
+	//0番のプレイヤーのみキーボードでも操作可能
+	if (i == 0)
+	{
+		if (padAxisYRepeat[0] != 0)
+			return padAxisYRepeat[0];
 
-	if (GetKeyboardRepeat(DIK_UP))
-		return 1;
+		if (GetKeyboardRepeat(DIK_UP))
+			return 1;
 
-	if (GetKeyboardRepeat(DIK_DOWN))
-		return -1;
+		if (GetKeyboardRepeat(DIK_DOWN))
+			return -1;
 
-	return 0;
+		return 0;
+	}
+	//それ以外はゲームパッドでのみ操作可能
+	else
+	{
+		return padAxisYRepeat[i];
+	}
 }
 
 //=============================================================================
 // 攻撃ボタン押下の取得
 //=============================================================================
-bool GetAttackButtonTrigger(void)
+bool GetAttackButtonTrigger(int i)
 {
-	return GetKeyboardTrigger(DIK_Z) || IsButtonTriggered(0, BUTTON_A);
+	if (i == 0)
+		return GetKeyboardTrigger(DIK_Z) || IsButtonTriggered(0, BUTTON_A);
+	else
+		return IsButtonTriggered(i, BUTTON_A);
 }
 
 //=============================================================================
 // 攻撃ボタン押しっぱなしの取得
 //=============================================================================
-bool GetAttackButtonPress(void)
+bool GetAttackButtonPress(int i)
 {
-	return GetKeyboardPress(DIK_Z) || IsButtonPressed(0, BUTTON_A);
+	if (i == 0)
+		return GetKeyboardPress(DIK_Z) || IsButtonPressed(0, BUTTON_A);
+	else
+		return IsButtonPressed(i, BUTTON_A);
 }
 
 //=============================================================================
 // 攻撃ボタン離しの取得
 //=============================================================================
-bool GetAttackButtonRelease(void)
+bool GetAttackButtonRelease(int i)
 {
-	return GetKeyboardRelease(DIK_Z) || IsButtonReleased(0, BUTTON_A);
+	if (i == 0)
+		return GetKeyboardRelease(DIK_Z) || IsButtonReleased(0, BUTTON_A);
+	else
+		return IsButtonReleased(i, BUTTON_A);
 }
 
 //=============================================================================
 // ポーズボタン押下の取得
 //=============================================================================
-bool GetPauseButtonTrigger(void)
+bool GetPauseButtonTrigger(int i)
 {
-	return GetKeyboardTrigger(DIK_Q);
+	if (i == 0)
+		return GetKeyboardTrigger(DIK_Q);
+	else
+		return IsButtonTriggered(i, BUTTON_M);
 }
 
 //=============================================================================
