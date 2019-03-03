@@ -37,14 +37,14 @@ HRESULT InitInput(HINSTANCE hInst, HWND hWnd);
 void UninitInput(void);
 void UpdateInput(void);
 
-int GetHorizontalInputPress(void);
-int GetVerticalInputPress(void);
-int GetHorizontalInputRepeat(void);
-int GetVerticalInputRepeat(void);
-bool GetAttackButtonTrigger(void);
-bool GetAttackButtonPress(void);
-bool GetAttackButtonRelease(void);
-bool GetPauseButtonTrigger(void);
+int GetHorizontalInputPress(int i);
+int GetVerticalInputPress(int i);
+int GetHorizontalInputRepeat(int i);
+int GetVerticalInputRepeat(int i);
+bool GetAttackButtonTrigger(int i);
+bool GetAttackButtonPress(int i);
+bool GetAttackButtonRelease(int i);
+bool GetPauseButtonTrigger(int i);
 
 bool GetKeyboardPress(int nKey);
 bool GetKeyboardTrigger(int nKey);
