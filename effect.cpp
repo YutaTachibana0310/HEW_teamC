@@ -107,15 +107,15 @@ void UpdateEffect(void)
 
 					if (Effect[CntEffect].life <= EFFECT_LIFE)
 					{
-						Effect[CntEffect].col.r = 0.90f - (float)(40 - Effect[CntEffect].life) / 8.0f * 0.06f + 0.2f;
-						Effect[CntEffect].col.g = 0.30f - (float)(40 - Effect[CntEffect].life) / 8.0f * 0.07f;
-						Effect[CntEffect].col.b = 0.30f;
+						Effect[CntEffect].col.r = 0.99f - (float)(40 - Effect[CntEffect].life) / 8.0f * 0.06f + 0.2f;
+						Effect[CntEffect].col.g = 0.40f - (float)(40 - Effect[CntEffect].life) / 8.0f * 0.07f;
+						Effect[CntEffect].col.b = 0.40f;
 					}
 
 					if (Effect[CntEffect].life <= 5)
 					{
 						// α値設定
-						Effect[CntEffect].col.a -= 0.01f;
+						Effect[CntEffect].col.a -= 0.001f;
 						if (Effect[CntEffect].col.a < 0.0f)
 						{
 							Effect[CntEffect].col.a = 0.0f;
@@ -140,15 +140,14 @@ void UpdateEffect(void)
 
 			move.z = 1.0f;
 
-			life = rand() % 50 + 5;
+			life = rand() % 30 + 5;
 
 			size = 15.0f;
 
 			pos.y = size / 2;
 
-
 			// エフェクトの設定
-			SetEffect(pos, D3DXCOLOR(0.8f, 0.7f, 0.2f, 0.85f), size, size, life);
+			SetEffect(pos);
 
 		}
 	}
@@ -333,7 +332,7 @@ void SetColorEffect(int nIdxEffect, D3DXCOLOR col)
 //=============================================================================
 // エフェクトの設定
 //=============================================================================
-int SetEffect(D3DXVECTOR3 pos, D3DXCOLOR col, float sizeX, float sizeY, int life)
+int SetEffect(D3DXVECTOR3 pos)
 {
 	int nIdxEffect = -1;
 
@@ -345,14 +344,14 @@ int SetEffect(D3DXVECTOR3 pos, D3DXCOLOR col, float sizeX, float sizeY, int life
 			Effect[CntEffect].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 			Effect[CntEffect].scl = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
 			Effect[CntEffect].move = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
-			Effect[CntEffect].col = col;
-			Effect[CntEffect].sizeX = sizeX;
-			Effect[CntEffect].sizeY = sizeY;
-			Effect[CntEffect].life = life;
+			Effect[CntEffect].col =  EFFECT_COLOR;
+			Effect[CntEffect].sizeX = EFFECT_SIZE_X;
+			Effect[CntEffect].sizeY = EFFECT_SIZE_Y;
+			Effect[CntEffect].life = EFFECT_LIFE;
 			Effect[CntEffect].use = true;
 
 			// 頂点座標の設定
-			SetVertexEffect(CntEffect, sizeX, sizeY);
+			SetVertexEffect(CntEffect, EFFECT_SIZE_X, EFFECT_SIZE_Y);
 
 			// 頂点カラーの設定
 			SetColorEffect(CntEffect,

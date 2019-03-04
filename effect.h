@@ -10,16 +10,23 @@
 //マクロ定義
 //*******************************************************************************************************
 #define TEXTURE_EFFECT		 "data/TEXTURE/EFFECT/effect000.jpg"		//テクスチャファイルの読み込み
+
 #define EFFECT_MAX			 (525)										//エフェクトの最大数
-#define EFFECT_SIZE_X		 (20.0f)									//テクスチャのXサイズ
-#define EFFECT_SIZE_Y		 (20.0f)									//テクスチャのYサイズ
+
+#define EFFECT_SIZE_X		 (3.0f)										//テクスチャのXサイズ
+#define EFFECT_SIZE_Y		 (3.0f)										//テクスチャのYサイズ
 
 #define VALUE_MOVE_EFFECT    (2.0f)										//移動速度
 
 #define MOVE_SPEED			 (0.75f)									//移動
 
 #define EFFECT_RADIUS		 (0.015f)									//半径
+
 #define EFFECT_LIFE			 (80)										//エフェクトのライフ
+
+#define EFFECT_COLOR		 D3DXCOLOR(0.8f, 0.7f, 0.2f, 0.85f)
+
+
 //*******************************************************************************************************
 //構造体定義
 //*******************************************************************************************************
@@ -53,5 +60,5 @@ void UninitEffect(void);										//エフェクトの終了処理
 void SetVertexEffect(int IdxEffect, float sizeX, float sizeY);  //エフェクトの頂点のセット
 void SetColorEffect(int IdxEffect, D3DXCOLOR col);				//エフェクトのカラーセット
 
-static int SetEffect(D3DXVECTOR3 pos, D3DXCOLOR col, float sizeX, float sizeY, int timer);
+static int SetEffect(D3DXVECTOR3 pos);
 #endif
