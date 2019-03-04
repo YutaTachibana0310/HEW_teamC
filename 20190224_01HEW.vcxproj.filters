@@ -165,6 +165,9 @@
     <ClCompile Include="speedGage.cpp">
       <Filter>ソース ファイル\Horiuchi</Filter>
     </ClCompile>
+    <ClCompile Include="effect.cpp">
+      <Filter>ソース ファイル\Horiuchi</Filter>
+    </ClCompile>
     <ClCompile Include="rainbowLane.cpp">
       <Filter>ソース ファイル\Tachibana</Filter>
     </ClCompile>
@@ -282,6 +285,9 @@
       <Filter>ヘッダー ファイル\Sakaino</Filter>
     </ClInclude>
     <ClInclude Include="speedGage.h">
+      <Filter>ヘッダー ファイル\Horiuchi</Filter>
+    </ClInclude>
+    <ClInclude Include="effect.h">
       <Filter>ヘッダー ファイル\Horiuchi</Filter>
     </ClInclude>
     <ClInclude Include="rainbowLane.h">

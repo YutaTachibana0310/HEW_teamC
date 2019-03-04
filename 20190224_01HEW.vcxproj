@@ -28,6 +28,7 @@
     <ClCompile Include="debugWindow.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="EasingVector.cpp" />
+    <ClCompile Include="effect.cpp" />
     <ClCompile Include="gameParameter.cpp" />
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="GUIManager.cpp" />
@@ -65,6 +66,7 @@
     <ClInclude Include="debugWindow.h" />
     <ClInclude Include="Easing.h" />
     <ClInclude Include="EasingVector.h" />
+    <ClInclude Include="effect.h" />
     <ClInclude Include="entryGUI.h" />
     <ClInclude Include="gameParameter.h" />
     <ClInclude Include="gameScene.h" />
