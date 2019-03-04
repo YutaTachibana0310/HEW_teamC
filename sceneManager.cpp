@@ -8,7 +8,7 @@
 #include "GUIManager.h"
 
 #include "gameScene.h"
-
+#include "titleScene.h"
 
 /**************************************
 マクロ定義
@@ -20,6 +20,7 @@
 typedef void(*SceneFunc)(void);			//シーンの各処理の関数ポインタ定義
 typedef HRESULT(*SceneInit)(int num);	//シーンの初期化処理の関数ポインタ定義
 typedef void(*SceneUninit)(int num);	//シーンの終了処理の関数ポインタ定義
+typedef void(*SceneDraw)(int n);		//シーンの描画処理の関数ポインタ定義
 
 /**************************************
 グローバル変数
@@ -30,21 +31,25 @@ static int nextScene;
 //初期化処理テーブル
 static SceneInit Init[DefineSceneMax] = {
 	InitGameScene,
+	InitTitleScene
 };
 
 //終了処理テーブル
 static SceneUninit Uninit[DefineSceneMax] = {
 	UninitGameScene,
+	UninitTitleScene
 };
 
 //更新処理テーブル
 static SceneFunc Update[DefineSceneMax] = {
 	UpdateGameScene,
+	UpdateTitleScene
 };
 
 //描画処理テーブル
-static SceneFunc Draw[DefineSceneMax] = {
-	DrawGameScene
+static SceneDraw Draw[DefineSceneMax] = {
+	DrawGameScene,
+	DrawTitleScene
 };
 
 /**************************************
@@ -56,12 +61,6 @@ static SceneFunc Draw[DefineSceneMax] = {
 ***************************************/
 void InitSceneManager(int* ptr)
 {
-
-	/*for (int i = 0; i < DefineSceneMax; i++)
-	{
-		Init[i](num);
-	}*/
-
 	currentSceneId = ptr;
 }
 
@@ -100,9 +99,9 @@ void UpdateSceneManager(void)
 /**************************************
 描画処理
 ***************************************/
-void DrawSceneManager(void)
+void DrawSceneManager(int n)
 {
-	Draw[*currentSceneId]();
+	Draw[*currentSceneId](n);
 }
 
 /**************************************
@@ -111,10 +110,17 @@ void DrawSceneManager(void)
 void SetScene(DefineScene sceneId)
 {
 	nextScene = sceneId;
+
+	//現在のシーンを終了
 	UninitScene(1);
+	UninitGUIManager(*currentSceneId);
+
+	//シーンを切り替え
 	*currentSceneId = sceneId;
-	//InitGUIManager(1);
+
+	//シーン初期化
 	InitScene(1);
+	InitGUIManager(*currentSceneId);
 }
 
 /**************************************

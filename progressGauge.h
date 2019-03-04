@@ -1,11 +1,11 @@
 //=====================================
 //
-//ゲームシーンヘッダ[gameScene.h]
+//進行ゲージヘッダ[progressGauge.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _GAMESCENE_H_
-#define _GAMESCENE_H_
+#ifndef _PROGRESSGAUGE_H_
+#define _PROGRESSGAUGE_H_
 
 #include "main.h"
 
@@ -20,9 +20,9 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-HRESULT InitGameScene(int num);
-void UninitGameScene(int num);
-void UpdateGameScene(void);
-void DrawGameScene(int n);
+void InitProgressGauge(int num);
+void UninitProgressGauge(int num);
+void UpdateProgressGauge(void);
+void DrawProgressGauge(void);
 
 #endif

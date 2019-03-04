@@ -1,11 +1,11 @@
 //=====================================
 //
-//ゲームシーンヘッダ[gameScene.h]
+//プログレスマーカーヘッダ[progressMarker.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _GAMESCENE_H_
-#define _GAMESCENE_H_
+#ifndef _PROGRESSNARKER_H_
+#define _PROGRESSNARKER_H_
 
 #include "main.h"
 
@@ -20,9 +20,10 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-HRESULT InitGameScene(int num);
-void UninitGameScene(int num);
-void UpdateGameScene(void);
-void DrawGameScene(int n);
+void InitProgressMarker(int num);
+void UninitProgressMarker(int num);
+void UpdateProgressMarker(void);
+void DrawProgressMarker(void);
 
+void SetProgressMarker(int targetID, float percent);
 #endif

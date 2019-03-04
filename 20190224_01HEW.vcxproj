@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="entryGUI.cpp" />
+    <ClCompile Include="gameSceneGUI.cpp" />
     <ClCompile Include="bgmManager.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="collider.cpp" />
@@ -27,6 +29,7 @@
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="EasingVector.cpp" />
     <ClCompile Include="effect.cpp" />
+    <ClCompile Include="gameParameter.cpp" />
     <ClCompile Include="gameScene.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -42,11 +45,18 @@
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="postEffectManager.cpp" />
+    <ClCompile Include="progressGauge.cpp" />
+    <ClCompile Include="progressMarker.cpp" />
+    <ClCompile Include="rainbowLane.cpp" />
+    <ClCompile Include="sceneFade.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="screenBG.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="soundEffectManager.cpp" />
     <ClCompile Include="speedGage.cpp" />
+    <ClCompile Include="titleLogo.cpp" />
+    <ClCompile Include="titleScene.cpp" />
+    <ClCompile Include="titleSceneGUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bgmManager.h" />
@@ -57,6 +67,8 @@
     <ClInclude Include="Easing.h" />
     <ClInclude Include="EasingVector.h" />
     <ClInclude Include="effect.h" />
+    <ClInclude Include="entryGUI.h" />
+    <ClInclude Include="gameParameter.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="GUIManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -74,11 +86,17 @@
     <ClInclude Include="MyLibrary.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="postEffectManager.h" />
+    <ClInclude Include="progressGauge.h" />
+    <ClInclude Include="progressMarker.h" />
+    <ClInclude Include="rainbowLane.h" />
+    <ClInclude Include="sceneFade.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="screenBG.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="soundEffectManager.h" />
     <ClInclude Include="speedGage.h" />
+    <ClInclude Include="titleLogo.h" />
+    <ClInclude Include="titleScene.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

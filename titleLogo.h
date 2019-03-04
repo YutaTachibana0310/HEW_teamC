@@ -1,11 +1,11 @@
 //=====================================
 //
-//ゲームシーンヘッダ[gameScene.h]
+//タイトルロゴヘッダ[titleLogo.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _GAMESCENE_H_
-#define _GAMESCENE_H_
+#ifndef _TITLELOGO_H_
+#define _TITLELOGO_H_
 
 #include "main.h"
 
@@ -20,9 +20,9 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-HRESULT InitGameScene(int num);
-void UninitGameScene(int num);
-void UpdateGameScene(void);
-void DrawGameScene(int n);
+void InitTitleLogo(int num);
+void UninitTitleLogo(int num);
+void UpdateTitleLogo(void);
+void DrawTitleLogo(void);
 
 #endif

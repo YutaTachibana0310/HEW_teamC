@@ -19,6 +19,7 @@
 #include "postEffectManager.h"
 #include "screenBG.h"
 #include "GUIManager.h"
+#include "sceneFade.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -51,12 +52,17 @@ int					g_nCountFPS;			// FPSカウンタ
 bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;
 
-//スクリーン全体を覆うテクスチャ
-static LPDIRECT3DTEXTURE9 fullScreenTexture[2];
-static LPDIRECT3DSURFACE9 fullScreenSurface[2];
-
 //現在のシーン
-static int currentScene = 0;
+static int currentScene = GameScene;
+
+//各ビューポート
+static D3DVIEWPORT9 viewPort[TARGETPLAYER_MAX] = {
+	{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 1.0f },
+	{SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 1.0f}
+};
+
+//デフォルトビューポート
+static D3DVIEWPORT9 defaultViewPort = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 1.0f };
 
 //=============================================================================
 // メイン関数
@@ -99,8 +105,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		WS_OVERLAPPEDWINDOW,
 		0,//CW_USEDEFAULT,
 		0,//CW_USEDEFAULT,
-		SCREEN_WIDTH + GetSystemMetrics(SM_CXDLGFRAME) * 2,
-		SCREEN_HEIGHT + GetSystemMetrics(SM_CXDLGFRAME) * 2 + GetSystemMetrics(SM_CYCAPTION),
+		WINDOW_WIDTH + GetSystemMetrics(SM_CXDLGFRAME) * 2,
+		WINDOW_HEIGHT + GetSystemMetrics(SM_CXDLGFRAME) * 2 + GetSystemMetrics(SM_CYCAPTION),
 		NULL,
 		NULL,
 		hInstance,
@@ -230,8 +236,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	// デバイスのプレゼンテーションパラメータの設定
 	ZeroMemory(&d3dpp, sizeof(d3dpp));							// ワークをゼロクリア
 	d3dpp.BackBufferCount = 1;						// バックバッファの数
-	d3dpp.BackBufferWidth = SCREEN_WIDTH;				// ゲーム画面サイズ(幅)
-	d3dpp.BackBufferHeight = SCREEN_HEIGHT;			// ゲーム画面サイズ(高さ)
+	d3dpp.BackBufferWidth = WINDOW_WIDTH;				// ゲーム画面サイズ(幅)
+	d3dpp.BackBufferHeight = WINDOW_HEIGHT;			// ゲーム画面サイズ(高さ)
 	d3dpp.BackBufferFormat = d3ddm.Format;				// カラーモードの指定
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;	// 映像信号に同期してフリップする
 	d3dpp.Windowed = bWindow;					// ウィンドウモード
@@ -319,20 +325,6 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	}
 #endif
 
-	//描画用のフルスクリーンテクスチャを作成しサーフェイスを取得
-	for (int i = 0; i < 2; i++)
-	{
-		g_pD3DDevice->CreateTexture(SCREEN_WIDTH,
-			SCREEN_HEIGHT,
-			1,
-			D3DUSAGE_RENDERTARGET,
-			D3DFMT_A8R8G8B8,
-			D3DPOOL_DEFAULT,
-			&fullScreenTexture[i],
-			NULL);
-		fullScreenTexture[i]->GetSurfaceLevel(0, &fullScreenSurface[i]);
-	}
-
 	// 入力処理の初期化
 	InitInput(hInstance, hWnd);
 
@@ -352,12 +344,9 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	//スクリーン背景初期化
 	InitScreenBG(0);
-	
+
 	//ポストエフェクト初期化
 	InitPostEffectManager(0);
-
-	//GUIマネージャ初期化
-	//InitGUIManager(0);
 
 	//シーンマネージャ初期化
 	InitSceneManager(&currentScene);
@@ -365,7 +354,10 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//デバッグウィンドウ初期化
 	InitDebugWindow(hWnd, g_pD3DDevice);
 
-	SetScene((DefineScene)0);
+	//シーンフェード初期化
+	InitSceneFade(0);
+
+	SetScene((DefineScene)currentScene);
 
 	return S_OK;
 }
@@ -386,11 +378,6 @@ void Uninit(void)
 		g_pD3D->Release();
 		g_pD3D = NULL;
 	}
-
-	SAFE_RELEASE(fullScreenSurface[0]);
-	SAFE_RELEASE(fullScreenSurface[1]);
-	SAFE_RELEASE(fullScreenTexture[0]);
-	SAFE_RELEASE(fullScreenTexture[1]);
 
 	// 入力処理の終了処理
 	UninitInput();
@@ -415,8 +402,8 @@ void Uninit(void)
 	//ポストエフェクト終了処理
 	UninitPostEffectManager(0);
 
-	//GUIマネージャ終了処理
-	UninitGUIManager(0);
+	//シーンフェード終了処理
+	UninitSceneFade(0);
 
 #ifdef USE_DEBUGWINDOW
 	UninitDebugWindow(0);
@@ -439,7 +426,9 @@ void Update(void)
 	UpdateLight();
 	UpdateSceneManager();
 	UpdatePostEffectManager();
-	UpdateGUIManager();
+	UpdateGUIManager(currentScene);
+
+	UpdateSceneFade();
 }
 
 //=============================================================================
@@ -447,27 +436,35 @@ void Update(void)
 //=============================================================================
 void Draw(void)
 {
-	LPDIRECT3DSURFACE9 oldSurface = NULL;
-	g_pD3DDevice->GetRenderTarget(0, &oldSurface);
-	g_pD3DDevice->SetRenderTarget(0, fullScreenSurface[0]);
-;	g_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), backColor, 1.0f, 0);
+	g_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), backColor, 1.0f, 0);
+
+	D3DVIEWPORT9 defViewPort;
+	g_pD3DDevice->GetViewport(&defViewPort);
+
+	//オブジェクトをそれぞれのビューポートで描画
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		g_pD3DDevice->SetViewport(&viewPort[i]);
+		if (SUCCEEDED(g_pD3DDevice->BeginScene()))
+		{
+			SetCamera(i);
+			DrawSceneManager(i);
+			g_pD3DDevice->EndScene();
+		}
+	}
+
+	//GUIを描画
+	g_pD3DDevice->SetViewport(&defViewPort);
 	if (SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{
-		SetCamera();
-
-		DrawScreenBG();
-
-		DrawSceneManager();
-
-		DrawPostEffectManager(fullScreenTexture, fullScreenSurface, oldSurface);
-
-		DrawGUIManager();
-
+		DrawGUIManager(currentScene);
+		DrawDebugWindowMain();
 		DrawDebugWindow();
-
+		DrawSceneFade();
 		g_pD3DDevice->EndScene();
 	}
 
+	//バックバッファとフロントバッファを入れ替え
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 }
 

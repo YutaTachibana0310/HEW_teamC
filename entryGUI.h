@@ -1,11 +1,11 @@
 //=====================================
 //
-//ゲームシーンヘッダ[gameScene.h]
+//エントリーGUIヘッダ[entryGUI.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _GAMESCENE_H_
-#define _GAMESCENE_H_
+#ifndef _ENTRYGUI_H_
+#define _ENTRYGUI_H_
 
 #include "main.h"
 
@@ -20,9 +20,11 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-HRESULT InitGameScene(int num);
-void UninitGameScene(int num);
-void UpdateGameScene(void);
-void DrawGameScene(int n);
+void InitEntryGUI(int num);
+void UninitEntryGUI(int num);
+void UpdateEntryGUI(void);
+void DrawEntryGUI(void);
+
+void SetEntryGUI(int playerID, bool isCompleted);
 
 #endif

@@ -29,7 +29,23 @@ enum GUI_NUMTEXTURE
 ***************************************/
 void InitGUIManager(int num);
 void UninitGUIManager(int num);
-void UpdateGUIManager(void);
-void DrawGUIManager(void);
-void DrawGUINum(GUI_NUMTEXTURE textureID, int num, VERTEX_2D *vtxWk);
+void UpdateGUIManager(int currentScene);
+void DrawGUIManager(int currentScene);
+
+//各シーンGU初期化処理
+void InitGameSceneGUI(void);
+void InitTitleSceneGUI(void);
+
+//各シーンGUI終了処理
+void UninitGameSceneGUI(void);
+void UninitTitleSceneGUI(void);
+
+//各シーンGUI更新処理
+void UpdateGameSceneGUI(void);
+void UpdateTitleSceneGUI(void);
+
+//各シーンGUI描画処理
+void DrawGameSceneGUI(void);
+void DrawTitleSceneGUI(void);
+
 #endif
