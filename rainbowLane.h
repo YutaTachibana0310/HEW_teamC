@@ -24,5 +24,6 @@ void InitRainbowLane(int num);
 void UninitRainbowLane(int num);
 void UpdateRainbowLane(void);
 void DrawRainbowLane(int n);
+float GetLanePos(int num);
 
 #endif

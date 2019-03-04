@@ -33,12 +33,16 @@ static LPDIRECT3DVERTEXBUFFER9 vtxBuff;				//頂点バッファ
 static LPDIRECT3DTEXTURE9 texture;					//テクスチャ
 static int cntFrame;								//カウントフレーム
 
+
+
 //各レーンの座標
 static D3DXVECTOR3 lanePos[RAINBOWLANE_NUM_MAX] = {
 	D3DXVECTOR3(0.0f, RAINBOWLANE_BASEPOS_Y, 0.0f),
 	D3DXVECTOR3(RAINBOWLANE_OFFSET_X, RAINBOWLANE_BASEPOS_Y + RAINBOWLANE_OFFSET_Y, 0.0f),
 	D3DXVECTOR3(-RAINBOWLANE_OFFSET_X, RAINBOWLANE_BASEPOS_Y + RAINBOWLANE_OFFSET_Y, 0.0f)
 };	
+
+
 
 //各レーンの回転量
 static D3DXVECTOR3 laneRot[RAINBOWLANE_NUM_MAX] = {
@@ -52,6 +56,15 @@ static D3DXVECTOR3 laneRot[RAINBOWLANE_NUM_MAX] = {
 ***************************************/
 void SetVertexRainbowLane(void);			//頂点設定処理
 void ScrollRainbowLane(int n);				//スクロール処理
+
+/**************************************
+lanePos.yのGet関数
+***************************************/
+float GetLanePos(int num)
+{
+	return lanePos[num].y;
+}
+
 
 /**************************************
 初期化処理
