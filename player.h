@@ -19,6 +19,11 @@ typedef struct
 	D3DXVECTOR3 rot;		// 現在の向き
 	D3DXVECTOR3 rotDest;	// 目的の向き
 	float radius;			// 半径
+
+	int prevLane;			// 前にいたレーンの番号
+	int currentLane;		// 今いるレーンの番号
+	int moveCntFrame;		// フレームカウント
+	bool moveFlag;			// 移動フラグ
 } PLAYER;
 
 //*****************************************************************************

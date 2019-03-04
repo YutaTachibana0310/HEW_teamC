@@ -24,5 +24,6 @@ void InitRainbowLane(int num);
 void UninitRainbowLane(int num);
 void UpdateRainbowLane(void);
 void DrawRainbowLane(int n);
+D3DXVECTOR3 GetLanePos(int num);
 
 #endif

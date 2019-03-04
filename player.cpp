@@ -7,18 +7,24 @@
 #include "player.h"
 #include "camera.h"
 #include "input.h"
+#include "rainbowLane.h"
+#include "Easing.h"
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
 #define	MODEL_PLAYER		"data/MODEL/airplane000.x"	// 読み込むモデル名
 #define	PLAYER_RADIUS		(10.0f)						// 半径
-#define	VALUE_MOVE_PLAYER	(10.0f)						// 移動速度
-#define	RATE_MOVE_PLAYER	(0.125f)					// 移動慣性係数
+#define	VALUE_MOVE_PLAYER	(8.0f)						// 移動速度
+#define	RATE_MOVE_PLAYER	(0.15f)						// 移動慣性係数
 #define	VALUE_ROTATE_PLAYER	(D3DX_PI * 0.025f)			// 回転速度
 #define	RATE_ROTATE_PLAYER	(0.10f)						// 回転慣性係数
 #define	VALUE_MOVE_BULLET	(7.5f)						// 弾の移動速度
-#define PLAYER_MOVE_BORDER	(80.0f)
+#define PLAYER_MOVE_DURATION (20)						// レーンの移動にかける時間
+#define LANE_LEFT			(0)							// レフトレーン
+#define LANE_CENTER			(1)							// センターレーン
+#define LANE_RIGHT			(2)							// ライトレーン
+#define PLAYER_DEFAULT_POS_Z	(100.0f)
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
@@ -41,7 +47,7 @@ HRESULT InitPlayer(void)
 	mesh = NULL;
 	matBuff = NULL;
 
-	player.pos = D3DXVECTOR3(0.0f, 0.0f, 100.0f);
+	player.pos = D3DXVECTOR3(0.0f, -10.0f, 100.0f);
 	player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	player.rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -66,6 +72,11 @@ HRESULT InitPlayer(void)
 		TEXTURE_FILENAME,		// ファイルの名前
 		&texture);	// 読み込むメモリー
 #endif
+
+	player.pos = GetLanePos(1);
+	player.pos.z = PLAYER_DEFAULT_POS_Z;
+	player.prevLane = player.currentLane = LANE_CENTER;
+	//player.moveFlag = false;
 
 	return S_OK;
 }
@@ -99,33 +110,64 @@ void UninitPlayer(void)
 //=============================================================================
 void UpdatePlayer(void)
 {
-	// 左移動
-	if (GetKeyboardTrigger(DIK_LEFT))
+	if (player.moveFlag == false)
 	{
-		player.move.x -= VALUE_MOVE_PLAYER;
-	}
-	// 右移動
-	else if (GetKeyboardTrigger(DIK_RIGHT))
-	{
-		player.move.x += VALUE_MOVE_PLAYER;
-	}
-	
-	// 位置移動
-	player.pos.x += player.move.x;
-	
-	// これ以上は行けないという処理
-	// マジックナンバー注意
-	if (player.pos.x <= -PLAYER_MOVE_BORDER)
-	{
-		player.pos.x = -PLAYER_MOVE_BORDER;
-	}
-	if (player.pos.x >= PLAYER_MOVE_BORDER)
-	{
-		player.pos.x = PLAYER_MOVE_BORDER;
-	}
+		switch (player.currentLane)
+		{
+		case LANE_LEFT:
+			if (GetKeyboardTrigger(DIK_RIGHT))
+			{
+				player.prevLane = LANE_LEFT;
+				player.currentLane = LANE_CENTER;
+				player.moveFlag = true;
+			}
+			break;
 
-	// 移動量に慣性をかける
-	player.move.x += (0.0f - player.move.x) * RATE_MOVE_PLAYER;
+		case LANE_CENTER:
+			if (GetKeyboardTrigger(DIK_LEFT))
+			{
+				player.prevLane = LANE_CENTER;
+				player.currentLane = LANE_LEFT;
+				player.moveFlag = true;
+			}
+			if (GetKeyboardTrigger(DIK_RIGHT))
+			{
+				player.prevLane = LANE_CENTER;
+				player.currentLane = LANE_RIGHT;
+				player.moveFlag = true;
+			}
+			break;
+
+		case LANE_RIGHT:
+			if (GetKeyboardTrigger(DIK_LEFT))
+			{
+				player.prevLane = LANE_RIGHT;
+				player.currentLane = LANE_CENTER;
+				player.moveFlag = true;
+			}
+			break;
+		}
+	}
+	else if (player.moveFlag == true)
+	{
+		//座標の取得
+		D3DXVECTOR3 prevLanePos = GetLanePos(player.prevLane);
+		D3DXVECTOR3 currentLanePos = GetLanePos(player.currentLane);
+		
+		player.moveCntFrame++;
+		float t = (float)player.moveCntFrame / PLAYER_MOVE_DURATION;
+		float posX = EaseInOutCubic(t, prevLanePos.x, currentLanePos.x);
+		float posY = EaseInOutCubic(t, prevLanePos.y, currentLanePos.y);
+
+		player.pos.x = posX;
+		player.pos.y = posY + 10.0f;
+
+		if (player.moveCntFrame == PLAYER_MOVE_DURATION)
+		{
+			player.moveCntFrame = 0;
+			player.moveFlag = false;
+		}
+	}
 }
 
 //=============================================================================
