@@ -6,6 +6,7 @@
 //=====================================
 #include "resultScene.h"
 #include "gameParameter.h"
+#include "sceneFade.h"
 
 #include "meshCylinder.h"
 #include "rainbowLane.h"
@@ -13,6 +14,7 @@
 /**************************************
 マクロ定義
 ***************************************/
+#define RESULTSCENE_DURATION		(300)
 
 /**************************************
 構造体定義
@@ -21,6 +23,7 @@
 /**************************************
 グローバル変数
 ***************************************/
+static int cntFrame;
 
 /**************************************
 プロトタイプ宣言
@@ -31,6 +34,8 @@
 ***************************************/
 HRESULT InitResultScene(int num)
 {
+	cntFrame = 0;
+
 	InitMeshCylinder(num);
 	InitRainbowLane(num);
 	return S_OK;
@@ -54,6 +59,12 @@ void UpdateResultScene(void)
 
 	UpdateMeshCylinder();
 	UpdateRainbowLane();
+
+	cntFrame++;
+	if (cntFrame == RESULTSCENE_DURATION)
+	{
+		SetSceneFade(TitleScene);
+	}
 }
 
 /**************************************
