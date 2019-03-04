@@ -10,6 +10,7 @@
 #include "progressMarker.h"
 #include "gameParameter.h"
 #include "countDownGUI.h"
+#include "goalTelop.h"
 
 /**************************************
 マクロ定義
@@ -35,6 +36,7 @@ void InitGameSceneGUI(void)
 	InitProgressGauge(0);
 	InitProgressMarker(0);
 	InitCountDownGUI(0);
+	InitGoalTelop(0);
 }
 
 /**************************************
@@ -45,6 +47,7 @@ void UninitGameSceneGUI(void)
 	UninitProgressGauge(0);
 	UninitProgressMarker(0);
 	UninitCountDownGUI(0);
+	UninitGoalTelop(0);
 }
 
 /**************************************
@@ -55,6 +58,7 @@ void UpdateGameSceneGUI(void)
 	UpdateProgressGauge();
 	UpdateProgressMarker();
 	UpdateCountDownGUI();
+	UpdateGoalTelop();
 }
 
 /**************************************
@@ -80,4 +84,16 @@ void DrawGameSceneGUI(void)
 
 	//カウントダウンGUIを描画
 	DrawCountDownGUI();
+
+	//ゴールテロップを描画
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		GAMEPARAMETER *param = GetGameParameterAdr(i);
+
+		//プレイヤーがゴール前ならcontinue
+		if (!param->isPlayerGoaled)
+			continue;
+
+		DrawGoalTelop(i);
+	}
 }

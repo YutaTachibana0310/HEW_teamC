@@ -5,6 +5,7 @@
 //
 //=====================================
 #include "gameParameter.h"
+#include "goalTelop.h"
 
 /**************************************
 マクロ定義
@@ -89,7 +90,7 @@ bool CheckPlayerGoaled(int id)
 	if (param[id].playerMoveDist >= GAMEPARAMETER_MOVEDIST_MAX)
 	{
 		param[id].isPlayerGoaled = true;
-		//TODO : ゴールテロップ再生
+		SetGoalTelop(id);
 		return true;
 	}
 
