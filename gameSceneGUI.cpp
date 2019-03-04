@@ -9,7 +9,7 @@
 #include "progressGauge.h"
 #include "progressMarker.h"
 #include "gameParameter.h"
-
+#include "score.h"
 /**************************************
 マクロ定義
 ***************************************/
@@ -33,6 +33,7 @@ void InitGameSceneGUI(void)
 {
 	InitProgressGauge(0);
 	InitProgressMarker(0);
+	InitScore();
 }
 
 /**************************************
@@ -42,6 +43,7 @@ void UninitGameSceneGUI(void)
 {
 	UninitProgressGauge(0);
 	UninitProgressMarker(0);
+	UninitScore();
 }
 
 /**************************************
@@ -51,6 +53,7 @@ void UpdateGameSceneGUI(void)
 {
 	UpdateProgressGauge();
 	UpdateProgressMarker();
+	UpdateScore();
 }
 
 /**************************************
@@ -73,4 +76,7 @@ void DrawGameSceneGUI(void)
 		SetProgressMarker(i, progress);
 		DrawProgressMarker();
 	}
+
+	//スコアの描画
+	DrawScore();
 }

@@ -53,6 +53,7 @@
     <ClCompile Include="resultSceneGUI.cpp" />
     <ClCompile Include="sceneFade.cpp" />
     <ClCompile Include="sceneManager.cpp" />
+    <ClCompile Include="score.cpp" />
     <ClCompile Include="screenBG.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="soundEffectManager.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="resultScene.h" />
     <ClInclude Include="sceneFade.h" />
     <ClInclude Include="sceneManager.h" />
+    <ClInclude Include="score.h" />
     <ClInclude Include="screenBG.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="soundEffectManager.h" />

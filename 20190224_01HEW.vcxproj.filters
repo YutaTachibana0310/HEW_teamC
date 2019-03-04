@@ -207,6 +207,9 @@
     <ClCompile Include="resultSceneGUI.cpp">
       <Filter>ソース ファイル\Tachibana\GUI\State</Filter>
     </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>ソース ファイル\Horiuchi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -328,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="resultGUI.h">
       <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>ヘッダー ファイル\Horiuchi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
