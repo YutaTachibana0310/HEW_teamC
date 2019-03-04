@@ -124,8 +124,8 @@ void SetScene(DefineScene sceneId)
 	*currentSceneId = sceneId;
 
 	//ƒV[ƒ“‰Šú‰»
-	InitScene(1);
 	InitGUIManager(*currentSceneId);
+	InitScene(1);
 }
 
 /**************************************

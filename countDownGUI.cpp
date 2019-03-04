@@ -11,8 +11,8 @@
 É}ÉNÉçíËã`
 ***************************************/
 #define COUNTDOWNGUI_TEXTURE_NAME		"data/TEXTURE/UI/countDownGUI.png"
-#define COUNTDOWNGUI_SIZE_X				(100.0f)
-#define COUNTDONWGUI_SIZE_Y				(100.0f)
+#define COUNTDOWNGUI_SIZE_X				(300.0f)
+#define COUNTDONWGUI_SIZE_Y				(300.0f)
 #define COUNTDOWNGUI_POS				(D3DXVECTOR3(WINDOW_CENTER_X, 300.0f, 0.0f))
 #define COUNTDOWNGUI_OFFSET_X			(SCREEN_WIDTH / 2.0f)
 #define COUNTDOWNGUI_TEX_DIV_X			(2)
@@ -148,10 +148,10 @@ void SetVertexCountDownGUI(int i)
 	float offsetX = i == 0 ? -COUNTDOWNGUI_OFFSET_X : COUNTDOWNGUI_OFFSET_X;
 	pos.x += offsetX;
 
-	vtxWk[0].vtx = pos + D3DXVECTOR3(-COUNTDOWNGUI_SIZE_X / 2.0f, -COUNTDONWGUI_SIZE_Y / 2.0f, 0.0f);
-	vtxWk[1].vtx = pos + D3DXVECTOR3( COUNTDOWNGUI_SIZE_X / 2.0f, -COUNTDONWGUI_SIZE_Y / 2.0f, 0.0f);
-	vtxWk[2].vtx = pos + D3DXVECTOR3(-COUNTDOWNGUI_SIZE_X / 2.0f,  COUNTDONWGUI_SIZE_Y / 2.0f, 0.0f);
-	vtxWk[3].vtx = pos + D3DXVECTOR3( COUNTDOWNGUI_SIZE_X / 2.0f,  COUNTDONWGUI_SIZE_Y / 2.0f, 0.0f);
+	vtxWk[0].vtx = pos + D3DXVECTOR3(-COUNTDOWNGUI_SIZE_X / 2.0f * scale, -COUNTDONWGUI_SIZE_Y / 2.0f * scale, 0.0f);
+	vtxWk[1].vtx = pos + D3DXVECTOR3( COUNTDOWNGUI_SIZE_X / 2.0f * scale, -COUNTDONWGUI_SIZE_Y / 2.0f * scale, 0.0f);
+	vtxWk[2].vtx = pos + D3DXVECTOR3(-COUNTDOWNGUI_SIZE_X / 2.0f * scale,  COUNTDONWGUI_SIZE_Y / 2.0f * scale, 0.0f);
+	vtxWk[3].vtx = pos + D3DXVECTOR3( COUNTDOWNGUI_SIZE_X / 2.0f * scale,  COUNTDONWGUI_SIZE_Y / 2.0f * scale, 0.0f);
 }
 
 /**************************************
