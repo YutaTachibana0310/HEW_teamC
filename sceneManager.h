@@ -20,6 +20,7 @@ enum DefineScene
 {
 	GameScene,
 	TitleScene,
+	ResultScene,
 	DefineSceneMax
 };
 

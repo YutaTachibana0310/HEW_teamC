@@ -9,6 +9,7 @@
 
 #include "gameScene.h"
 #include "titleScene.h"
+#include "resultScene.h"
 
 /**************************************
 マクロ定義
@@ -31,25 +32,29 @@ static int nextScene;
 //初期化処理テーブル
 static SceneInit Init[DefineSceneMax] = {
 	InitGameScene,
-	InitTitleScene
+	InitTitleScene,
+	InitResultScene,
 };
 
 //終了処理テーブル
 static SceneUninit Uninit[DefineSceneMax] = {
 	UninitGameScene,
-	UninitTitleScene
+	UninitTitleScene,
+	UninitResultScene
 };
 
 //更新処理テーブル
 static SceneFunc Update[DefineSceneMax] = {
 	UpdateGameScene,
-	UpdateTitleScene
+	UpdateTitleScene,
+	UpdateResultScene
 };
 
 //描画処理テーブル
 static SceneDraw Draw[DefineSceneMax] = {
 	DrawGameScene,
-	DrawTitleScene
+	DrawTitleScene,
+	DrawResultScene
 };
 
 /**************************************
