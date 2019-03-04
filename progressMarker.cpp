@@ -106,7 +106,7 @@ void SetProgressMarker(int targetID, float percent)
 	vtxWk[3].tex = D3DXVECTOR2((x + 1) * sizeX, (y + 1) * sizeY);
 
 	//í∏ì_ç¿ïWê›íË
-	D3DXVECTOR3 pos;
+	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	pos.x = WINDOW_CENTER_X;
 	pos.x += (targetID == 0) ? -PROGRESSMARKER_POS_OFFSET_X : PROGRESSMARKER_POS_OFFSET_X;
 	pos.y = EaseLinear(percent, PROGRESSMARKER_POS_BOTTOM, PROGRESSMARKER_POS_TOP);
