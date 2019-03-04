@@ -20,7 +20,7 @@
 typedef struct _GAMEPARAMETER{
 	float playerSpeed;			//プレイヤーのスピード
 	float playerMoveDist;		//プレイヤーの移動距離
-
+	bool isPlayerGoaled;		//ゴールしているかどうか
 }GAMEPARAMETER;
 /**************************************
 プロトタイプ宣言
@@ -30,5 +30,6 @@ void UninitGameParameter(int num);
 void UpdateGameParameter(void);
 void DrawGameParameter(void);
 GAMEPARAMETER *GetGameParameterAdr(int n);
-
+void SetSpeedGameParameter(int id, float speed);
+bool CheckPlayerGoaled(int id);
 #endif

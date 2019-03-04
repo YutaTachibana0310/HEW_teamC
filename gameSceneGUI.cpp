@@ -1,6 +1,6 @@
 //=====================================
 //
-//バトルシーンGUI処理[battleSceneGUI.cpp]
+//バトルシーンGUI処理[gameSceneGUI.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
@@ -9,6 +9,7 @@
 #include "progressGauge.h"
 #include "progressMarker.h"
 #include "gameParameter.h"
+#include "countDownGUI.h"
 
 /**************************************
 マクロ定義
@@ -33,6 +34,7 @@ void InitGameSceneGUI(void)
 {
 	InitProgressGauge(0);
 	InitProgressMarker(0);
+	InitCountDownGUI(0);
 }
 
 /**************************************
@@ -42,6 +44,7 @@ void UninitGameSceneGUI(void)
 {
 	UninitProgressGauge(0);
 	UninitProgressMarker(0);
+	UninitCountDownGUI(0);
 }
 
 /**************************************
@@ -51,6 +54,7 @@ void UpdateGameSceneGUI(void)
 {
 	UpdateProgressGauge();
 	UpdateProgressMarker();
+	UpdateCountDownGUI();
 }
 
 /**************************************
@@ -73,4 +77,7 @@ void DrawGameSceneGUI(void)
 		SetProgressMarker(i, progress);
 		DrawProgressMarker();
 	}
+
+	//カウントダウンGUIを描画
+	DrawCountDownGUI();
 }
