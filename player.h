@@ -22,7 +22,8 @@ typedef struct
 
 	int prevLane;			// 前にいたレーンの番号
 	int currentLane;		// 今いるレーンの番号
-	int moveCntFrame;			// フレームカウント
+	int moveCntFrame;		// フレームカウント
+	bool moveFlag;			// 移動フラグ
 } PLAYER;
 
 //*****************************************************************************

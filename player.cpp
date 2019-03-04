@@ -20,8 +20,11 @@
 #define	VALUE_ROTATE_PLAYER	(D3DX_PI * 0.025f)			// 回転速度
 #define	RATE_ROTATE_PLAYER	(0.10f)						// 回転慣性係数
 #define	VALUE_MOVE_BULLET	(7.5f)						// 弾の移動速度
-#define PLAYER_MOVE_BORDER	(80.0f)						// 最大移動範囲
 #define PLAYER_MOVE_DURATION (20)						// レーンの移動にかける時間
+#define LANE_LEFT			(0)							// レフトレーン
+#define LANE_CENTER			(1)							// センターレーン
+#define LANE_RIGHT			(2)							// ライトレーン
+#define PLAYER_DEFAULT_POS_Z	(100.0f)
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
@@ -32,8 +35,6 @@ static DWORD				numMat;			// 属性情報の総数
 
 static D3DXMATRIX			mtxWorld;		// ワールドマトリックス
 static PLAYER				player;			// プレイヤーワーク
-
-static int					laneCnt;		// レーン制御カウンター
 
 //=============================================================================
 // 初期化処理
@@ -72,7 +73,10 @@ HRESULT InitPlayer(void)
 		&texture);	// 読み込むメモリー
 #endif
 
-	laneCnt = 0;
+	player.pos = GetLanePos(1);
+	player.pos.z = PLAYER_DEFAULT_POS_Z;
+	player.prevLane = player.currentLane = LANE_CENTER;
+	//player.moveFlag = false;
 
 	return S_OK;
 }
@@ -106,7 +110,64 @@ void UninitPlayer(void)
 //=============================================================================
 void UpdatePlayer(void)
 {
-	
+	if (player.moveFlag == false)
+	{
+		switch (player.currentLane)
+		{
+		case LANE_LEFT:
+			if (GetKeyboardTrigger(DIK_RIGHT))
+			{
+				player.prevLane = LANE_LEFT;
+				player.currentLane = LANE_CENTER;
+				player.moveFlag = true;
+			}
+			break;
+
+		case LANE_CENTER:
+			if (GetKeyboardTrigger(DIK_LEFT))
+			{
+				player.prevLane = LANE_CENTER;
+				player.currentLane = LANE_LEFT;
+				player.moveFlag = true;
+			}
+			if (GetKeyboardTrigger(DIK_RIGHT))
+			{
+				player.prevLane = LANE_CENTER;
+				player.currentLane = LANE_RIGHT;
+				player.moveFlag = true;
+			}
+			break;
+
+		case LANE_RIGHT:
+			if (GetKeyboardTrigger(DIK_LEFT))
+			{
+				player.prevLane = LANE_RIGHT;
+				player.currentLane = LANE_CENTER;
+				player.moveFlag = true;
+			}
+			break;
+		}
+	}
+	else if (player.moveFlag == true)
+	{
+		//座標の取得
+		D3DXVECTOR3 prevLanePos = GetLanePos(player.prevLane);
+		D3DXVECTOR3 currentLanePos = GetLanePos(player.currentLane);
+		
+		player.moveCntFrame++;
+		float t = (float)player.moveCntFrame / PLAYER_MOVE_DURATION;
+		float posX = EaseInOutCubic(t, prevLanePos.x, currentLanePos.x);
+		float posY = EaseInOutCubic(t, prevLanePos.y, currentLanePos.y);
+
+		player.pos.x = posX;
+		player.pos.y = posY + 10.0f;
+
+		if (player.moveCntFrame == PLAYER_MOVE_DURATION)
+		{
+			player.moveCntFrame = 0;
+			player.moveFlag = false;
+		}
+	}
 }
 
 //=============================================================================

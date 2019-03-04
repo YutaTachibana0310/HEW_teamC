@@ -46,9 +46,9 @@ static D3DXVECTOR3 lanePos[RAINBOWLANE_NUM_MAX] = {
 
 //äeÉåÅ[ÉìÇÃâÒì]ó 
 static D3DXVECTOR3 laneRot[RAINBOWLANE_NUM_MAX] = {
+	D3DXVECTOR3(0.0f, 0.0f, -RAINBOWLANE_ROT_VALUE),
 	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 	D3DXVECTOR3(0.0f, 0.0f, RAINBOWLANE_ROT_VALUE),
-	D3DXVECTOR3(0.0f, 0.0f, -RAINBOWLANE_ROT_VALUE)
 };
 
 /**************************************
