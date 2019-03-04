@@ -33,7 +33,7 @@ HRESULT InitPlayer(void);
 void UninitPlayer(void);
 void UpdatePlayer(void);
 void DrawPlayer(void);
-PLAYER *GetPlayer(void);
+PLAYER *GetPlayer(int nam);
 
 D3DXVECTOR3 GetPositionPlayer(void);
 D3DXVECTOR3 GetRotationPlayer(void);
