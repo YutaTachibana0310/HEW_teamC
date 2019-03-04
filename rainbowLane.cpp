@@ -37,9 +37,9 @@ static int cntFrame;								//カウントフレーム
 
 //各レーンの座標
 static D3DXVECTOR3 lanePos[RAINBOWLANE_NUM_MAX] = {
+	D3DXVECTOR3(-RAINBOWLANE_OFFSET_X, RAINBOWLANE_BASEPOS_Y + RAINBOWLANE_OFFSET_Y, 0.0f),
 	D3DXVECTOR3(0.0f, RAINBOWLANE_BASEPOS_Y, 0.0f),
 	D3DXVECTOR3(RAINBOWLANE_OFFSET_X, RAINBOWLANE_BASEPOS_Y + RAINBOWLANE_OFFSET_Y, 0.0f),
-	D3DXVECTOR3(-RAINBOWLANE_OFFSET_X, RAINBOWLANE_BASEPOS_Y + RAINBOWLANE_OFFSET_Y, 0.0f)
 };	
 
 
@@ -60,9 +60,9 @@ void ScrollRainbowLane(int n);				//スクロール処理
 /**************************************
 lanePos.yのGet関数
 ***************************************/
-float GetLanePos(int num)
+D3DXVECTOR3 GetLanePos(int num)
 {
-	return lanePos[num].y;
+	return lanePos[num];
 }
 
 

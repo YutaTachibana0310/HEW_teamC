@@ -8,6 +8,7 @@
 #include "camera.h"
 #include "input.h"
 #include "rainbowLane.h"
+#include "Easing.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -20,7 +21,7 @@
 #define	RATE_ROTATE_PLAYER	(0.10f)						// 回転慣性係数
 #define	VALUE_MOVE_BULLET	(7.5f)						// 弾の移動速度
 #define PLAYER_MOVE_BORDER	(80.0f)						// 最大移動範囲
-
+#define PLAYER_MOVE_DURATION (20)						// レーンの移動にかける時間
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
@@ -105,53 +106,7 @@ void UninitPlayer(void)
 //=============================================================================
 void UpdatePlayer(void)
 {
-	switch (laneCnt)
-	{
-	case 0:	// 真ん中にいるとき
-		// 左移動
-		if (GetKeyboardTrigger(DIK_LEFT))
-		{
-			player.move.x -= VALUE_MOVE_PLAYER;
-			player.move.y += VALUE_MOVE_PLAYER;
-			laneCnt += 2;
-		}
-		// 右移動
-		else if (GetKeyboardTrigger(DIK_RIGHT))
-		{
-			player.move.x += VALUE_MOVE_PLAYER;
-			player.move.y += VALUE_MOVE_PLAYER;
-			laneCnt += 1;
-		}
-		break;
-
-	case 1:	// 右にいるとき
-		// 左移動
-		if (GetKeyboardTrigger(DIK_LEFT))
-		{
-			player.move.x -= VALUE_MOVE_PLAYER;
-			player.move.y -= VALUE_MOVE_PLAYER;
-			laneCnt -= 1;
-		}
-		break;
-
-	case 2:	// 左にいるとき
-		// 右移動
-		if (GetKeyboardTrigger(DIK_RIGHT))
-		{
-			player.move.x += VALUE_MOVE_PLAYER;
-			player.move.y -= VALUE_MOVE_PLAYER;
-			laneCnt -= 2;
-		}
-		break;
-	}
-
-	// 位置移動
-	player.pos.x += player.move.x;
-	player.pos.y += player.move.y;
-
-	// 移動量に慣性をかける
-	player.move.x += (0.0f - player.move.x) * RATE_MOVE_PLAYER;
-	player.move.y += (0.0f - player.move.y) * RATE_MOVE_PLAYER;
+	
 }
 
 //=============================================================================
