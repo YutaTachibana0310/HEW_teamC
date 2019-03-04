@@ -47,6 +47,7 @@
     <ClCompile Include="progressGauge.cpp" />
     <ClCompile Include="progressMarker.cpp" />
     <ClCompile Include="rainbowLane.cpp" />
+    <ClCompile Include="resultScene.cpp" />
     <ClCompile Include="sceneFade.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="screenBG.cpp" />
@@ -87,6 +88,7 @@
     <ClInclude Include="progressGauge.h" />
     <ClInclude Include="progressMarker.h" />
     <ClInclude Include="rainbowLane.h" />
+    <ClInclude Include="resultScene.h" />
     <ClInclude Include="sceneFade.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="screenBG.h" />

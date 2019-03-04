@@ -6,6 +6,9 @@
 //=====================================
 #include "resultScene.h"
 
+#include "meshCylinder.h"
+#include "rainbowLane.h"
+
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
@@ -27,7 +30,8 @@
 ***************************************/
 HRESULT InitResultScene(int num)
 {
-
+	InitMeshCylinder(num);
+	InitRainbowLane(num);
 }
 
 /**************************************
@@ -35,7 +39,8 @@ HRESULT InitResultScene(int num)
 ***************************************/
 void UninitResultScene(int num)
 {
-
+	UninitMeshCylinder(num);
+	UninitRainbowLane(num);
 }
 
 /**************************************
@@ -43,7 +48,8 @@ void UninitResultScene(int num)
 ***************************************/
 void UpdateResultScene(void)
 {
-
+	UpdateMeshCylinder();
+	UpdateRainbowLane();
 }
 
 /**************************************
@@ -51,5 +57,6 @@ void UpdateResultScene(void)
 ***************************************/
 void DrawResultScene(int n)
 {
-
+	DrawMeshCylinder(n);
+	DrawRainbowLane(n;
 }
