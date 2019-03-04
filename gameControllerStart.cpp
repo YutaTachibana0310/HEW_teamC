@@ -6,6 +6,7 @@
 //=====================================
 #include "gameController.h"
 
+#include "countDownGUI.h"
 /**************************************
 ƒ}ƒNƒ’è‹`
 ***************************************/
@@ -29,6 +30,7 @@
 void EnterGameControllerStart(GAMECONTROLLER *entity)
 {
 	entity->cntFrame = 0;
+	SetCountDownGUI();
 }
 
 /**************************************

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="countDownGUI.cpp" />
     <ClCompile Include="entryGUI.cpp" />
     <ClCompile Include="gameController.cpp" />
     <ClCompile Include="gameControllerGoal.cpp" />
@@ -69,6 +70,7 @@
     <ClInclude Include="bgmManager.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="collider.h" />
+    <ClInclude Include="countDownGUI.h" />
     <ClInclude Include="debugTimer.h" />
     <ClInclude Include="debugWindow.h" />
     <ClInclude Include="Easing.h" />
