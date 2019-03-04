@@ -27,6 +27,8 @@ typedef struct {
 //ゲームコントローラの各ステート
 enum GAMECONTROLLER_STATE {
 	GAMECONTROLLER_START,
+	GAMECONTROLLER_RUN,
+	GAMECONTROLLER_GOAL,
 	GAMECONTROLLER_STATEMAX
 };
 /**************************************
@@ -42,8 +44,12 @@ void ChangeStateGameController(int next);
 
 //各入場処理
 void EnterGameControllerStart(GAMECONTROLLER *entity);
+void EnterGameControllerRun(GAMECONTROLLER *entity);
+void EnterGameControllerGoal(GAMECONTROLLER *entity);
 
 //各更新処理
 void UpdateGameControllerStart(GAMECONTROLLER *entity);
+void UpdateGameControllerRun(GAMECONTROLLER *entity);
+void UpdateGameControllerGoal(GAMECONTROLLER *entity);
 
 #endif

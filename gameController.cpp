@@ -22,12 +22,16 @@ static GAMECONTROLLER controller;
 
 //入場処理テーブル
 static FuncGameController OnEnter[GAMECONTROLLER_STATEMAX] = {
-	EnterGameControllerStart
+	EnterGameControllerStart,
+	EnterGameControllerRun,
+	EnterGameControllerGoal,
 };
 
 //更新処理テーブル
 static FuncGameController OnUpdate[GAMECONTROLLER_STATEMAX] = {
-	UpdateGameControllerStart
+	UpdateGameControllerStart,
+	UpdateGameControllerRun,
+	UpdateGameControllerGoal
 };
 
 /**************************************

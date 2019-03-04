@@ -207,6 +207,18 @@
     <ClCompile Include="resultSceneGUI.cpp">
       <Filter>ソース ファイル\Tachibana\GUI\State</Filter>
     </ClCompile>
+    <ClCompile Include="gameController.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
+    </ClCompile>
+    <ClCompile Include="gameControllerStart.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI\State</Filter>
+    </ClCompile>
+    <ClCompile Include="gameControllerRun.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI\State</Filter>
+    </ClCompile>
+    <ClCompile Include="gameControllerGoal.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -328,6 +340,9 @@
     </ClInclude>
     <ClInclude Include="resultGUI.h">
       <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="gameController.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

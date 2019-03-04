@@ -20,6 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="entryGUI.cpp" />
+    <ClCompile Include="gameController.cpp" />
+    <ClCompile Include="gameControllerGoal.cpp" />
+    <ClCompile Include="gameControllerRun.cpp" />
+    <ClCompile Include="gameControllerStart.cpp" />
     <ClCompile Include="gameSceneGUI.cpp" />
     <ClCompile Include="bgmManager.cpp" />
     <ClCompile Include="camera.cpp" />
@@ -71,6 +75,7 @@
     <ClInclude Include="EasingVector.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="entryGUI.h" />
+    <ClInclude Include="gameController.h" />
     <ClInclude Include="gameParameter.h" />
     <ClInclude Include="gameScene.h" />
     <ClInclude Include="GUIManager.h" />
