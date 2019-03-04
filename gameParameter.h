@@ -30,5 +30,5 @@ void UninitGameParameter(int num);
 void UpdateGameParameter(void);
 void DrawGameParameter(void);
 GAMEPARAMETER *GetGameParameterAdr(int n);
-
+void SetSpeedGameParameter(int id, float speed);
 #endif

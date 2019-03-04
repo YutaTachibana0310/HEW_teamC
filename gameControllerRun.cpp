@@ -6,6 +6,8 @@
 //=====================================
 #include "gameController.h"
 
+#include "gameParameter.h"
+
 /**************************************
 ƒ}ƒNƒ’è‹`
 ***************************************/
@@ -28,6 +30,10 @@
 void EnterGameControllerRun(GAMECONTROLLER *entity)
 {
 	entity->cntFrame = 0;
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		SetSpeedGameParameter(i, 1.0f);
+	}
 }
 
 /**************************************

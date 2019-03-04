@@ -30,7 +30,8 @@ void InitGameParameter(int num)
 {
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
-		param[i].playerSpeed = 1.0f;
+		param[i].playerSpeed = 0.0f;
+		param[i].playerMoveDist = 0.0f;
 	}
 }
 
@@ -64,4 +65,12 @@ void DrawGameParameter(void)
 GAMEPARAMETER *GetGameParameterAdr(int n)
 {
 	return &param[n];
+}
+
+/**************************************
+進行関連のパラメータセット処理
+***************************************/
+void SetSpeedGameParameter(int id, float speed)
+{
+	param[id].playerSpeed = speed;
 }
