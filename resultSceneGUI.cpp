@@ -1,14 +1,12 @@
 //=====================================
 //
-//リザルトシーン処理[resulScene.cpp]
+//リザルトシーンGUI処理[resultSceneGUI.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#include "resultScene.h"
-#include "gameParameter.h"
+#include "GUIManager.h"
 
-#include "meshCylinder.h"
-#include "rainbowLane.h"
+#include "resultGUI.h"
 
 /**************************************
 マクロ定義
@@ -29,38 +27,37 @@
 /**************************************
 初期化処理
 ***************************************/
-HRESULT InitResultScene(int num)
+void InitResultSceneGUI(void)
 {
-	InitMeshCylinder(num);
-	InitRainbowLane(num);
-	return S_OK;
+	InitResultGUI(0);
 }
 
 /**************************************
 終了処理
 ***************************************/
-void UninitResultScene(int num)
+void UninitResultSceneGUI(void)
 {
-	UninitMeshCylinder(num);
-	UninitRainbowLane(num);
+	UninitResultGUI(0);
 }
 
 /**************************************
 更新処理
 ***************************************/
-void UpdateResultScene(void)
+void UpdateResultSceneGUI(void)
 {
-	UpdateGameParameter();
-
-	UpdateMeshCylinder();
-	UpdateRainbowLane();
+	UpdateResultGUI();
 }
 
 /**************************************
 描画処理
 ***************************************/
-void DrawResultScene(int n)
+void DrawResultSceneGUI(void)
 {
-	DrawMeshCylinder(n);
-	DrawRainbowLane(n);
+	//順位を描画
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		//TODO : ゲーム結果をGameParameterから取得してセットする
+		SetResultGUI(i, i != 0);
+		DrawResultGUI();
+	}
 }

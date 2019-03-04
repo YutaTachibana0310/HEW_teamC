@@ -30,24 +30,28 @@ typedef void(*FuncGUI)(void);
 static FuncGUI Init[DefineSceneMax] = {
 	InitGameSceneGUI,
 	InitTitleSceneGUI,
+	InitResultSceneGUI,
 };
 
 //終了処理テーブル
 static FuncGUI Uninit[DefineSceneMax] = {
 	UninitGameSceneGUI,
-	UninitTitleSceneGUI
+	UninitTitleSceneGUI,
+	UninitResultSceneGUI,
 };
 
 //更新処理テーブル
 static FuncGUI Update[DefineSceneMax] = {
 	UpdateGameSceneGUI,
 	UpdateTitleSceneGUI,
+	UpdateResultSceneGUI,
 };
 
 //描画処理テーブル
 static FuncGUI Draw[DefineSceneMax] = {
 	DrawGameSceneGUI,
-	DrawTitleSceneGUI
+	DrawTitleSceneGUI,
+	DrawResultSceneGUI,
 };
 
 /**************************************
