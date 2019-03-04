@@ -6,9 +6,12 @@
 //=====================================
 #include "gameController.h"
 
+#include "sceneFade.h"
+
 /**************************************
 マクロ定義
 ***************************************/
+#define GAMECONTROLLER_GOAL_DURATION		(180)
 
 /**************************************
 構造体定義
@@ -27,7 +30,7 @@
 ***************************************/
 void EnterGameControllerGoal(GAMECONTROLLER *entity)
 {
-
+	entity->cntFrame = 0;
 }
 
 /**************************************
@@ -35,5 +38,10 @@ void EnterGameControllerGoal(GAMECONTROLLER *entity)
 ***************************************/
 void UpdateGameControllerGoal(GAMECONTROLLER *entity)
 {
+	entity->cntFrame++;
 
+	if(entity->cntFrame == GAMECONTROLLER_GOAL_DURATION)
+	{
+		SetSceneFade(ResultScene);
+	}
 }
