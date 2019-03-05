@@ -40,4 +40,6 @@ D3DXVECTOR3 GetRotationPlayer(void);
 D3DXVECTOR3 GetRotationDestPlayer(void);
 D3DXVECTOR3 GetMovePlayer(void);
 
+void SetPlayerPos(int playerId, bool isAccelerator);
+
 #endif
