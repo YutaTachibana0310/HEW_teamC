@@ -21,11 +21,13 @@
 #define	RATE_ROTATE_PLAYER	(0.10f)						// 回転慣性係数
 #define	VALUE_MOVE_BULLET	(7.5f)						// 弾の移動速度
 #define PLAYER_MOVE_DURATION (20)						// レーンの移動にかける時間
-#define LANE_LEFT			(0)							// レフトレーン
-#define LANE_CENTER			(1)							// センターレーン
-#define LANE_RIGHT			(2)							// ライトレーン
+#define LANE_LEFT			(0)							// 左レーン
+#define LANE_CENTER			(1)							// 中央レーン
+#define LANE_RIGHT			(2)							// 右レーン
 #define PLAYER_DEFAULT_POS_Y	(10.0f)
 #define PLAYER_DEFAULT_POS_Z	(100.0f)
+#define PLAYER_MOVE_INTERVAL	(1000.0f)				// 移動距離
+#define PLAYER_ACCEL_DURATION	(30)					// 加減速にかける時間
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
@@ -71,9 +73,9 @@ HRESULT InitPlayer(void)
 
 #if 0
 		// テクスチャの読み込み
-		D3DXCreateTextureFromFile(pDevice,					// デバイスへのポインタ
-			TEXTURE_FILENAME,		// ファイルの名前
-			&texture);	// 読み込むメモリー
+		D3DXCreateTextureFromFile(pDevice,	// デバイスへのポインタ
+			TEXTURE_FILENAME,				// ファイルの名前
+			&texture);						// 読み込むメモリー
 #endif
 		//プレイヤーのパラメータを初期化
 		int laneIndex = i == 0 ? LANE_LEFT : LANE_RIGHT;
@@ -120,36 +122,36 @@ void UpdatePlayer(void)
 	{
 		if (player[i].moveFlag == false)
 		{
-			int input = GetHorizontalInputTrigger(i);
+			int input = GetHorizontalInputTrigger(i); // 各パッドの入力処理
 			switch (player[i].currentLane)
 			{
-			case LANE_LEFT:
+			case LANE_LEFT: // 左レーンにいるとき
 				if (input == 1)
-				{
+				{// 右が入力されたら
 					player[i].prevLane = LANE_LEFT;
 					player[i].currentLane = LANE_CENTER;
 					player[i].moveFlag = true;
 				}
 				break;
 
-			case LANE_CENTER:
+			case LANE_CENTER: // 中央レーンにいるとき
 				if (input == -1)
-				{
+				{// 左が入力されたら
 					player[i].prevLane = LANE_CENTER;
 					player[i].currentLane = LANE_LEFT;
 					player[i].moveFlag = true;
 				}
 				else if (input == 1)
-				{
+				{// 右が入力されたら
 					player[i].prevLane = LANE_CENTER;
 					player[i].currentLane = LANE_RIGHT;
 					player[i].moveFlag = true;
 				}
 				break;
 
-			case LANE_RIGHT:
+			case LANE_RIGHT: // 右レーンにいるとき
 				if (input == -1)
-				{
+				{// 左が入力されたら
 					player[i].prevLane = LANE_RIGHT;
 					player[i].currentLane = LANE_CENTER;
 					player[i].moveFlag = true;
@@ -165,6 +167,7 @@ void UpdatePlayer(void)
 			D3DXVECTOR3 prevLaneRot = GetLaneRot(player[i].prevLane);
 			D3DXVECTOR3 currentLaneRot = GetLaneRot(player[i].currentLane);
 
+			// アニメーション
 			player[i].moveCntFrame++;
 			float t = (float)player[i].moveCntFrame / PLAYER_MOVE_DURATION;
 			float posX = EaseOutCubic(t, prevLanePos.x, currentLanePos.x);
@@ -179,6 +182,23 @@ void UpdatePlayer(void)
 			{
 				player[i].moveCntFrame = 0;
 				player[i].moveFlag = false;
+			}
+		}
+
+	
+		if (player[i].accelerationFlag == true) // 加減速フラグが立ったら
+		{
+			// アニメーション
+			player[i].accelCntFrame++;
+			float t = (float)player[i].accelCntFrame / PLAYER_ACCEL_DURATION;
+			float posZ = EaseInOutCubic(t, player[i].prevPosZ, player[i].currentPosZ);
+
+			player[i].pos.z = posZ;
+
+			if (player[i].accelCntFrame == PLAYER_ACCEL_DURATION)
+			{
+				player[i].accelCntFrame = 0;
+				player[i].accelerationFlag = false;
 			}
 		}
 	}
@@ -274,4 +294,31 @@ D3DXVECTOR3 GetRotationDestPlayer(void)
 D3DXVECTOR3 GetMovePlayer(void)
 {
 	return player[0].move;
+}
+
+//=============================================================================
+// プレイヤーのアクセラレーションのSet関数
+//=============================================================================
+void SetPlayerAcceleration(int playerId, bool isAccelerator)
+{
+	if (isAccelerator == true)
+	{
+		//座標の取得
+		D3DXVECTOR3 playerPos = GetPositionPlayer();
+		player[playerId].prevPosZ = playerPos.z;
+		player[playerId].currentPosZ = playerPos.z + PLAYER_MOVE_INTERVAL;
+		
+		// フラグのセット
+		player[playerId].accelerationFlag = true;
+	}
+	else if (isAccelerator == false)
+	{
+		//座標の取得
+		D3DXVECTOR3 playerPos = GetPositionPlayer();
+		player[playerId].prevPosZ = playerPos.z;
+		player[playerId].currentPosZ = playerPos.z - PLAYER_MOVE_INTERVAL;
+
+		// フラグのセット
+		player[playerId].accelerationFlag = true;
+	}
 }

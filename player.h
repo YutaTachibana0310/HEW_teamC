@@ -24,6 +24,11 @@ typedef struct
 	int currentLane;		// 今いるレーンの番号
 	int moveCntFrame;		// フレームカウント
 	bool moveFlag;			// 移動フラグ
+
+	float prevPosZ;			// 移動元の位置
+	float currentPosZ;		// 移動先の位置
+	int accelCntFrame;		// 加減速のフレームカウント
+	bool accelerationFlag;	// 加減速フラグ
 } PLAYER;
 
 //*****************************************************************************
@@ -39,5 +44,7 @@ D3DXVECTOR3 GetPositionPlayer(int playerID);
 D3DXVECTOR3 GetRotationPlayer(int playerID);
 D3DXVECTOR3 GetRotationDestPlayer(void);
 D3DXVECTOR3 GetMovePlayer(void);
+
+void SetPlayerAcceleration(int playerId, bool isAccelerator);
 
 #endif
