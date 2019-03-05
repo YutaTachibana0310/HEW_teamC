@@ -225,6 +225,9 @@
     <ClCompile Include="goalTelop.cpp">
       <Filter>ソース ファイル\Tachibana\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="playerMarker.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -354,6 +357,9 @@
       <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
     </ClInclude>
     <ClInclude Include="goalTelop.h">
+      <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="playerMarker.h">
       <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
     </ClInclude>
   </ItemGroup>
