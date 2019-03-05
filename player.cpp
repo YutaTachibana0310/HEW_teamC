@@ -130,7 +130,6 @@ void UpdatePlayer(void)
 					player[i].prevLane = LANE_LEFT;
 					player[i].currentLane = LANE_CENTER;
 					player[i].moveFlag = true;
-					SetPlayerAcceleration(0, false);
 				}
 				break;
 
@@ -140,14 +139,12 @@ void UpdatePlayer(void)
 					player[i].prevLane = LANE_CENTER;
 					player[i].currentLane = LANE_LEFT;
 					player[i].moveFlag = true;
-					SetPlayerAcceleration(0, true);
 				}
 				else if (input == 1)
 				{// ‰E‚ª“ü—Í‚³‚ê‚½‚ç
 					player[i].prevLane = LANE_CENTER;
 					player[i].currentLane = LANE_RIGHT;
 					player[i].moveFlag = true;
-					SetPlayerAcceleration(0, true);
 				}
 				break;
 
@@ -157,7 +154,6 @@ void UpdatePlayer(void)
 					player[i].prevLane = LANE_RIGHT;
 					player[i].currentLane = LANE_CENTER;
 					player[i].moveFlag = true;
-					SetPlayerAcceleration(0, false);
 				}
 				break;
 			}
