@@ -26,7 +26,8 @@
 #define LANE_RIGHT			(2)							// 右レーン
 #define PLAYER_DEFAULT_POS_Y	(10.0f)
 #define PLAYER_DEFAULT_POS_Z	(100.0f)
-#define PLAYER_MOVE_INTERVAL	(100.0f)				// 移動距離←intervl or distance
+#define PLAYER_MOVE_INTERVAL	(1000.0f)				// 移動距離
+#define PLAYER_ACCEL_DURATION	(30)					// 加減速にかける時間
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
@@ -129,7 +130,7 @@ void UpdatePlayer(void)
 					player[i].prevLane = LANE_LEFT;
 					player[i].currentLane = LANE_CENTER;
 					player[i].moveFlag = true;
-					SetPlayerPos(0, true);
+					SetPlayerAcceleration(0, false);
 				}
 				break;
 
@@ -139,14 +140,14 @@ void UpdatePlayer(void)
 					player[i].prevLane = LANE_CENTER;
 					player[i].currentLane = LANE_LEFT;
 					player[i].moveFlag = true;
-					SetPlayerPos(0, true);
+					SetPlayerAcceleration(0, true);
 				}
 				else if (input == 1)
 				{// 右が入力されたら
 					player[i].prevLane = LANE_CENTER;
 					player[i].currentLane = LANE_RIGHT;
 					player[i].moveFlag = true;
-					SetPlayerPos(0, true);
+					SetPlayerAcceleration(0, true);
 				}
 				break;
 
@@ -156,7 +157,7 @@ void UpdatePlayer(void)
 					player[i].prevLane = LANE_RIGHT;
 					player[i].currentLane = LANE_CENTER;
 					player[i].moveFlag = true;
-					SetPlayerPos(0, true);
+					SetPlayerAcceleration(0, false);
 				}
 				break;
 			}
@@ -181,27 +182,22 @@ void UpdatePlayer(void)
 				player[i].moveCntFrame = 0;
 				player[i].moveFlag = false;
 			}
+		}
 
+	
+		if (player[i].accelerationFlag == true) // 加減速フラグが立ったら
+		{
+			// アニメーション
+			player[i].accelCntFrame++;
+			float t = (float)player[i].accelCntFrame / PLAYER_ACCEL_DURATION;
+			float posZ = EaseInOutCubic(t, player[i].prevPosZ, player[i].currentPosZ);
 
-			if (player[i].accelerationFlag == true)
-			{				
-				////座標の取得
-				//D3DXVECTOR3 playerPos = GetPositionPlayer();
-				//player[i].prevPos = playerPos.z;
-				//player[i].currentPos = playerPos.z + PLAYER_MOVE_INTERVAL;
-				
-				// アニメーション
-				player[i].accelCntFrame++;
-				float t = (float)player[i].accelCntFrame / PLAYER_MOVE_DURATION;
-				float posZ = EaseInOutCubic(t, player[i].prevPos, player[i].currentPos);
+			player[i].pos.z = posZ;
 
-				player[i].pos.z = posZ;
-
-				if (player[i].accelCntFrame == PLAYER_MOVE_DURATION)
-				{
-					player[i].accelCntFrame = 0;
-					player[i].accelerationFlag = false;
-				}
+			if (player[i].accelCntFrame == PLAYER_ACCEL_DURATION)
+			{
+				player[i].accelCntFrame = 0;
+				player[i].accelerationFlag = false;
 			}
 		}
 	}
@@ -300,21 +296,28 @@ D3DXVECTOR3 GetMovePlayer(void)
 }
 
 //=============================================================================
-// SetPos関数(仮) flagがtrueだったら移動するように、ここで制御するには、、、
+// プレイヤーのアクセラレーションのSet関数
 //=============================================================================
-void SetPlayerPos(int playerId, bool isAccelerator)
+void SetPlayerAcceleration(int playerId, bool isAccelerator)
 {
 	if (isAccelerator == true)
 	{
 		//座標の取得
 		D3DXVECTOR3 playerPos = GetPositionPlayer();
-		player[playerId].prevPos = playerPos.z;
-		player[playerId].currentPos = playerPos.z + PLAYER_MOVE_INTERVAL;
+		player[playerId].prevPosZ = playerPos.z;
+		player[playerId].currentPosZ = playerPos.z + PLAYER_MOVE_INTERVAL;
 		
+		// フラグのセット
 		player[playerId].accelerationFlag = true;
 	}
 	else if (isAccelerator == false)
 	{
-		player[playerId].decelerationFlag = true;
+		//座標の取得
+		D3DXVECTOR3 playerPos = GetPositionPlayer();
+		player[playerId].prevPosZ = playerPos.z;
+		player[playerId].currentPosZ = playerPos.z - PLAYER_MOVE_INTERVAL;
+
+		// フラグのセット
+		player[playerId].accelerationFlag = true;
 	}
 }

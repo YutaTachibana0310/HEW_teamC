@@ -25,12 +25,10 @@ typedef struct
 	int moveCntFrame;		// フレームカウント
 	bool moveFlag;			// 移動フラグ
 
-	float prevPos;			// 移動元の位置
-	float currentPos;		// 移動先の位置
+	float prevPosZ;			// 移動元の位置
+	float currentPosZ;		// 移動先の位置
 	int accelCntFrame;		// 加減速のフレームカウント
-	bool accelerationFlag;	// 加速フラグ
-	bool decelerationFlag;	// 減速フラグ
-
+	bool accelerationFlag;	// 加減速フラグ
 } PLAYER;
 
 //*****************************************************************************
@@ -47,6 +45,6 @@ D3DXVECTOR3 GetRotationPlayer(void);
 D3DXVECTOR3 GetRotationDestPlayer(void);
 D3DXVECTOR3 GetMovePlayer(void);
 
-void SetPlayerPos(int playerId, bool isAccelerator);
+void SetPlayerAcceleration(int playerId, bool isAccelerator);
 
 #endif
