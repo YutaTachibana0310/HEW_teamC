@@ -15,6 +15,7 @@
 /**************************************
 マクロ定義
 ***************************************/
+#define TITLESCENE_SCROLLSPEED_DEFAULT		(1.0f)
 
 /**************************************
 構造体定義
@@ -44,6 +45,14 @@ HRESULT InitTitleScene(int num)
 	InitGameParameter(num);
 	InitMeshCylinder(num);
 	InitRainbowLane(num);
+
+	//背景のスクロールスピードを設定
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		SetSpeedGameParameter(i, TITLESCENE_SCROLLSPEED_DEFAULT);
+
+	}
+
 	return S_OK;
 }
 
