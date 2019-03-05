@@ -208,6 +208,7 @@ int GetHorizontalInputTrigger(int i)
 	//それ以外はゲームパッドでのみ操作可能
 	else
 	{
+#ifndef _DEBUG
 		if (IsButtonTriggered(i, BUTTON_LEFT))
 			return -1;
 
@@ -215,6 +216,15 @@ int GetHorizontalInputTrigger(int i)
 			return 1;
 
 		return 0;		
+#else
+		if (IsButtonTriggered(i, BUTTON_LEFT) || GetKeyboardTrigger(DIK_A))
+			return -1;
+
+		if (IsButtonTriggered(i, BUTTON_RIGHT) || GetKeyboardTrigger(DIK_D))
+			return 1;
+
+		return 0;
+#endif
 	}
 }
 
