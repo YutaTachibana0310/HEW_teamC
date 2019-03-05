@@ -119,10 +119,11 @@ void UpdatePlayer(void)
 	{
 		if (player[i].moveFlag == false)
 		{
+			int input = GetHorizontalInputTrigger(i);
 			switch (player[i].currentLane)
 			{
 			case LANE_LEFT:
-				if (GetKeyboardTrigger(DIK_RIGHT))
+				if (input == 1)
 				{
 					player[i].prevLane = LANE_LEFT;
 					player[i].currentLane = LANE_CENTER;
@@ -131,13 +132,13 @@ void UpdatePlayer(void)
 				break;
 
 			case LANE_CENTER:
-				if (GetKeyboardTrigger(DIK_LEFT))
+				if (input == -1)
 				{
 					player[i].prevLane = LANE_CENTER;
 					player[i].currentLane = LANE_LEFT;
 					player[i].moveFlag = true;
 				}
-				if (GetKeyboardTrigger(DIK_RIGHT))
+				else if (input == 1)
 				{
 					player[i].prevLane = LANE_CENTER;
 					player[i].currentLane = LANE_RIGHT;
@@ -146,7 +147,7 @@ void UpdatePlayer(void)
 				break;
 
 			case LANE_RIGHT:
-				if (GetKeyboardTrigger(DIK_LEFT))
+				if (input == -1)
 				{
 					player[i].prevLane = LANE_RIGHT;
 					player[i].currentLane = LANE_CENTER;
@@ -233,9 +234,9 @@ void DrawPlayer(void)
 //=============================================================================
 // ÉvÉåÉCÉÑÅ[ÇéÊìæ
 //=============================================================================
-PLAYER *GetPlayer(int nam)
+PLAYER *GetPlayer(int num)
 {
-	return &player[nam];
+	return &player[num];
 }
 
 //=============================================================================
