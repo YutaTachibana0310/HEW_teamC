@@ -304,7 +304,7 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 	if (isAccelerator == true)
 	{
 		//ç¿ïWÇÃéÊìæ
-		D3DXVECTOR3 playerPos = GetPositionPlayer();
+		D3DXVECTOR3 playerPos = GetPositionPlayer(playerId);
 		player[playerId].prevPosZ = playerPos.z;
 		player[playerId].currentPosZ = playerPos.z + PLAYER_MOVE_INTERVAL;
 		
@@ -314,7 +314,7 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 	else if (isAccelerator == false)
 	{
 		//ç¿ïWÇÃéÊìæ
-		D3DXVECTOR3 playerPos = GetPositionPlayer();
+		D3DXVECTOR3 playerPos = GetPositionPlayer(playerId);
 		player[playerId].prevPosZ = playerPos.z;
 		player[playerId].currentPosZ = playerPos.z - PLAYER_MOVE_INTERVAL;
 
