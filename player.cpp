@@ -242,17 +242,17 @@ PLAYER *GetPlayer(int num)
 //=============================================================================
 // ˆÊ’uŽæ“¾
 //=============================================================================
-D3DXVECTOR3 GetPositionPlayer(void)
+D3DXVECTOR3 GetPositionPlayer(int playerID)
 {
-	return player[0].pos;
+	return player[playerID].pos;
 }
 
 //=============================================================================
 // Œü‚«Žæ“¾
 //=============================================================================
-D3DXVECTOR3 GetRotationPlayer(void)
+D3DXVECTOR3 GetRotationPlayer(int playerID)
 {
-	return player[0].rot;
+	return player[playerID].rot;
 }
 
 //=============================================================================
