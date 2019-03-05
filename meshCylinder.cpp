@@ -11,7 +11,7 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define MESHCYLINDER_TEXTURE        "data/TEXTURE/BG/circuit00.jpg"
+#define MESHCYLINDER_TEXTURE        "data/TEXTURE/BG/backGround.jpg"
 #define MESHCYLINDER_CIRCUIT1		"data/TEXTURE/BG/circuit02.png"
 #define MESHCYLINDER_CIRCUIT2		"data/TEXTURE/BG/circuit04.png"
 #define MESHCYLINDER_BLOCKNUM		(50)
@@ -37,7 +37,8 @@ static int numIndex;
 static float sizeBlockX, sizeBlockZ;
 static int cntFrame;
 
-static float offsetSpeed[MESHCYLINDER_TEXMAX] = { 0.003f, 0.0034f, 0.004f};
+static float offsetSpeed[MESHCYLINDER_TEXMAX] = { 0.003f, 0.0034f, 0.004f };
+static float rotation[MESHCYLINDER_TEXMAX] = { 0.0f, 1.0f, 2.0f };
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -115,37 +116,37 @@ void DrawMeshCylinder(int n)
 
 	D3DXMATRIX mtxRot, mtxTranslate;
 
-	D3DXMatrixIdentity(&mtxWorld);
-
-	//回転
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
-	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
-
-	//移動
-	D3DXMatrixTranslation(&mtxTranslate, pos.x, pos.y, pos.z);
-	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
-
-	//設定
-	pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
 	pDevice->SetIndices(idxBuff);
 	pDevice->SetFVF(FVF_VERTEX_3D);
 	pDevice->SetTexture(0, texture[0]);
 
-	//描画
-	SetTextureOffsetMeshCylinder(n, 0);
-	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, numVertex, 0, numPolygon);
+	for (int i = 0; i < MESHCYLINDER_TEXMAX; i++)
+	{
+		//レンダーステート設定
+		_D3DBLEND blend = i == 0 ? D3DBLEND_INVSRCALPHA : D3DBLEND_ONE;
+		_D3DCMPFUNC cmp = i == 0 ? D3DCMP_GREATEREQUAL : D3DCMP_ALWAYS;
+		pDevice->SetRenderState(D3DRS_DESTBLEND, blend);
+		pDevice->SetRenderState(D3DRS_ZFUNC, cmp);
 
-	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
-	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+		//ワールド行列初期化
+		D3DXMatrixIdentity(&mtxWorld);
 
-	pDevice->SetTexture(0, texture[1]);
-	SetTextureOffsetMeshCylinder(n, 1);
-	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, numVertex, 0, numPolygon);
+		//回転
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, 0.0f, 0.0f, rotation[i]);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
-	pDevice->SetTexture(0, texture[2]);
-	SetTextureOffsetMeshCylinder(n, 2);
-	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, numVertex, 0, numPolygon);
+		//移動
+		D3DXMatrixTranslation(&mtxTranslate, pos.x, pos.y, pos.z);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
+
+		//設定
+		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+		//描画
+		SetTextureOffsetMeshCylinder(n, i);
+		pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, numVertex, 0, numPolygon);
+	}
 
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
