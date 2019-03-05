@@ -24,6 +24,7 @@
 #define LANE_LEFT			(0)							// レフトレーン
 #define LANE_CENTER			(1)							// センターレーン
 #define LANE_RIGHT			(2)							// ライトレーン
+#define PLAYER_DEFAULT_POS_Y	(10.0f)
 #define PLAYER_DEFAULT_POS_Z	(100.0f)
 //*****************************************************************************
 // グローバル変数
@@ -34,7 +35,7 @@ static LPD3DXBUFFER			matBuff;		// メッシュのマテリアル情報を格納
 static DWORD				numMat;			// 属性情報の総数
 
 static D3DXMATRIX			mtxWorld;		// ワールドマトリックス
-static PLAYER				player;			// プレイヤーワーク
+static PLAYER				player[TARGETPLAYER_MAX];			// プレイヤーワーク
 
 //=============================================================================
 // 初期化処理
@@ -43,40 +44,44 @@ HRESULT InitPlayer(void)
 {
 	LPDIRECT3DDEVICE9 device = GetDevice();
 
-	texture = NULL;
-	mesh = NULL;
-	matBuff = NULL;
-
-	player.pos = D3DXVECTOR3(0.0f, -10.0f, 100.0f);
-	player.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	player.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	player.rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	player.radius = PLAYER_RADIUS;
-
-	// Xファイルの読み込み
-	if (FAILED(D3DXLoadMeshFromX(MODEL_PLAYER,
-		D3DXMESH_SYSTEMMEM,
-		device,
-		NULL,
-		&matBuff,
-		NULL,
-		&numMat,
-		&mesh)))
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
-		return E_FAIL;
-	}
+		texture = NULL;
+		mesh = NULL;
+		matBuff = NULL;
+
+		player[i].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		player[i].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		player[i].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		player[i].rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		player[i].radius = PLAYER_RADIUS;
+
+		// Xファイルの読み込み
+		if (FAILED(D3DXLoadMeshFromX(MODEL_PLAYER,
+			D3DXMESH_SYSTEMMEM,
+			device,
+			NULL,
+			&matBuff,
+			NULL,
+			&numMat,
+			&mesh)))
+		{
+			return E_FAIL;
+		}
 
 #if 0
-	// テクスチャの読み込み
-	D3DXCreateTextureFromFile(pDevice,					// デバイスへのポインタ
-		TEXTURE_FILENAME,		// ファイルの名前
-		&texture);	// 読み込むメモリー
+		// テクスチャの読み込み
+		D3DXCreateTextureFromFile(pDevice,					// デバイスへのポインタ
+			TEXTURE_FILENAME,		// ファイルの名前
+			&texture);	// 読み込むメモリー
 #endif
 
-	player.pos = GetLanePos(1);
-	player.pos.z = PLAYER_DEFAULT_POS_Z;
-	player.prevLane = player.currentLane = LANE_CENTER;
-	//player.moveFlag = false;
+		player[i].pos = GetLanePos(1);
+		player[i].pos.y += PLAYER_DEFAULT_POS_Y;
+		player[i].pos.z = (i + 1) * PLAYER_DEFAULT_POS_Z;
+		player[i].prevLane = player[i].currentLane = LANE_CENTER;
+		player[i].moveFlag = false;
+	}
 
 	return S_OK;
 }
@@ -110,62 +115,66 @@ void UninitPlayer(void)
 //=============================================================================
 void UpdatePlayer(void)
 {
-	if (player.moveFlag == false)
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
-		switch (player.currentLane)
+		if (player[i].moveFlag == false)
 		{
-		case LANE_LEFT:
-			if (GetKeyboardTrigger(DIK_RIGHT))
+			int input = GetHorizontalInputTrigger(i);
+			switch (player[i].currentLane)
 			{
-				player.prevLane = LANE_LEFT;
-				player.currentLane = LANE_CENTER;
-				player.moveFlag = true;
-			}
-			break;
+			case LANE_LEFT:
+				if (input == 1)
+				{
+					player[i].prevLane = LANE_LEFT;
+					player[i].currentLane = LANE_CENTER;
+					player[i].moveFlag = true;
+				}
+				break;
 
-		case LANE_CENTER:
-			if (GetKeyboardTrigger(DIK_LEFT))
-			{
-				player.prevLane = LANE_CENTER;
-				player.currentLane = LANE_LEFT;
-				player.moveFlag = true;
-			}
-			if (GetKeyboardTrigger(DIK_RIGHT))
-			{
-				player.prevLane = LANE_CENTER;
-				player.currentLane = LANE_RIGHT;
-				player.moveFlag = true;
-			}
-			break;
+			case LANE_CENTER:
+				if (input == -1)
+				{
+					player[i].prevLane = LANE_CENTER;
+					player[i].currentLane = LANE_LEFT;
+					player[i].moveFlag = true;
+				}
+				else if (input == 1)
+				{
+					player[i].prevLane = LANE_CENTER;
+					player[i].currentLane = LANE_RIGHT;
+					player[i].moveFlag = true;
+				}
+				break;
 
-		case LANE_RIGHT:
-			if (GetKeyboardTrigger(DIK_LEFT))
-			{
-				player.prevLane = LANE_RIGHT;
-				player.currentLane = LANE_CENTER;
-				player.moveFlag = true;
+			case LANE_RIGHT:
+				if (input == -1)
+				{
+					player[i].prevLane = LANE_RIGHT;
+					player[i].currentLane = LANE_CENTER;
+					player[i].moveFlag = true;
+				}
+				break;
 			}
-			break;
 		}
-	}
-	else if (player.moveFlag == true)
-	{
-		//座標の取得
-		D3DXVECTOR3 prevLanePos = GetLanePos(player.prevLane);
-		D3DXVECTOR3 currentLanePos = GetLanePos(player.currentLane);
-		
-		player.moveCntFrame++;
-		float t = (float)player.moveCntFrame / PLAYER_MOVE_DURATION;
-		float posX = EaseInOutCubic(t, prevLanePos.x, currentLanePos.x);
-		float posY = EaseInOutCubic(t, prevLanePos.y, currentLanePos.y);
-
-		player.pos.x = posX;
-		player.pos.y = posY + 10.0f;
-
-		if (player.moveCntFrame == PLAYER_MOVE_DURATION)
+		else if (player[i].moveFlag == true)
 		{
-			player.moveCntFrame = 0;
-			player.moveFlag = false;
+			//座標の取得
+			D3DXVECTOR3 prevLanePos = GetLanePos(player[i].prevLane);
+			D3DXVECTOR3 currentLanePos = GetLanePos(player[i].currentLane);
+
+			player[i].moveCntFrame++;
+			float t = (float)player[i].moveCntFrame / PLAYER_MOVE_DURATION;
+			float posX = EaseInOutCubic(t, prevLanePos.x, currentLanePos.x);
+			float posY = EaseInOutCubic(t, prevLanePos.y, currentLanePos.y);
+
+			player[i].pos.x = posX;
+			player[i].pos.y = posY + PLAYER_DEFAULT_POS_Y;
+
+			if (player[i].moveCntFrame == PLAYER_MOVE_DURATION)
+			{
+				player[i].moveCntFrame = 0;
+				player[i].moveFlag = false;
+			}
 		}
 	}
 }
@@ -179,52 +188,55 @@ void DrawPlayer(void)
 	D3DXMATRIX mtxRot, mtxTranslate;
 	D3DXMATERIAL *mat;
 
-	// ワールドマトリックスの初期化
-	D3DXMatrixIdentity(&mtxWorld);
-
-	// 回転を反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, player.rot.y, player.rot.x, player.rot.z);
-	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
-
-	// 移動を反映
-	D3DXMatrixTranslation(&mtxTranslate, player.pos.x, player.pos.y, player.pos.z);
-	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
-
-	// ワールドマトリックスの設定
-	device->SetTransform(D3DTS_WORLD, &mtxWorld);
-
-	// マテリアル情報に対するポインタを取得
-	mat = (D3DXMATERIAL*)matBuff->GetBufferPointer();
-
-	for (int i = 0; i < (int)numMat; i++)
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
-		// マテリアルの設定
-		device->SetMaterial(&mat[i].MatD3D);
+		// ワールドマトリックスの初期化
+		D3DXMatrixIdentity(&mtxWorld);
 
-		// テクスチャの設定
-		device->SetTexture(0, texture);
+		// 回転を反映
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, player[i].rot.y, player[i].rot.x, player[i].rot.z);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
-		// 描画
-		mesh->DrawSubset(i);
-	}
+		// 移動を反映
+		D3DXMatrixTranslation(&mtxTranslate, player[i].pos.x, player[i].pos.y, player[i].pos.z);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
 
-	{// マテリアルをデフォルトに戻す
-		D3DXMATERIAL mat;
+		// ワールドマトリックスの設定
+		device->SetTransform(D3DTS_WORLD, &mtxWorld);
 
-		mat.MatD3D.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f);
-		mat.MatD3D.Ambient = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
-		mat.MatD3D.Emissive = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+		// マテリアル情報に対するポインタを取得
+		mat = (D3DXMATERIAL*)matBuff->GetBufferPointer();
 
-		device->SetMaterial(&mat.MatD3D);
+		for (int i = 0; i < (int)numMat; i++)
+		{
+			// マテリアルの設定
+			device->SetMaterial(&mat[i].MatD3D);
+
+			// テクスチャの設定
+			device->SetTexture(0, texture);
+
+			// 描画
+			mesh->DrawSubset(i);
+		}
+
+		{// マテリアルをデフォルトに戻す
+			D3DXMATERIAL mat;
+
+			mat.MatD3D.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f);
+			mat.MatD3D.Ambient = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+			mat.MatD3D.Emissive = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+
+			device->SetMaterial(&mat.MatD3D);
+		}
 	}
 }
 
 //=============================================================================
 // プレイヤーを取得
 //=============================================================================
-PLAYER *GetPlayer(void)
+PLAYER *GetPlayer(int num)
 {
-	return &player;
+	return &player[num];
 }
 
 //=============================================================================
@@ -232,7 +244,7 @@ PLAYER *GetPlayer(void)
 //=============================================================================
 D3DXVECTOR3 GetPositionPlayer(void)
 {
-	return player.pos;
+	return player[0].pos;
 }
 
 //=============================================================================
@@ -240,7 +252,7 @@ D3DXVECTOR3 GetPositionPlayer(void)
 //=============================================================================
 D3DXVECTOR3 GetRotationPlayer(void)
 {
-	return player.rot;
+	return player[0].rot;
 }
 
 //=============================================================================
@@ -248,7 +260,7 @@ D3DXVECTOR3 GetRotationPlayer(void)
 //=============================================================================
 D3DXVECTOR3 GetRotationDestPlayer(void)
 {
-	return player.rotDest;
+	return player[0].rotDest;
 }
 
 //=============================================================================
@@ -256,5 +268,5 @@ D3DXVECTOR3 GetRotationDestPlayer(void)
 //=============================================================================
 D3DXVECTOR3 GetMovePlayer(void)
 {
-	return player.move;
+	return player[0].move;
 }
