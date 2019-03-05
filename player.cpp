@@ -159,8 +159,8 @@ void UpdatePlayer(void)
 		else if (player[i].moveFlag == true)
 		{
 			//ç¿ïWÇ∆âÒì]ÇÃéÊìæ
-			D3DXVECTOR3 prevLanePos = GetLanePos(player[i].prevLane);
-			D3DXVECTOR3 currentLanePos = GetLanePos(player[i].currentLane);
+			D3DXVECTOR3 prevLanePos = GetLanePos(player[i].prevLane) + GetLaneNormal(player[i].prevLane) * PLAYER_DEFAULT_POS_Y;
+			D3DXVECTOR3 currentLanePos = GetLanePos(player[i].currentLane) + GetLaneNormal(player[i].currentLane) * PLAYER_DEFAULT_POS_Y;;
 			D3DXVECTOR3 prevLaneRot = GetLaneRot(player[i].prevLane);
 			D3DXVECTOR3 currentLaneRot = GetLaneRot(player[i].currentLane);
 
