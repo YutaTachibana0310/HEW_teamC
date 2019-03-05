@@ -106,6 +106,7 @@ void InitRainbowLane(int num)
 		D3DXMATRIX mtxRot;
 		D3DXMatrixRotationYawPitchRoll(&mtxRot, laneRot[i].y, laneRot[i].x, laneRot[i].z);
 		D3DXVec3TransformCoord(&laneNormal[i], RAINBOWLANE_NORMAL_DEFAULT, &mtxRot);
+		D3DXVec3Normalize(&laneNormal[i], &laneNormal[i]);
 	}
 
 	//テクスチャを読み込み

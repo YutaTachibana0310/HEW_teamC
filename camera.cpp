@@ -21,7 +21,7 @@
 
 #define CAMERA_POSITION_OFFSET		(D3DXVECTOR3(0.0f, 50.0f, -70.0f))	//視点の位置
 #define CAMERA_TARGET_OFFSET		(D3DXVECTOR3(0.0f, 10.0f, 50.0f))	//注視点の位置
-#define CAMERA_OFFSET_MAGNI			(0.6f)								//カメラの移動倍率
+#define CAMERA_OFFSET_MAGNI			(0.35f)								//カメラの移動倍率
 
 //*****************************************************************************
 // プロトタイプ宣言

@@ -44,30 +44,30 @@ HRESULT InitPlayer(void)
 {
 	LPDIRECT3DDEVICE9 device = GetDevice();
 
+	texture = NULL;
+	mesh = NULL;
+	matBuff = NULL;
+
+	// Xファイルの読み込み
+	if (FAILED(D3DXLoadMeshFromX(MODEL_PLAYER,
+		D3DXMESH_SYSTEMMEM,
+		device,
+		NULL,
+		&matBuff,
+		NULL,
+		&numMat,
+		&mesh)))
+	{
+		return E_FAIL;
+	}
+
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
-		texture = NULL;
-		mesh = NULL;
-		matBuff = NULL;
-
 		player[i].pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		player[i].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		player[i].rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		player[i].rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		player[i].radius = PLAYER_RADIUS;
-
-		// Xファイルの読み込み
-		if (FAILED(D3DXLoadMeshFromX(MODEL_PLAYER,
-			D3DXMESH_SYSTEMMEM,
-			device,
-			NULL,
-			&matBuff,
-			NULL,
-			&numMat,
-			&mesh)))
-		{
-			return E_FAIL;
-		}
 
 #if 0
 		// テクスチャの読み込み
@@ -75,11 +75,12 @@ HRESULT InitPlayer(void)
 			TEXTURE_FILENAME,		// ファイルの名前
 			&texture);	// 読み込むメモリー
 #endif
-
-		player[i].pos = GetLanePos(1);
-		player[i].pos.y += PLAYER_DEFAULT_POS_Y;
-		player[i].pos.z = (i + 1) * PLAYER_DEFAULT_POS_Z;
-		player[i].prevLane = player[i].currentLane = LANE_CENTER;
+		//プレイヤーのパラメータを初期化
+		int laneIndex = i == 0 ? LANE_LEFT : LANE_RIGHT;
+		player[i].pos = GetLanePos(laneIndex);
+		player[i].pos.z = 0.0f;
+		player[i].rot = GetLaneRot(laneIndex);
+		player[i].prevLane = player[i].currentLane = laneIndex;
 		player[i].moveFlag = false;
 	}
 
@@ -160,7 +161,7 @@ void UpdatePlayer(void)
 		{
 			//座標と回転の取得
 			D3DXVECTOR3 prevLanePos = GetLanePos(player[i].prevLane) + GetLaneNormal(player[i].prevLane) * PLAYER_DEFAULT_POS_Y;
-			D3DXVECTOR3 currentLanePos = GetLanePos(player[i].currentLane) + GetLaneNormal(player[i].currentLane) * PLAYER_DEFAULT_POS_Y;;
+			D3DXVECTOR3 currentLanePos = GetLanePos(player[i].currentLane) + GetLaneNormal(player[i].currentLane) * PLAYER_DEFAULT_POS_Y;
 			D3DXVECTOR3 prevLaneRot = GetLaneRot(player[i].prevLane);
 			D3DXVECTOR3 currentLaneRot = GetLaneRot(player[i].currentLane);
 
@@ -171,7 +172,7 @@ void UpdatePlayer(void)
 			float rotZ = EaseOutCubic(t, prevLaneRot.z, currentLaneRot.z);
 
 			player[i].pos.x = posX;
-			player[i].pos.y = posY + PLAYER_DEFAULT_POS_Y;
+			player[i].pos.y = posY;
 			player[i].rot.z = rotZ;
 
 			if (player[i].moveCntFrame == PLAYER_MOVE_DURATION)
