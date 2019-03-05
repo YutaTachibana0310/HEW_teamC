@@ -65,6 +65,13 @@ D3DXVECTOR3 GetLanePos(int num)
 	return lanePos[num];
 }
 
+/**************************************
+lƒŒ[ƒ“‚Ì‰ñ“]‚ÌGetŠÖ”
+***************************************/
+D3DXVECTOR3 GetLaneRot(int num)
+{
+	return laneRot[num];
+}
 
 /**************************************
 ‰Šú‰»ˆ—

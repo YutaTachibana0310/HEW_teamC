@@ -62,8 +62,7 @@ void UninitCamera(void)
 //=============================================================================
 void UpdateCamera(void)
 {
-	D3DXVECTOR3 playerPos = GetPositionPlayer();
-	
+
 }
 
 //=============================================================================
@@ -74,8 +73,7 @@ void SetCamera(int targetPlayerID)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//プレイヤーを基準に注視点を設定
-	//TODO : プレイヤーの複数化に対応
-	D3DXVECTOR3 playerPos = GetPositionPlayer();
+	D3DXVECTOR3 playerPos = GetPositionPlayer(targetPlayerID);
 	camera.target = playerPos + CAMERA_TARGET_OFFSET;
 
 	//プレイヤーを基準にカメラの視点を決定する

@@ -158,17 +158,21 @@ void UpdatePlayer(void)
 		}
 		else if (player[i].moveFlag == true)
 		{
-			//ç¿ïWÇÃéÊìæ
+			//ç¿ïWÇ∆âÒì]ÇÃéÊìæ
 			D3DXVECTOR3 prevLanePos = GetLanePos(player[i].prevLane);
 			D3DXVECTOR3 currentLanePos = GetLanePos(player[i].currentLane);
+			D3DXVECTOR3 prevLaneRot = GetLaneRot(player[i].prevLane);
+			D3DXVECTOR3 currentLaneRot = GetLaneRot(player[i].currentLane);
 
 			player[i].moveCntFrame++;
 			float t = (float)player[i].moveCntFrame / PLAYER_MOVE_DURATION;
-			float posX = EaseInOutCubic(t, prevLanePos.x, currentLanePos.x);
-			float posY = EaseInOutCubic(t, prevLanePos.y, currentLanePos.y);
+			float posX = EaseOutCubic(t, prevLanePos.x, currentLanePos.x);
+			float posY = EaseOutCubic(t, prevLanePos.y, currentLanePos.y);
+			float rotZ = EaseOutCubic(t, prevLaneRot.z, currentLaneRot.z);
 
 			player[i].pos.x = posX;
 			player[i].pos.y = posY + PLAYER_DEFAULT_POS_Y;
+			player[i].rot.z = rotZ;
 
 			if (player[i].moveCntFrame == PLAYER_MOVE_DURATION)
 			{
