@@ -24,6 +24,13 @@ typedef struct
 	int currentLane;		// 今いるレーンの番号
 	int moveCntFrame;		// フレームカウント
 	bool moveFlag;			// 移動フラグ
+
+	float prevPos;			// 移動元の位置
+	float currentPos;		// 移動先の位置
+	int accelCntFrame;		// 加減速のフレームカウント
+	bool accelerationFlag;	// 加速フラグ
+	bool decelerationFlag;	// 減速フラグ
+
 } PLAYER;
 
 //*****************************************************************************
