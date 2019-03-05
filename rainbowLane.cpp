@@ -21,6 +21,7 @@
 #define RAINBOWLANE_OFFSET_X		(50.0f)								//レーンのオフセット(X)
 #define RAINBOWLANE_OFFSET_Y		(30.0f)								//レーンのオフセット(Y)
 #define RAINBOWLANE_ROT_VALUE		(D3DXToRadian(40.0f))				//レーンの回転量
+#define RAINBOWLANE_NORMAL_DEFAULT	(&D3DXVECTOR3(0.0f, 1.0f, 0.0f))	//デフォルト法線
 
 /**************************************
 構造体定義
@@ -33,8 +34,6 @@ static LPDIRECT3DVERTEXBUFFER9 vtxBuff;				//頂点バッファ
 static LPDIRECT3DTEXTURE9 texture;					//テクスチャ
 static int cntFrame;								//カウントフレーム
 
-
-
 //各レーンの座標
 static D3DXVECTOR3 lanePos[RAINBOWLANE_NUM_MAX] = {
 	D3DXVECTOR3(-RAINBOWLANE_OFFSET_X, RAINBOWLANE_BASEPOS_Y + RAINBOWLANE_OFFSET_Y, 0.0f),
@@ -42,13 +41,18 @@ static D3DXVECTOR3 lanePos[RAINBOWLANE_NUM_MAX] = {
 	D3DXVECTOR3(RAINBOWLANE_OFFSET_X, RAINBOWLANE_BASEPOS_Y + RAINBOWLANE_OFFSET_Y, 0.0f),
 };	
 
-
-
 //各レーンの回転量
 static D3DXVECTOR3 laneRot[RAINBOWLANE_NUM_MAX] = {
 	D3DXVECTOR3(0.0f, 0.0f, -RAINBOWLANE_ROT_VALUE),
 	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 	D3DXVECTOR3(0.0f, 0.0f, RAINBOWLANE_ROT_VALUE),
+};
+
+//各レーンの法線
+static D3DXVECTOR3 laneNormal[RAINBOWLANE_NUM_MAX] = {
+	D3DXVECTOR3(0.0f, 1.0f, 0.0f),
+	D3DXVECTOR3(0.0f, 1.0f, 0.0f),
+	D3DXVECTOR3(0.0f, 1.0f, 0.0f),
 };
 
 /**************************************
@@ -65,6 +69,21 @@ D3DXVECTOR3 GetLanePos(int num)
 	return lanePos[num];
 }
 
+/**************************************
+lレーンの回転のGet関数
+***************************************/
+D3DXVECTOR3 GetLaneRot(int num)
+{
+	return laneRot[num];
+}
+
+/**************************************
+lレーンの法線の取得関数
+***************************************/
+D3DXVECTOR3 GetLaneNormal(int num)
+{
+	return laneNormal[num];
+}
 
 /**************************************
 初期化処理
@@ -80,6 +99,14 @@ void InitRainbowLane(int num)
 		D3DPOOL_MANAGED,
 		&vtxBuff,
 		NULL);
+
+	//レーン法線計算
+	for (int i = 0; i < RAINBOWLANE_NUM_MAX; i++)
+	{
+		D3DXMATRIX mtxRot;
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, laneRot[i].y, laneRot[i].x, laneRot[i].z);
+		D3DXVec3TransformCoord(&laneNormal[i], RAINBOWLANE_NORMAL_DEFAULT, &mtxRot);
+	}
 
 	//テクスチャを読み込み
 	texture = CreateTextureFromFile((LPSTR)RAINBOWLANE_TEXTURE_NAME, pDevice);

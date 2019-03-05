@@ -35,8 +35,8 @@ void UpdatePlayer(void);
 void DrawPlayer(void);
 PLAYER *GetPlayer(int num);
 
-D3DXVECTOR3 GetPositionPlayer(void);
-D3DXVECTOR3 GetRotationPlayer(void);
+D3DXVECTOR3 GetPositionPlayer(int playerID);
+D3DXVECTOR3 GetRotationPlayer(int playerID);
 D3DXVECTOR3 GetRotationDestPlayer(void);
 D3DXVECTOR3 GetMovePlayer(void);
 

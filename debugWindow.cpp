@@ -76,7 +76,7 @@ void UninitDebugWindow(int num)
 void UpdateDebugWindow(void)
 {
 #ifdef USE_DEBUGFUNC
-	if (GetKeyboardTrigger(DIK_D))
+	if (GetKeyboardTrigger(DIK_D) && GetKeyboardTrigger(DIK_LCONTROL))
 	{
 		enableDraw = !enableDraw;
 	}

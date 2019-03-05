@@ -20,7 +20,8 @@
 #define	VALUE_ROTATE_CAMERA			(D3DX_PI * 0.01f)		// カメラの回転量
 
 #define CAMERA_POSITION_OFFSET		(D3DXVECTOR3(0.0f, 50.0f, -70.0f))	//視点の位置
-#define CAMERA_TARGET_OFFSET		(D3DXVECTOR3(0.0f, 0.0f, 50.0f))	//注視点の位置
+#define CAMERA_TARGET_OFFSET		(D3DXVECTOR3(0.0f, 10.0f, 50.0f))	//注視点の位置
+#define CAMERA_OFFSET_MAGNI			(0.6f)								//カメラの移動倍率
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -62,8 +63,7 @@ void UninitCamera(void)
 //=============================================================================
 void UpdateCamera(void)
 {
-	D3DXVECTOR3 playerPos = GetPositionPlayer();
-	
+
 }
 
 //=============================================================================
@@ -74,12 +74,15 @@ void SetCamera(int targetPlayerID)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//プレイヤーを基準に注視点を設定
-	//TODO : プレイヤーの複数化に対応
-	D3DXVECTOR3 playerPos = GetPositionPlayer();
+	D3DXVECTOR3 playerPos = GetPositionPlayer(targetPlayerID);
 	camera.target = playerPos + CAMERA_TARGET_OFFSET;
+	camera.target.x *= CAMERA_OFFSET_MAGNI;
+	camera.target.y *= CAMERA_OFFSET_MAGNI;
 
 	//プレイヤーを基準にカメラの視点を決定する
 	camera.pos = playerPos + CAMERA_POSITION_OFFSET;
+	camera.pos.x *= CAMERA_OFFSET_MAGNI;
+	camera.pos.y *= CAMERA_OFFSET_MAGNI;
 
 	// ビューマトリックスの初期化
 	D3DXMatrixIdentity(&camera.view);

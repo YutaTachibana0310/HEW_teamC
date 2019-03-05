@@ -13,7 +13,7 @@
 マクロ定義
 ***************************************/
 #define GAMECONTROLLER_START_DURATION		(180)
-#define GAMECONTROLLER_START_SCROLLSPEED	(1.0f)
+#define GAMECONTROLLER_START_SCROLLSPEED	(0.5f)
 /**************************************
 構造体定義
 ***************************************/
