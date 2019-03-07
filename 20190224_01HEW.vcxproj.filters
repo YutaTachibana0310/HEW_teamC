@@ -231,6 +231,9 @@
     <ClCompile Include="score.cpp">
       <Filter>ソース ファイル\Horiuchi</Filter>
     </ClCompile>
+    <ClCompile Include="timeGUI.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -366,6 +369,9 @@
       <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
     </ClInclude>
     <ClInclude Include="playerMarker.h">
+      <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="timeGUI.h">
       <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
     </ClInclude>
   </ItemGroup>
