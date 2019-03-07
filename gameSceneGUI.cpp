@@ -12,6 +12,7 @@
 #include "score.h"
 #include "countDownGUI.h"
 #include "goalTelop.h"
+#include "timeGUI.h"
 
 /**************************************
 マクロ定義
@@ -39,6 +40,7 @@ void InitGameSceneGUI(void)
 	InitScore(0);
 	InitCountDownGUI(0);
 	InitGoalTelop(0);
+	InitTimeGUI(0);
 }
 
 /**************************************
@@ -51,6 +53,7 @@ void UninitGameSceneGUI(void)
 	UninitScore(0);
 	UninitCountDownGUI(0);
 	UninitGoalTelop(0);
+	UninitTimeGUI(0);
 }
 
 /**************************************
@@ -63,6 +66,7 @@ void UpdateGameSceneGUI(void)
 	UpdateScore();
 	UpdateCountDownGUI();
 	UpdateGoalTelop();
+	UpdateTimeGUI();
 }
 
 /**************************************
@@ -104,5 +108,12 @@ void DrawGameSceneGUI(void)
 			continue;
 
 		DrawGoalTelop(i);
+	}
+
+	//タイムGUIを描画
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		//DrawTimeGUI(GetGameParameterAdr(0)->deltaTime, GetGameParameterAdr(1)->deltaTime);
+		DrawTimeGUI(12.34f, 56.78f);
 	}
 }
