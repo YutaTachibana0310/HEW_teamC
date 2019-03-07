@@ -20,6 +20,8 @@
 typedef struct _GAMEPARAMETER{
 	float playerSpeed;			//プレイヤーのスピード
 	float playerMoveDist;		//プレイヤーの移動距離
+	int score;					//現在のスコア
+	float deltaTime;			//タイム
 	bool isPlayerGoaled;		//ゴールしているかどうか
 }GAMEPARAMETER;
 /**************************************

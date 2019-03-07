@@ -9,6 +9,7 @@
 #include "progressGauge.h"
 #include "progressMarker.h"
 #include "gameParameter.h"
+#include "score.h"
 #include "countDownGUI.h"
 #include "goalTelop.h"
 
@@ -35,6 +36,7 @@ void InitGameSceneGUI(void)
 {
 	InitProgressGauge(0);
 	InitProgressMarker(0);
+	InitScore(0);
 	InitCountDownGUI(0);
 	InitGoalTelop(0);
 }
@@ -46,6 +48,7 @@ void UninitGameSceneGUI(void)
 {
 	UninitProgressGauge(0);
 	UninitProgressMarker(0);
+	UninitScore(0);
 	UninitCountDownGUI(0);
 	UninitGoalTelop(0);
 }
@@ -57,6 +60,7 @@ void UpdateGameSceneGUI(void)
 {
 	UpdateProgressGauge();
 	UpdateProgressMarker();
+	UpdateScore();
 	UpdateCountDownGUI();
 	UpdateGoalTelop();
 }
@@ -81,6 +85,11 @@ void DrawGameSceneGUI(void)
 		SetProgressMarker(i, progress);
 		DrawProgressMarker();
 	}
+
+	//スコアの描画
+	int score1P = GetGameParameterAdr(0)->score;
+	int score2P = GetGameParameterAdr(1)->score;
+	DrawScore(score1P, score2P);
 
 	//カウントダウンGUIを描画
 	DrawCountDownGUI();
