@@ -36,12 +36,20 @@ void UpdateCollisionManager(void)
 		SLASHBULLET *bullet = GetSlashBulletAdr(0);
 		for (int j = 0; j < SLASHBULLET_NUM_MAX; j++, bullet++)
 		{
+			//非アクティブのバレットとは判定しない
 			if (!bullet->active)
 				continue;
 
+			//プレイヤー自身が発射したバレットとは判定しない
+			if (bullet->parentPlayerID == i)
+				continue;
+
+			//バウンディングボックスの判定
 			if (ChechHitBoundingCube(&player->collider, &bullet->collider))
 			{
+				//バレットが当たったら減速
 				SetPlayerAcceleration(i, false);
+				bullet->active = false;
 			}
 		}
 	}

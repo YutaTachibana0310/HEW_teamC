@@ -82,7 +82,7 @@ void UpdateSlashBullet(void)
 	{
 		D3DXVECTOR3 lanePos = GetLanePos(0);
 		lanePos.x = 0.0f;
-		SetSlashBullet(lanePos);
+		SetSlashBullet(lanePos, 0);
 	}
 
 	SLASHBULLET *ptr = &bullet[0];
@@ -223,7 +223,7 @@ void SetTextureSlashBullet(void)
 /**************************************
 ÉZÉbÉgèàóù
 ***************************************/
-void SetSlashBullet(D3DXVECTOR3 pos)
+void SetSlashBullet(D3DXVECTOR3 pos, int playerID)
 {
 	SLASHBULLET *ptr = &bullet[0];
 	for (int i = 0; i < SLASHBULLET_NUM_MAX; i++, ptr++)
@@ -233,6 +233,7 @@ void SetSlashBullet(D3DXVECTOR3 pos)
 
 		ptr->pos = pos;
 		ptr->active = true;
+		ptr->parentPlayerID = playerID;
 		return;
 	}
 }
