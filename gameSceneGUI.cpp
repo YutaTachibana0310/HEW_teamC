@@ -33,7 +33,7 @@ void InitGameSceneGUI(void)
 {
 	InitProgressGauge(0);
 	InitProgressMarker(0);
-	InitScore();
+	InitScore(0);
 }
 
 /**************************************
@@ -43,7 +43,7 @@ void UninitGameSceneGUI(void)
 {
 	UninitProgressGauge(0);
 	UninitProgressMarker(0);
-	UninitScore();
+	UninitScore(0);
 }
 
 /**************************************
@@ -78,5 +78,5 @@ void DrawGameSceneGUI(void)
 	}
 
 	//ÉXÉRÉAÇÃï`âÊ
-	DrawScore();
+	DrawScore(1000, 1000);
 }
