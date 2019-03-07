@@ -60,6 +60,17 @@ void UpdateGameControllerRun(GAMECONTROLLER *entity)
 		param->playerMoveDist += param->playerSpeed;
 	}
 
+	//ゲームパラメータの時間を加算
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		GAMEPARAMETER *param = GetGameParameterAdr(i);
+
+		if (param->isPlayerGoaled)
+			continue;
+
+		param->deltaTime += 1.0f / 60.0f;
+	}
+
 	//プレイヤーが両方ゴールしたらステート遷移
 	if (CheckPlayerGoaled(0) && CheckPlayerGoaled(1))
 	{
