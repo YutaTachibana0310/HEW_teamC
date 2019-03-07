@@ -11,11 +11,12 @@
 マクロ定義
 ***************************************/
 #define SLASHBULLET_TEXTURE_NAME		"data/TEXTURE/EFFECT/pipo-btleffect130.png"
-#define SLASHBULLET_SIZE_X				(15.0f)
+#define SLASHBULLET_SIZE_X				(35.0f)
 #define SLASHBULLET_SIZE_Y				(SLASHBULLET_SIZE_X * 0.75f)
 #define SLASHBULLET_TEX_DIV_X			(2)
 #define SLASHBULLET_TEX_DIV_Y			(12)
 #define SLASHBULLET_ANIM_PATTERN_MAX	(SLASHBULLET_TEX_DIV_X*SLASHBULLET_TEX_DIV_Y)
+#define SLASHBULLET_MOVE_SPEED			(10.0f)
 
 /**************************************
 構造体定義
@@ -64,11 +65,20 @@ void UninitSlashBullet(int num)
 	SAFE_RELEASE(vtxBuff);
 }
 
+#include "rainbowLane.h"
+#include "input.h"
 /**************************************
 更新処理
 ***************************************/
 void UpdateSlashBullet(void)
 {
+	if (GetKeyboardTrigger(DIK_SPACE))
+	{
+		D3DXVECTOR3 lanePos = GetLanePos(0);
+		lanePos.x = 0.0f;
+		SetSlashBullet(lanePos);
+	}
+
 	SLASHBULLET *ptr = &bullet[0];
 	for (int i = 0; i < SLASHBULLET_NUM_MAX; i++, ptr++)
 	{
@@ -76,6 +86,8 @@ void UpdateSlashBullet(void)
 			continue;
 
 		ptr->cntFrame++;
+
+		ptr->pos.z += SLASHBULLET_MOVE_SPEED;
 	}
 
 	SetTextureSlashBullet();
@@ -111,10 +123,12 @@ void DrawSlashBullet(void)
 
 		//回転
 		//D3DXMatrixInverse(&mtxWorld, NULL, &mtxView);
-		//D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
-		//D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
 
 		//移動
+		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
+
+
 		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
 		//描画
@@ -196,5 +210,22 @@ void SetTextureSlashBullet(void)
 		pVtx[1].tex = D3DXVECTOR2((x + 1) * sizeX, y * sizeY);
 		pVtx[2].tex = D3DXVECTOR2(x * sizeX, (y + 1) * sizeY);
 		pVtx[3].tex = D3DXVECTOR2((x + 1) * sizeX, (y + 1) * sizeY);
+	}
+}
+
+/**************************************
+セット処理
+***************************************/
+void SetSlashBullet(D3DXVECTOR3 pos)
+{
+	SLASHBULLET *ptr = &bullet[0];
+	for (int i = 0; i < SLASHBULLET_NUM_MAX; i++, ptr++)
+	{
+		if (ptr->active)
+			continue;
+
+		ptr->pos = pos;
+		ptr->active = true;
+		return;
 	}
 }
