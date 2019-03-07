@@ -18,7 +18,7 @@
 #define SLASHBULLET_ANIM_PATTERN_MAX	(SLASHBULLET_TEX_DIV_X*SLASHBULLET_TEX_DIV_Y)
 #define SLASHBULLET_MOVE_SPEED			(10.0f)
 
-#define SLASHBULLET_COLLIDER_LENGTH		(D3DXVECTOR3(5.0f, 5.0f, 5.0f))
+#define SLASHBULLET_COLLIDER_LENGTH		(D3DXVECTOR3(10.0f, 10.0f, 10.0f))
 
 /**************************************
 構造体定義
@@ -139,6 +139,7 @@ void DrawSlashBullet(void)
 
 		//描画
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, i * NUM_VERTEX, NUM_POLYGON);
+
 	}
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
@@ -234,4 +235,12 @@ void SetSlashBullet(D3DXVECTOR3 pos)
 		ptr->active = true;
 		return;
 	}
+}
+
+/**************************************
+アドレス取得処理
+***************************************/
+SLASHBULLET* GetSlashBulletAdr(int n)
+{
+	return &bullet[0];
 }

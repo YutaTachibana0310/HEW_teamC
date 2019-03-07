@@ -32,4 +32,5 @@ void UninitSlashBullet(int num);
 void UpdateSlashBullet(void);
 void DrawSlashBullet(void);
 void SetSlashBullet(D3DXVECTOR3 pos);
+SLASHBULLET* GetSlashBulletAdr(int n);
 #endif
