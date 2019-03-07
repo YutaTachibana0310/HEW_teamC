@@ -9,6 +9,7 @@
 #include "input.h"
 #include "rainbowLane.h"
 #include "Easing.h"
+#include "slashBullet.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -38,6 +39,11 @@ static DWORD				numMat;			// 属性情報の総数
 
 static D3DXMATRIX			mtxWorld;		// ワールドマトリックス
 static PLAYER				player[TARGETPLAYER_MAX];			// プレイヤーワーク
+
+//*****************************************************************************
+// プロトタイプ宣言
+//*****************************************************************************
+void PlayerAttack(int i);
 
 //=============================================================================
 // 初期化処理
@@ -206,6 +212,9 @@ void UpdatePlayer(void)
 				player[i].accelerationFlag = false;
 			}
 		}
+
+		//攻撃処理
+		PlayerAttack(i);
 	}
 }
 
@@ -327,5 +336,19 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 
 		// フラグのセット
 		player[playerId].accelerationFlag = true;
+	}
+}
+
+//=============================================================================
+// プレイヤーの攻撃処理
+//=============================================================================
+void PlayerAttack(int i)
+{
+	PLAYER* ptr = &player[i];
+
+	//攻撃ボタンのトリガー検知
+	if (GetAttackButtonTrigger(i))
+	{
+		SetSlashBullet(player->pos, i);
 	}
 }
