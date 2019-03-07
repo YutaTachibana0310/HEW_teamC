@@ -14,7 +14,7 @@
 #define SLASHBULLET_SIZE_X				(50.0f)
 #define SLASHBULLET_SIZE_Y				(SLASHBULLET_SIZE_X * 0.75f)
 #define SLASHBULLET_TEX_DIV_X			(2)
-#define SLASHBULLET_TEX_DIV_Y			(10)
+#define SLASHBULLET_TEX_DIV_Y			(12)
 #define SLASHBULLET_ANIM_PATTERN_MAX	(SLASHBULLET_TEX_DIV_X*SLASHBULLET_TEX_DIV_Y)
 
 /**************************************
@@ -69,7 +69,16 @@ void UninitSlashBullet(int num)
 ***************************************/
 void UpdateSlashBullet(void)
 {
+	SLASHBULLET *ptr = &bullet[0];
+	for (int i = 0; i < SLASHBULLET_NUM_MAX; i++, ptr++)
+	{
+		if (!ptr->active)
+			continue;
 
+		ptr->cntFrame++;
+	}
+
+	SetTextureSlashBullet();
 }
 
 /**************************************
@@ -165,7 +174,7 @@ void MakeVertexSlashBullet(void)
 /**************************************
 UVê›íËèàóù
 ***************************************/
-void SetTexturePlayerBullet(void)
+void SetTextureSlashBullet(void)
 {
 	VERTEX_3D *pVtx;
 	float sizeX = 1.0f / SLASHBULLET_TEX_DIV_X;
