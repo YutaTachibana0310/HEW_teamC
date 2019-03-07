@@ -10,19 +10,19 @@
 マクロ定義
 ***************************************/
 #define SCORE_TEXTURE_NAME		"data/TEXTURE/SCORE/number002.png"
-#define SCORE_TEXTURE_SIZE_X	(80.0f)
-#define SCORE_TEXTURE_SIZE_Y	(100.0f)
-#define SCORE_BASEPOS_1P		(D3DXVECTOR3(300.0f, 110.0f, 0.0f))
-#define SCORE_BASEPOS_2P		(D3DXVECTOR3(SCREEN_WIDTH + 300.0f, 110.0f, 0.0f))
+#define SCORE_TEXTURE_SIZE_X	(30.0f)
+#define SCORE_TEXTURE_SIZE_Y	(50.0f)
+#define SCORE_BASEPOS_1P		(D3DXVECTOR3(200.0f, 90.0f, 0.0f))
+#define SCORE_BASEPOS_2P		(D3DXVECTOR3(SCREEN_WIDTH + 200.0f, 90.0f, 0.0f))
 #define SCORE_OFFSET			(-50.0f)
 #define SCORE_TEX_DIV_X			(10)
 #define SCORE_TEX_DIV_Y			(1)
 
 #define SCORE_TEXTEX_NAME			"data/TEXTURE/SCORE/scoreText.png"
-#define SCORE_TEXT_SIZE_X			(320.0f)
+#define SCORE_TEXT_SIZE_X			(240.0f)
 #define SCORE_TEXT_SIZE_Y			(SCORE_TEXT_SIZE_X / 4.0f)
-#define SCORE_TEXTTEX_BASEPOS_1P	(D3DXVECTOR3(SCORE_TEXT_SIZE_X / 2.0f, 30.0f, 0.0f))
-#define SCORE_TEXTTEX_BASEPOS_2P	(D3DXVECTOR3(SCORE_TEXT_SIZE_X / 2.0f + SCREEN_WIDTH, 30.0f, 0.0f))
+#define SCORE_TEXTTEX_BASEPOS_1P	(D3DXVECTOR3(100.0f, 30.0f, 0.0f))
+#define SCORE_TEXTTEX_BASEPOS_2P	(D3DXVECTOR3(SCREEN_WIDTH + 150.0f, 30.0f, 0.0f))
 
 /**************************************
 構造体定義
