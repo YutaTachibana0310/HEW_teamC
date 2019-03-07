@@ -113,7 +113,6 @@ void DrawGameSceneGUI(void)
 	//ƒ^ƒCƒ€GUI‚ð•`‰æ
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
-		//DrawTimeGUI(GetGameParameterAdr(0)->deltaTime, GetGameParameterAdr(1)->deltaTime);
-		DrawTimeGUI(12.34f, 56.78f);
+		DrawTimeGUI(GetGameParameterAdr(0)->deltaTime, GetGameParameterAdr(1)->deltaTime);
 	}
 }
