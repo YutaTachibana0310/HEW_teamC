@@ -5,6 +5,7 @@
 //
 //=====================================
 #include "gameParameter.h"
+#include "goalTelop.h"
 
 /**************************************
 マクロ定義
@@ -30,7 +31,9 @@ void InitGameParameter(int num)
 {
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
-		param[i].playerSpeed = 1.0f;
+		param[i].playerSpeed = 0.0f;
+		param[i].playerMoveDist = 0.0f;
+		param[i].isPlayerGoaled = false;
 	}
 }
 
@@ -64,4 +67,33 @@ void DrawGameParameter(void)
 GAMEPARAMETER *GetGameParameterAdr(int n)
 {
 	return &param[n];
+}
+
+/**************************************
+進行関連のパラメータセット処理
+***************************************/
+void SetSpeedGameParameter(int id, float speed)
+{
+	param[id].playerSpeed = speed;
+}
+
+/**************************************
+ゴール到達判定処理
+***************************************/
+bool CheckPlayerGoaled(int id)
+{
+	//ゴール済みであればreturn true
+	if (param[id].isPlayerGoaled)
+		return true;
+
+	//移動距離をチェックし、ゴールを超えていればテロップをセットしreturn true
+	if (param[id].playerMoveDist >= GAMEPARAMETER_MOVEDIST_MAX)
+	{
+		param[id].isPlayerGoaled = true;
+		SetGoalTelop(id);
+		return true;
+	}
+
+	//未ゴール判定
+	return false;
 }

@@ -1,11 +1,11 @@
 //=====================================
 //
-//レインボーレーンヘッダ[rainbowLane.h]
+//カウントダウンGUIヘッダ[countDownGUI.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _RAINBOWLANE_H_
-#define _RAINBOWLANE_H_
+#ifndef _COUNTDOWNGUI_H_
+#define _COUNTDOWNGUI_H_
 
 #include "main.h"
 
@@ -20,13 +20,11 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitRainbowLane(int num);
-void UninitRainbowLane(int num);
-void UpdateRainbowLane(void);
-void DrawRainbowLane(int n);
+void InitCountDownGUI(int num);
+void UninitCountDownGUI(int num);
+void UpdateCountDownGUI(void);
+void DrawCountDownGUI(void);
 
-D3DXVECTOR3 GetLanePos(int num);
-D3DXVECTOR3 GetLaneRot(int num);
-D3DXVECTOR3 GetLaneNormal(int num);
+void SetCountDownGUI(void);
 
 #endif

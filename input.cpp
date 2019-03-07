@@ -189,6 +189,75 @@ int GetVerticalInputRepeat(int i)
 }
 
 //=============================================================================
+// 水平方向の入力の取得
+//=============================================================================
+int GetHorizontalInputTrigger(int i)
+{
+	//0番のプレイヤーのみキーボードでも操作可能
+	if (i == 0)
+	{
+
+		if (GetKeyboardTrigger(DIK_LEFT) || IsButtonTriggered(0, BUTTON_LEFT))
+			return -1;
+
+		if (GetKeyboardTrigger(DIK_RIGHT) || IsButtonTriggered(0, BUTTON_RIGHT))
+			return 1;
+
+		return 0;
+	}
+	//それ以外はゲームパッドでのみ操作可能
+	else
+	{
+#ifndef _DEBUG
+		if (IsButtonTriggered(i, BUTTON_LEFT))
+			return -1;
+
+		if (IsButtonTriggered(i, BUTTON_RIGHT))
+			return 1;
+
+		return 0;		
+#else
+		if (IsButtonTriggered(i, BUTTON_LEFT) || GetKeyboardTrigger(DIK_A))
+			return -1;
+
+		if (IsButtonTriggered(i, BUTTON_RIGHT) || GetKeyboardTrigger(DIK_D))
+			return 1;
+
+		return 0;
+#endif
+	}
+}
+
+//=============================================================================
+// 垂直方向の入力の取得
+//=============================================================================
+int GetVerticalInputTrigger(int i)
+{
+	//0番のプレイヤーのみキーボードでも操作可能
+	if (i == 0)
+	{
+		if (GetKeyboardTrigger(DIK_UP) || IsButtonTriggered(0, BUTTON_UP))
+			return 1;
+
+		if (GetKeyboardTrigger(DIK_DOWN) || IsButtonTriggered(0, BUTTON_DOWN))
+			return -1;
+
+		return 0;
+	}
+	//それ以外はゲームパッドでのみ操作可能
+	else
+	{
+		if (IsButtonTriggered(i, BUTTON_UP))
+			return 1;
+
+		if (IsButtonTriggered(i, BUTTON_DOWN))
+			return -1;
+
+		return 0;
+	}
+}
+
+//=============================================================================
 // 攻撃ボタン押下の取得
 //=============================================================================
 bool GetAttackButtonTrigger(int i)

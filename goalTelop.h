@@ -1,11 +1,11 @@
 //=====================================
 //
-//レインボーレーンヘッダ[rainbowLane.h]
+//ゴールテロップヘッダ[goalTelop.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _RAINBOWLANE_H_
-#define _RAINBOWLANE_H_
+#ifndef _GOALTELOP_H_
+#define _GOALTELOP_H_
 
 #include "main.h"
 
@@ -20,13 +20,9 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitRainbowLane(int num);
-void UninitRainbowLane(int num);
-void UpdateRainbowLane(void);
-void DrawRainbowLane(int n);
-
-D3DXVECTOR3 GetLanePos(int num);
-D3DXVECTOR3 GetLaneRot(int num);
-D3DXVECTOR3 GetLaneNormal(int num);
-
+void InitGoalTelop(int num);
+void UninitGoalTelop(int num);
+void UpdateGoalTelop(void);
+void DrawGoalTelop(int i);
+void SetGoalTelop(int playerID);
 #endif

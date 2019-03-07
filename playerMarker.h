@@ -1,11 +1,11 @@
 //=====================================
 //
-//レインボーレーンヘッダ[rainbowLane.h]
+//プレイヤーマーカーヘッダ[playerMarker.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _RAINBOWLANE_H_
-#define _RAINBOWLANE_H_
+#ifndef _PLAYERMARKER_H_
+#define _PLAYERMARKER_H_
 
 #include "main.h"
 
@@ -20,13 +20,11 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitRainbowLane(int num);
-void UninitRainbowLane(int num);
-void UpdateRainbowLane(void);
-void DrawRainbowLane(int n);
+void InitPlayerMarker(int num);
+void UninitPlayerMarker(int num);
+void UpdatePlayerMarker(void);
+void DrawPlayerMarker(void);
 
-D3DXVECTOR3 GetLanePos(int num);
-D3DXVECTOR3 GetLaneRot(int num);
-D3DXVECTOR3 GetLaneNormal(int num);
+void SetPlayerMarker(int playerID, D3DXVECTOR3 pos);
 
 #endif

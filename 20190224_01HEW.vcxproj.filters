@@ -79,7 +79,7 @@
     <Filter Include="ソース ファイル\Tachibana\GUI">
       <UniqueIdentifier>{cbf6e534-8698-448b-a570-d7a22db28e10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Tachibana\GUI\State">
+    <Filter Include="ソース ファイル\Tachibana\State">
       <UniqueIdentifier>{a8b0bce3-8fae-463d-a0d4-48cc551d97cf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -175,10 +175,10 @@
       <Filter>ソース ファイル\System\Scene</Filter>
     </ClCompile>
     <ClCompile Include="gameSceneGUI.cpp">
-      <Filter>ソース ファイル\Tachibana\GUI\State</Filter>
+      <Filter>ソース ファイル\Tachibana\State</Filter>
     </ClCompile>
     <ClCompile Include="titleSceneGUI.cpp">
-      <Filter>ソース ファイル\Tachibana\GUI\State</Filter>
+      <Filter>ソース ファイル\Tachibana\State</Filter>
     </ClCompile>
     <ClCompile Include="progressGauge.cpp">
       <Filter>ソース ファイル\Tachibana\GUI</Filter>
@@ -205,7 +205,28 @@
       <Filter>ソース ファイル\Tachibana\GUI</Filter>
     </ClCompile>
     <ClCompile Include="resultSceneGUI.cpp">
-      <Filter>ソース ファイル\Tachibana\GUI\State</Filter>
+      <Filter>ソース ファイル\Tachibana\State</Filter>
+    </ClCompile>
+    <ClCompile Include="gameController.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
+    </ClCompile>
+    <ClCompile Include="gameControllerStart.cpp">
+      <Filter>ソース ファイル\Tachibana\State</Filter>
+    </ClCompile>
+    <ClCompile Include="gameControllerRun.cpp">
+      <Filter>ソース ファイル\Tachibana\State</Filter>
+    </ClCompile>
+    <ClCompile Include="gameControllerGoal.cpp">
+      <Filter>ソース ファイル\Tachibana\State</Filter>
+    </ClCompile>
+    <ClCompile Include="countDownGUI.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="goalTelop.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="playerMarker.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI</Filter>
     </ClCompile>
     <ClCompile Include="score.cpp">
       <Filter>ソース ファイル\Horiuchi</Filter>
@@ -334,6 +355,18 @@
     </ClInclude>
     <ClInclude Include="score.h">
       <Filter>ヘッダー ファイル\Horiuchi</Filter>
+    </ClInclude>
+    <ClInclude Include="gameController.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
+    </ClInclude>
+    <ClInclude Include="countDownGUI.h">
+      <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="goalTelop.h">
+      <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="playerMarker.h">
+      <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

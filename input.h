@@ -41,6 +41,8 @@ int GetHorizontalInputPress(int i);
 int GetVerticalInputPress(int i);
 int GetHorizontalInputRepeat(int i);
 int GetVerticalInputRepeat(int i);
+int GetHorizontalInputTrigger(int i);
+int GetVerticalInputTrigger(int i);
 bool GetAttackButtonTrigger(int i);
 bool GetAttackButtonPress(int i);
 bool GetAttackButtonRelease(int i);

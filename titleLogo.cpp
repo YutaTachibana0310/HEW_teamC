@@ -10,8 +10,8 @@
 É}ÉNÉçíËã`
 ***************************************/
 #define TITLELOGO_TEXTURE_NAME		"data/TEXTURE/UI/titleLogo.png"
-#define TITLELOGO_SIZE_X			(800.0f)
-#define TITLELOGO_SIZE_Y			(400.0f)
+#define TITLELOGO_SIZE_X			(1000.0f)
+#define TITLELOGO_SIZE_Y			(500.0f)
 #define TITLELOGO_POS				(D3DXVECTOR3(WINDOW_CENTER_X, 300.0f, 0.0f))
 
 /**************************************

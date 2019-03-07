@@ -1,6 +1,6 @@
 //=====================================
 //
-//バトルシーンGUI処理[battleSceneGUI.cpp]
+//バトルシーンGUI処理[gameSceneGUI.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
@@ -10,6 +10,9 @@
 #include "progressMarker.h"
 #include "gameParameter.h"
 #include "score.h"
+#include "countDownGUI.h"
+#include "goalTelop.h"
+
 /**************************************
 マクロ定義
 ***************************************/
@@ -34,6 +37,8 @@ void InitGameSceneGUI(void)
 	InitProgressGauge(0);
 	InitProgressMarker(0);
 	InitScore(0);
+	InitCountDownGUI(0);
+	InitGoalTelop(0);
 }
 
 /**************************************
@@ -44,6 +49,8 @@ void UninitGameSceneGUI(void)
 	UninitProgressGauge(0);
 	UninitProgressMarker(0);
 	UninitScore(0);
+	UninitCountDownGUI(0);
+	UninitGoalTelop(0);
 }
 
 /**************************************
@@ -54,6 +61,8 @@ void UpdateGameSceneGUI(void)
 	UpdateProgressGauge();
 	UpdateProgressMarker();
 	UpdateScore();
+	UpdateCountDownGUI();
+	UpdateGoalTelop();
 }
 
 /**************************************
@@ -81,4 +90,19 @@ void DrawGameSceneGUI(void)
 	int score1P = GetGameParameterAdr(0)->score;
 	int score2P = GetGameParameterAdr(1)->score;
 	DrawScore(score1P, score2P);
+
+	//カウントダウンGUIを描画
+	DrawCountDownGUI();
+
+	//ゴールテロップを描画
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		GAMEPARAMETER *param = GetGameParameterAdr(i);
+
+		//プレイヤーがゴール前ならcontinue
+		if (!param->isPlayerGoaled)
+			continue;
+
+		DrawGoalTelop(i);
+	}
 }

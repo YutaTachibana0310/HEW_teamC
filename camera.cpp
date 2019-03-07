@@ -7,15 +7,21 @@
 #include "camera.h"
 #include "input.h"
 
+#include "player.h"
+
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define	VIEW_ANGLE			(D3DXToRadian(60.0f))	// 視野角
-#define	VIEW_ASPECT			((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT)	// ビュー平面のアスペクト比
-#define	VIEW_NEAR_Z			(50.0f)					// ビュー平面のNearZ値
-#define	VIEW_FAR_Z			(20000.0f)				// ビュー平面のFarZ値
-#define	VALUE_MOVE_CAMERA	(20.0f)					// カメラの移動量
-#define	VALUE_ROTATE_CAMERA	(D3DX_PI * 0.01f)		// カメラの回転量
+#define	VIEW_ANGLE					(D3DXToRadian(60.0f))	// 視野角
+#define	VIEW_ASPECT					((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT)	// ビュー平面のアスペクト比
+#define	VIEW_NEAR_Z					(50.0f)					// ビュー平面のNearZ値
+#define	VIEW_FAR_Z					(20000.0f)				// ビュー平面のFarZ値
+#define	VALUE_MOVE_CAMERA			(20.0f)					// カメラの移動量
+#define	VALUE_ROTATE_CAMERA			(D3DX_PI * 0.01f)		// カメラの回転量
+
+#define CAMERA_POSITION_OFFSET		(D3DXVECTOR3(0.0f, 50.0f, -70.0f))	//視点の位置
+#define CAMERA_TARGET_OFFSET		(D3DXVECTOR3(0.0f, 10.0f, 50.0f))	//注視点の位置
+#define CAMERA_OFFSET_MAGNI			(0.35f)								//カメラの移動倍率
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -67,9 +73,16 @@ void SetCamera(int targetPlayerID)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	//一旦、座標を仮設定
-	D3DXVECTOR3 pos = (targetPlayerID == 0) ? D3DXVECTOR3(0.0f, 0.0f, -100.0f) : D3DXVECTOR3(0.0f, 0.0f, -100.0f);
-	camera.pos = pos;
+	//プレイヤーを基準に注視点を設定
+	D3DXVECTOR3 playerPos = GetPositionPlayer(targetPlayerID);
+	camera.target = playerPos + CAMERA_TARGET_OFFSET;
+	camera.target.x *= CAMERA_OFFSET_MAGNI;
+	camera.target.y *= CAMERA_OFFSET_MAGNI;
+
+	//プレイヤーを基準にカメラの視点を決定する
+	camera.pos = playerPos + CAMERA_POSITION_OFFSET;
+	camera.pos.x *= CAMERA_OFFSET_MAGNI;
+	camera.pos.y *= CAMERA_OFFSET_MAGNI;
 
 	// ビューマトリックスの初期化
 	D3DXMatrixIdentity(&camera.view);

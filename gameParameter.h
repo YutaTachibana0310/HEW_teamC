@@ -12,7 +12,7 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define GAMEPARAMETER_MOVEDIST_MAX		(5000.0f)
+#define GAMEPARAMETER_MOVEDIST_MAX		(50000.0f)
 
 /**************************************
 構造体定義
@@ -22,6 +22,7 @@ typedef struct _GAMEPARAMETER{
 	float playerMoveDist;		//プレイヤーの移動距離
 	int score;					//現在のスコア
 	float deltaTime;			//タイム
+	bool isPlayerGoaled;		//ゴールしているかどうか
 }GAMEPARAMETER;
 /**************************************
 プロトタイプ宣言
@@ -31,5 +32,6 @@ void UninitGameParameter(int num);
 void UpdateGameParameter(void);
 void DrawGameParameter(void);
 GAMEPARAMETER *GetGameParameterAdr(int n);
-
+void SetSpeedGameParameter(int id, float speed);
+bool CheckPlayerGoaled(int id);
 #endif
