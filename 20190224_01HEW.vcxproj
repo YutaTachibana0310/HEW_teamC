@@ -65,6 +65,7 @@
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="soundEffectManager.cpp" />
     <ClCompile Include="speedGage.cpp" />
+    <ClCompile Include="star.cpp" />
     <ClCompile Include="titleLogo.cpp" />
     <ClCompile Include="titleScene.cpp" />
     <ClCompile Include="titleSceneGUI.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="sound.h" />
     <ClInclude Include="soundEffectManager.h" />
     <ClInclude Include="speedGage.h" />
+    <ClInclude Include="star.h" />
     <ClInclude Include="titleLogo.h" />
     <ClInclude Include="titleScene.h" />
   </ItemGroup>

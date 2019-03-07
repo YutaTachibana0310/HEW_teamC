@@ -231,6 +231,9 @@
     <ClCompile Include="score.cpp">
       <Filter>ソース ファイル\Horiuchi</Filter>
     </ClCompile>
+    <ClCompile Include="star.cpp">
+      <Filter>ソース ファイル\Sangmin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -367,6 +370,9 @@
     </ClInclude>
     <ClInclude Include="playerMarker.h">
       <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="star.h">
+      <Filter>ヘッダー ファイル\Sangmin</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
