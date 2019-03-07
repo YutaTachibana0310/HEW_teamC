@@ -78,5 +78,7 @@ void DrawGameSceneGUI(void)
 	}
 
 	//ƒXƒRƒA‚Ì•`‰æ
-	DrawScore(1000, 1000);
+	int score1P = GetGameParameterAdr(0)->score;
+	int score2P = GetGameParameterAdr(1)->score;
+	DrawScore(score1P, score2P);
 }
