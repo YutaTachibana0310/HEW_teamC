@@ -11,7 +11,7 @@
 É}ÉNÉçíËã`
 ***************************************/
 #define SLASHBULLET_TEXTURE_NAME		"data/TEXTURE/EFFECT/pipo-btleffect130.png"
-#define SLASHBULLET_SIZE_X				(50.0f)
+#define SLASHBULLET_SIZE_X				(15.0f)
 #define SLASHBULLET_SIZE_Y				(SLASHBULLET_SIZE_X * 0.75f)
 #define SLASHBULLET_TEX_DIV_X			(2)
 #define SLASHBULLET_TEX_DIV_Y			(12)
