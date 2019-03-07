@@ -8,6 +8,7 @@
 #define _PLAYER_H_
 
 #include "main.h"
+#include "collider.h"
 
 //*****************************************************************************
 // 構造体定義
@@ -29,6 +30,8 @@ typedef struct
 	float currentPosZ;		// 移動先の位置
 	int accelCntFrame;		// 加減速のフレームカウント
 	bool accelerationFlag;	// 加減速フラグ
+
+	COLLIDER_CUBE collider;	// 当たり判定
 } PLAYER;
 
 //*****************************************************************************

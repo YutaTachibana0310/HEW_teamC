@@ -71,6 +71,11 @@ HRESULT InitPlayer(void)
 		player[i].rotDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		player[i].radius = PLAYER_RADIUS;
 
+		//当たり判定の初期化
+		player[i].collider.pos = &player[i].pos;
+		player[i].collider.length = D3DXVECTOR3(PLAYER_RADIUS, PLAYER_RADIUS, PLAYER_RADIUS);
+		player[i].collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
 #if 0
 		// テクスチャの読み込み
 		D3DXCreateTextureFromFile(pDevice,	// デバイスへのポインタ
@@ -253,6 +258,8 @@ void DrawPlayer(void)
 
 			device->SetMaterial(&mat.MatD3D);
 		}
+
+		DrawBoundingCube(&player[i].collider);
 	}
 }
 
