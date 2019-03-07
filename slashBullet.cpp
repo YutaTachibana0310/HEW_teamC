@@ -18,6 +18,8 @@
 #define SLASHBULLET_ANIM_PATTERN_MAX	(SLASHBULLET_TEX_DIV_X*SLASHBULLET_TEX_DIV_Y)
 #define SLASHBULLET_MOVE_SPEED			(10.0f)
 
+#define SLASHBULLET_COLLIDER_LENGTH		(D3DXVECTOR3(5.0f, 5.0f, 5.0f))
+
 /**************************************
 \‘¢‘Ì’è‹`
 ***************************************/
@@ -51,6 +53,10 @@ void InitSlashBullet(int num)
 	{
 		ptr->cntFrame = 0;
 		ptr->active = false;
+
+		ptr->collider.pos = &ptr->pos;
+		ptr->collider.length = SLASHBULLET_COLLIDER_LENGTH;
+		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
 
 	bullet[0].active = true;

@@ -8,7 +8,7 @@
 #define _SLASHBULLET_H_
 
 #include "main.h"
-
+#include "collider.h"
 /**************************************
 マクロ定義
 ***************************************/
@@ -22,6 +22,7 @@ typedef struct _SLASHBULLET {
 	D3DXVECTOR3 pos;
 	int cntFrame;
 
+	COLLIDER_CUBE collider;
 }SLASHBULLET;
 /**************************************
 プロトタイプ宣言
