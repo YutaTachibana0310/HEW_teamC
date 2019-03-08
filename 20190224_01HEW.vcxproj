@@ -59,6 +59,7 @@
     <ClCompile Include="resultGUI.cpp" />
     <ClCompile Include="resultScene.cpp" />
     <ClCompile Include="resultSceneGUI.cpp" />
+    <ClCompile Include="resultTelop.cpp" />
     <ClCompile Include="sceneFade.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="score.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="rainbowLane.h" />
     <ClInclude Include="resultGUI.h" />
     <ClInclude Include="resultScene.h" />
+    <ClInclude Include="resultTelop.h" />
     <ClInclude Include="sceneFade.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="score.h" />
