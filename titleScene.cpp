@@ -11,6 +11,7 @@
 #include "meshCylinder.h"
 #include "rainbowLane.h"
 #include "gameParameter.h"
+#include "player.h"
 
 /**************************************
 マクロ定義
@@ -45,6 +46,7 @@ HRESULT InitTitleScene(int num)
 	InitGameParameter(num);
 	InitMeshCylinder(num);
 	InitRainbowLane(num);
+	InitPlayer();
 
 	//背景のスクロールスピードを設定
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
@@ -64,6 +66,7 @@ void UninitTitleScene(int num)
 	UninitGameParameter(num);
 	UninitMeshCylinder(num);
 	UninitRainbowLane(num);
+	UninitPlayer();
 }
 
 /**************************************
@@ -75,6 +78,7 @@ void UpdateTitleScene(void)
 
 	UpdateMeshCylinder();
 	UpdateRainbowLane();
+	UpdatePlayer();
 
 	//エントリー検出処理
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
@@ -106,6 +110,7 @@ void DrawTitleScene(int i)
 {
 	DrawMeshCylinder(i);
 	DrawRainbowLane(i);
+	DrawPlayer();
 }
 
 /**************************************
