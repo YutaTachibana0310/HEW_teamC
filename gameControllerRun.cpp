@@ -38,6 +38,7 @@ void EnterGameControllerRun(GAMECONTROLLER *entity)
 }
 
 #include "input.h"
+#include "player.h"
 /**************************************
 更新処理
 ***************************************/
@@ -51,6 +52,14 @@ void UpdateGameControllerRun(GAMECONTROLLER *entity)
 	if (GetKeyboardPress(DIK_E))
 	{
 		GetGameParameterAdr(1)->playerSpeed += 0.05f;
+	}
+	if (GetKeyboardTrigger(DIK_K))
+	{
+		GetPlayer(0)->pos.z += 50.0f;
+	}
+	if (GetKeyboardTrigger(DIK_L))
+	{
+		GetPlayer(1)->pos.z += 50.0f;
 	}
 
 	//プレイヤーの移動距離を加算

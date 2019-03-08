@@ -77,6 +77,7 @@ static int		axisYRepeatCnt[GAMEPADMAX];
 //=============================================================================
 int GetHorizontalInputPress(int i)
 {
+#ifndef _DEBUG
 	//0番のプレイヤーのみキーボードでも操作可能
 	if (i == 0)
 	{
@@ -102,6 +103,30 @@ int GetHorizontalInputPress(int i)
 
 		return 0;
 	}
+#else
+	//0番のプレイヤーはキーボードで操作
+	if (i == 0)
+	{
+		if (GetKeyboardPress(DIK_LEFT))
+			return -1;
+
+		if (GetKeyboardPress(DIK_RIGHT))
+			return 1;
+
+		return 0;
+	}
+	//1番以降はパッドで操作
+	else
+	{
+		if (IsButtonPressed(i - 1, BUTTON_LEFT))
+			return -1;
+
+		if (IsButtonPressed(i - 1, BUTTON_RIGHT))
+			return 1;
+
+		return 0;
+	}
+#endif
 }
 
 //=============================================================================
@@ -109,6 +134,7 @@ int GetHorizontalInputPress(int i)
 //=============================================================================
 int GetVerticalInputPress(int i)
 {
+#ifndef _DEBUG
 	//0番のプレイヤーのみキーボードでも操作可能
 	if (i == 0)
 	{
@@ -134,6 +160,30 @@ int GetVerticalInputPress(int i)
 
 		return 0;
 	}
+#else
+	//0番のプレイヤーはキーボードで操作
+	if (i == 0)
+	{
+		if (GetKeyboardPress(DIK_DOWN))
+			return -1;
+
+		if (GetKeyboardPress(DIK_UP))
+			return 1;
+
+		return 0;
+	}
+	//1番以降はパッドで操作
+	else
+	{
+		if (IsButtonPressed(i - 1, BUTTON_DOWN))
+			return -1;
+
+		if (IsButtonPressed(i - 1, BUTTON_UP))
+			return 1;
+
+		return 0;
+	}
+#endif
 }
 
 //=============================================================================
@@ -141,6 +191,7 @@ int GetVerticalInputPress(int i)
 //=============================================================================
 int GetHorizontalInputRepeat(int i)
 {
+#ifndef _DEBUG
 	//0番のプレイヤーのみキーボードでも操作可能
 	if (i == 0)
 	{
@@ -160,6 +211,24 @@ int GetHorizontalInputRepeat(int i)
 	{
 		return padAxisXRepeat[i];
 	}
+#else
+	//0番のプレイヤーはキーボードで操作
+	if (i == 0)
+	{
+		if (GetKeyboardRepeat(DIK_LEFT))
+			return -1;
+
+		if (GetKeyboardRepeat(DIK_RIGHT))
+			return 1;
+
+		return 0;
+	}
+	//1番以降はパッドで操作
+	else
+	{
+		return padAxisXRepeat[i - 1];
+	}
+#endif
 }
 
 //=============================================================================
@@ -167,6 +236,7 @@ int GetHorizontalInputRepeat(int i)
 //=============================================================================
 int GetVerticalInputRepeat(int i)
 {
+#ifndef _DEBUG
 	//0番のプレイヤーのみキーボードでも操作可能
 	if (i == 0)
 	{
@@ -186,6 +256,22 @@ int GetVerticalInputRepeat(int i)
 	{
 		return padAxisYRepeat[i];
 	}
+#else
+	if (i == 0)
+	{
+		if (GetKeyboardRepeat(DIK_UP))
+			return 1;
+
+		if (GetKeyboardRepeat(DIK_DOWN))
+			return -1;
+
+		return 0;
+	}
+	else
+	{
+		return padAxisYRepeat[i - 1];
+	}
+#endif
 }
 
 //=============================================================================
@@ -193,6 +279,7 @@ int GetVerticalInputRepeat(int i)
 //=============================================================================
 int GetHorizontalInputTrigger(int i)
 {
+#ifndef  _DEBUG
 	//0番のプレイヤーのみキーボードでも操作可能
 	if (i == 0)
 	{
@@ -208,7 +295,6 @@ int GetHorizontalInputTrigger(int i)
 	//それ以外はゲームパッドでのみ操作可能
 	else
 	{
-#ifndef _DEBUG
 		if (IsButtonTriggered(i, BUTTON_LEFT))
 			return -1;
 
@@ -216,16 +302,29 @@ int GetHorizontalInputTrigger(int i)
 			return 1;
 
 		return 0;		
+	}
 #else
-		if (IsButtonTriggered(i, BUTTON_LEFT) || GetKeyboardTrigger(DIK_A))
+	if (i == 0)
+	{
+		if (GetKeyboardTrigger(DIK_LEFT))
 			return -1;
 
-		if (IsButtonTriggered(i, BUTTON_RIGHT) || GetKeyboardTrigger(DIK_D))
+		if (GetKeyboardTrigger(DIK_RIGHT))
 			return 1;
 
 		return 0;
-#endif
 	}
+	else
+	{
+		if (IsButtonTriggered(i - 1, BUTTON_LEFT))
+			return -1;
+
+		if (IsButtonTriggered(i - 1, BUTTON_RIGHT))
+			return 1;
+
+		return 0;
+	}
+#endif
 }
 
 //=============================================================================
@@ -233,6 +332,7 @@ int GetHorizontalInputTrigger(int i)
 //=============================================================================
 int GetVerticalInputTrigger(int i)
 {
+#ifndef _DEBUG
 	//0番のプレイヤーのみキーボードでも操作可能
 	if (i == 0)
 	{
@@ -255,6 +355,28 @@ int GetVerticalInputTrigger(int i)
 
 		return 0;
 	}
+#else
+	if (i == 0)
+	{
+		if (GetKeyboardTrigger(DIK_UP))
+			return 1;
+
+		if (GetKeyboardTrigger(DIK_DOWN))
+			return -1;
+
+		return 0;
+	}
+	else
+	{
+		if (IsButtonTriggered(i - 1, BUTTON_UP))
+			return 1;
+
+		if (IsButtonTriggered(i - 1, BUTTON_DOWN))
+			return 1;
+
+		return 0;
+	}
+#endif
 }
 
 //=============================================================================
@@ -262,10 +384,17 @@ int GetVerticalInputTrigger(int i)
 //=============================================================================
 bool GetAttackButtonTrigger(int i)
 {
+#ifndef _DEBUG
 	if (i == 0)
 		return GetKeyboardTrigger(DIK_Z) || IsButtonTriggered(0, BUTTON_A);
 	else
 		return IsButtonTriggered(i, BUTTON_A);
+#else
+	if (i == 0)
+		return GetKeyboardTrigger(DIK_Z);
+	else
+		return IsButtonTriggered(i - 1, BUTTON_A);
+#endif
 }
 
 //=============================================================================
@@ -273,10 +402,17 @@ bool GetAttackButtonTrigger(int i)
 //=============================================================================
 bool GetAttackButtonPress(int i)
 {
+#ifndef _DEBUG
 	if (i == 0)
 		return GetKeyboardPress(DIK_Z) || IsButtonPressed(0, BUTTON_A);
 	else
 		return IsButtonPressed(i, BUTTON_A);
+#else
+	if (i == 0)
+		return GetKeyboardPress(DIK_Z);
+	else
+		return IsButtonPressed(i - 1, BUTTON_A);
+#endif
 }
 
 //=============================================================================
@@ -284,10 +420,17 @@ bool GetAttackButtonPress(int i)
 //=============================================================================
 bool GetAttackButtonRelease(int i)
 {
+#ifndef _DEBUG
 	if (i == 0)
 		return GetKeyboardRelease(DIK_Z) || IsButtonReleased(0, BUTTON_A);
 	else
 		return IsButtonReleased(i, BUTTON_A);
+#else
+	if (i == 0)
+		return GetKeyboardRelease(DIK_Z);
+	else
+		return IsButtonReleased(i - 1, BUTTON_A);
+#endif
 }
 
 //=============================================================================
@@ -295,10 +438,17 @@ bool GetAttackButtonRelease(int i)
 //=============================================================================
 bool GetPauseButtonTrigger(int i)
 {
+#ifndef _DEBUG
 	if (i == 0)
 		return GetKeyboardTrigger(DIK_Q);
 	else
 		return IsButtonTriggered(i, BUTTON_M);
+#else
+	if (i == 0)
+		return GetKeyboardTrigger(DIK_Q);
+	else
+		return IsButtonTriggered(i - 1, BUTTON_M);
+#endif
 }
 
 //=============================================================================

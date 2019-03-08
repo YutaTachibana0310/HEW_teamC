@@ -58,8 +58,6 @@ void InitSlashBullet(int num)
 		ptr->collider.length = SLASHBULLET_COLLIDER_LENGTH;
 		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
-
-	bullet[0].active = true;
 }
 
 /**************************************
@@ -71,20 +69,11 @@ void UninitSlashBullet(int num)
 	SAFE_RELEASE(vtxBuff);
 }
 
-#include "rainbowLane.h"
-#include "input.h"
 /**************************************
 更新処理
 ***************************************/
 void UpdateSlashBullet(void)
 {
-	if (GetKeyboardTrigger(DIK_SPACE))
-	{
-		D3DXVECTOR3 lanePos = GetLanePos(0);
-		lanePos.x = 0.0f;
-		SetSlashBullet(lanePos);
-	}
-
 	SLASHBULLET *ptr = &bullet[0];
 	for (int i = 0; i < SLASHBULLET_NUM_MAX; i++, ptr++)
 	{
@@ -223,7 +212,7 @@ void SetTextureSlashBullet(void)
 /**************************************
 セット処理
 ***************************************/
-void SetSlashBullet(D3DXVECTOR3 pos)
+void SetSlashBullet(D3DXVECTOR3 pos, int playerID)
 {
 	SLASHBULLET *ptr = &bullet[0];
 	for (int i = 0; i < SLASHBULLET_NUM_MAX; i++, ptr++)
@@ -233,6 +222,7 @@ void SetSlashBullet(D3DXVECTOR3 pos)
 
 		ptr->pos = pos;
 		ptr->active = true;
+		ptr->parentPlayerID = playerID;
 		return;
 	}
 }

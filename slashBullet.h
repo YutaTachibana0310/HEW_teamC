@@ -23,6 +23,9 @@ typedef struct _SLASHBULLET {
 	int cntFrame;
 
 	COLLIDER_CUBE collider;
+
+	int parentPlayerID;
+
 }SLASHBULLET;
 /**************************************
 プロトタイプ宣言
@@ -31,6 +34,6 @@ void InitSlashBullet(int num);
 void UninitSlashBullet(int num);
 void UpdateSlashBullet(void);
 void DrawSlashBullet(void);
-void SetSlashBullet(D3DXVECTOR3 pos);
+void SetSlashBullet(D3DXVECTOR3 pos, int playerID);
 SLASHBULLET* GetSlashBulletAdr(int n);
 #endif
