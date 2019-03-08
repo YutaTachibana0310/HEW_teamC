@@ -28,7 +28,7 @@
 #define LANE_RIGHT				(2)							// 右レーン
 #define PLAYER_DEFAULT_POS_Y	(10.0f)
 #define PLAYER_DEFAULT_POS_Z	(100.0f)
-#define PLAYER_MOVE_INTERVAL	(1000.0f)					// 移動距離
+#define PLAYER_ACCEL_DIF		(50.0f)					// 移動距離
 #define PLAYER_ACCEL_DURATION	(30)						// 加減速にかける時間
 #define PLAYER_TEXTURE_MAX		(9)
 #define PLAYER_DEFAULTROT_Y		(D3DXToRadian(180.0f))
@@ -237,7 +237,7 @@ void UpdatePlayer(void)
 			// アニメーション
 			player[i].accelCntFrame++;
 			float t = (float)player[i].accelCntFrame / PLAYER_ACCEL_DURATION;
-			float posZ = EaseInOutCubic(t, player[i].prevPosZ, player[i].currentPosZ);
+			float posZ = EaseOutCubic(t, player[i].prevPosZ, player[i].currentPosZ);
 
 			player[i].pos.z = posZ;
 
@@ -358,7 +358,7 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 		//座標の取得
 		D3DXVECTOR3 playerPos = GetPositionPlayer(playerId);
 		player[playerId].prevPosZ = playerPos.z;
-		player[playerId].currentPosZ = playerPos.z + PLAYER_MOVE_INTERVAL;
+		player[playerId].currentPosZ = playerPos.z + PLAYER_ACCEL_DIF;
 
 		// フラグのセット
 		player[playerId].accelerationFlag = true;
@@ -368,7 +368,7 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 		//座標の取得
 		D3DXVECTOR3 playerPos = GetPositionPlayer(playerId);
 		player[playerId].prevPosZ = playerPos.z;
-		player[playerId].currentPosZ = playerPos.z - PLAYER_MOVE_INTERVAL;
+		player[playerId].currentPosZ = playerPos.z - PLAYER_ACCEL_DIF;
 
 		// フラグのセット
 		player[playerId].accelerationFlag = true;
