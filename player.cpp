@@ -28,10 +28,11 @@
 #define LANE_RIGHT				(2)							// 右レーン
 #define PLAYER_DEFAULT_POS_Y	(10.0f)
 #define PLAYER_DEFAULT_POS_Z	(100.0f)
-#define PLAYER_ACCEL_DIF		(50.0f)					// 移動距離
+#define PLAYER_ACCEL_DIF		(50.0f)						// 移動距離
 #define PLAYER_ACCEL_DURATION	(30)						// 加減速にかける時間
 #define PLAYER_TEXTURE_MAX		(9)
 #define PLAYER_DEFAULTROT_Y		(D3DXToRadian(180.0f))
+#define PLAYER_SHOT_INTERBAL	(30)
 
 //*****************************************************************************
 // グローバル変数
@@ -248,6 +249,9 @@ void UpdatePlayer(void)
 			}
 		}
 
+		//ショットインターバルカウント
+		player[i].shotInterbal++;
+
 		//攻撃処理
 		PlayerAttack(i);
 	}
@@ -383,8 +387,9 @@ void PlayerAttack(int i)
 	PLAYER* ptr = &player[i];
 
 	//攻撃ボタンのトリガー検知
-	if (GetAttackButtonTrigger(i))
+	if (GetAttackButtonTrigger(i) && ptr->shotInterbal > PLAYER_SHOT_INTERBAL)
 	{
+		ptr->shotInterbal = 0;
 		SetSlashBullet(ptr->pos, i);
 	}
 }
