@@ -14,31 +14,59 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define	MODEL_PLAYER		"data/MODEL/airplane000.x"	// 読み込むモデル名
-#define	PLAYER_RADIUS		(10.0f)						// 半径
-#define	VALUE_MOVE_PLAYER	(8.0f)						// 移動速度
-#define	RATE_MOVE_PLAYER	(0.15f)						// 移動慣性係数
-#define	VALUE_ROTATE_PLAYER	(D3DX_PI * 0.025f)			// 回転速度
-#define	RATE_ROTATE_PLAYER	(0.10f)						// 回転慣性係数
-#define	VALUE_MOVE_BULLET	(7.5f)						// 弾の移動速度
-#define PLAYER_MOVE_DURATION (20)						// レーンの移動にかける時間
-#define LANE_LEFT			(0)							// 左レーン
-#define LANE_CENTER			(1)							// 中央レーン
-#define LANE_RIGHT			(2)							// 右レーン
+#define	MODEL_PLAYER			"data/MODEL/airplane000.x"	// 読み込むモデル名
+#define MODEL_PLAYER_RELEASE	"data/MODEL/player001.x"	// 読み込むモデル名（リリース版）
+#define	PLAYER_RADIUS			(10.0f)						// 半径
+#define	VALUE_MOVE_PLAYER		(8.0f)						// 移動速度
+#define	RATE_MOVE_PLAYER		(0.15f)						// 移動慣性係数
+#define	VALUE_ROTATE_PLAYER		(D3DX_PI * 0.025f)			// 回転速度
+#define	RATE_ROTATE_PLAYER		(0.10f)						// 回転慣性係数
+#define	VALUE_MOVE_BULLET		(7.5f)						// 弾の移動速度
+#define PLAYER_MOVE_DURATION	 (20)						// レーンの移動にかける時間
+#define LANE_LEFT				(0)							// 左レーン
+#define LANE_CENTER				(1)							// 中央レーン
+#define LANE_RIGHT				(2)							// 右レーン
 #define PLAYER_DEFAULT_POS_Y	(10.0f)
 #define PLAYER_DEFAULT_POS_Z	(100.0f)
-#define PLAYER_MOVE_INTERVAL	(1000.0f)				// 移動距離
-#define PLAYER_ACCEL_DURATION	(30)					// 加減速にかける時間
+#define PLAYER_MOVE_INTERVAL	(1000.0f)					// 移動距離
+#define PLAYER_ACCEL_DURATION	(30)						// 加減速にかける時間
+#define PLAYER_TEXTURE_MAX		(19)
+#define PLAYER_DEFAULTROT_Y		(D3DXToRadian(180.0f))
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
-static LPDIRECT3DTEXTURE9	texture;		// テクスチャ読み込み場所
 static LPD3DXMESH			mesh;			// ID3DXMeshインターフェイスへのポインタ
 static LPD3DXBUFFER			matBuff;		// メッシュのマテリアル情報を格納
 static DWORD				numMat;			// 属性情報の総数
 
 static D3DXMATRIX			mtxWorld;		// ワールドマトリックス
 static PLAYER				player[TARGETPLAYER_MAX];			// プレイヤーワーク
+
+//テクスチャ名
+static const char* textureName[PLAYER_TEXTURE_MAX] = {
+	NULL,
+	"data/TEXTURE/PLAYER/d10.jpg",
+	"data/TEXTURE/PLAYER/door_mtl2_diffcol.jpg",
+	NULL,
+	NULL,
+	"data/TEXTURE/PLAYER/d17.jpg",
+	"data/TEXTURE/PLAYER/door_mtl1_diffcol.jpg",
+	NULL,
+	NULL,
+	"data/TEXTURE/PLAYER/d17b.jpg",
+	NULL,
+	NULL,
+	"data/TEXTURE/PLAYER/vj2c.jpg",
+	NULL,
+	NULL,
+	"data/TEXTURE/PLAYER/cockpit_mtl1_diffcol.jpg",
+	NULL,
+	"data/TEXTURE/PLAYER/yx1_02_01_01.jpg",
+	"data/TEXTURE/PLAYER/bmq1.jpg",
+};
+
+//テクスチャ
+static LPDIRECT3DTEXTURE9 textures[PLAYER_TEXTURE_MAX];
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -52,11 +80,11 @@ HRESULT InitPlayer(void)
 {
 	LPDIRECT3DDEVICE9 device = GetDevice();
 
-	texture = NULL;
 	mesh = NULL;
 	matBuff = NULL;
 
 	// Xファイルの読み込み
+#ifdef _DEBUG
 	if (FAILED(D3DXLoadMeshFromX(MODEL_PLAYER,
 		D3DXMESH_SYSTEMMEM,
 		device,
@@ -68,6 +96,23 @@ HRESULT InitPlayer(void)
 	{
 		return E_FAIL;
 	}
+#else
+	if (FAILED(D3DXLoadMeshFromX(MODEL_PLAYER_RELEASE,
+		D3DXMESH_SYSTEMMEM,
+		device,
+		NULL,
+		&matBuff,
+		NULL,
+		&numMat,
+		&mesh)))
+	{
+		return E_FAIL;
+	}
+	for (int i = 0; i < PLAYER_TEXTURE_MAX; i++)
+	{
+		textures[i] = CreateTextureFromFile((LPSTR)textureName[i], device);
+	}
+#endif
 
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
@@ -105,10 +150,9 @@ HRESULT InitPlayer(void)
 //=============================================================================
 void UninitPlayer(void)
 {
-	if (texture != NULL)
-	{// テクスチャの開放
-		texture->Release();
-		texture = NULL;
+	for (int i = 0; i < PLAYER_TEXTURE_MAX; i++)
+	{
+		SAFE_RELEASE(textures[i]);
 	}
 
 	if (mesh != NULL)
@@ -196,7 +240,7 @@ void UpdatePlayer(void)
 			}
 		}
 
-	
+
 		if (player[i].accelerationFlag == true) // 加減速フラグが立ったら
 		{
 			// アニメーション
@@ -233,7 +277,7 @@ void DrawPlayer(void)
 		D3DXMatrixIdentity(&mtxWorld);
 
 		// 回転を反映
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, player[i].rot.y, player[i].rot.x, player[i].rot.z);
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, PLAYER_DEFAULTROT_Y, player[i].rot.x, -player[i].rot.z);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
 		// 移動を反映
@@ -246,16 +290,16 @@ void DrawPlayer(void)
 		// マテリアル情報に対するポインタを取得
 		mat = (D3DXMATERIAL*)matBuff->GetBufferPointer();
 
-		for (int i = 0; i < (int)numMat; i++)
+		for (int j = 0; j < (int)numMat; j++)
 		{
 			// マテリアルの設定
-			device->SetMaterial(&mat[i].MatD3D);
+			device->SetMaterial(&mat[j].MatD3D);
 
 			// テクスチャの設定
-			device->SetTexture(0, texture);
+			device->SetTexture(0, textures[j]);
 
 			// 描画
-			mesh->DrawSubset(i);
+			mesh->DrawSubset(j);
 		}
 
 		{// マテリアルをデフォルトに戻す
@@ -267,8 +311,9 @@ void DrawPlayer(void)
 
 			device->SetMaterial(&mat.MatD3D);
 		}
-
+#ifdef _DEBUG
 		DrawBoundingCube(&player[i].collider);
+#endif
 	}
 }
 
@@ -323,7 +368,7 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 		D3DXVECTOR3 playerPos = GetPositionPlayer(playerId);
 		player[playerId].prevPosZ = playerPos.z;
 		player[playerId].currentPosZ = playerPos.z + PLAYER_MOVE_INTERVAL;
-		
+
 		// フラグのセット
 		player[playerId].accelerationFlag = true;
 	}
