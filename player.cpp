@@ -30,8 +30,9 @@
 #define PLAYER_DEFAULT_POS_Z	(100.0f)
 #define PLAYER_MOVE_INTERVAL	(1000.0f)					// 移動距離
 #define PLAYER_ACCEL_DURATION	(30)						// 加減速にかける時間
-#define PLAYER_TEXTURE_MAX		(19)
+#define PLAYER_TEXTURE_MAX		(9)
 #define PLAYER_DEFAULTROT_Y		(D3DXToRadian(180.0f))
+
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
@@ -45,24 +46,14 @@ static PLAYER				player[TARGETPLAYER_MAX];			// プレイヤーワーク
 //テクスチャ名
 static const char* textureName[PLAYER_TEXTURE_MAX] = {
 	NULL,
-	"data/TEXTURE/PLAYER/d10.jpg",
-	"data/TEXTURE/PLAYER/door_mtl2_diffcol.jpg",
 	NULL,
 	NULL,
-	"data/TEXTURE/PLAYER/d17.jpg",
-	"data/TEXTURE/PLAYER/door_mtl1_diffcol.jpg",
-	NULL,
-	NULL,
-	"data/TEXTURE/PLAYER/d17b.jpg",
 	NULL,
 	NULL,
 	"data/TEXTURE/PLAYER/vj2c.jpg",
+	"data/TEXTURE/PLAYER/door_mtl1_diffcol.jpg",
 	NULL,
-	NULL,
-	"data/TEXTURE/PLAYER/cockpit_mtl1_diffcol.jpg",
-	NULL,
-	"data/TEXTURE/PLAYER/yx1_02_01_01.jpg",
-	"data/TEXTURE/PLAYER/bmq1.jpg",
+	"data/TEXTURE/PLAYER/door_mtl2_diffcol.jpg"
 };
 
 //テクスチャ
