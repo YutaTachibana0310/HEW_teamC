@@ -16,7 +16,7 @@
 //*****************************************************************************
 // ƒ}ƒNƒ’è‹`
 //*****************************************************************************
-#define INIT_BLOCK_SCALE		D3DXVECTOR3(0.3f, 0.3f, 0.3f)
+#define INIT_BLOCK_SCALE		D3DXVECTOR3(0.2f, 0.2f, 0.2f)
 
 #define	BLOCK_WIDTH				(20.0f)						// ’e‚Ì”¼Œa•
 #define	BLOCK_HEIGHT			(80.0f)						// ’e‚Ì”¼Œa•
@@ -734,10 +734,10 @@ void UpdateStar(void)
 		//PrintDebugProc("%d\n", wkStar->use);
 	}
 
-	if (IsButtonTriggered(0 ,BUTTON_B) || GetKeyboardTrigger(DIK_X))
-	{
-		useMove = (useMove + 1) % 2;
-	}
+	//if (IsButtonTriggered(0 ,BUTTON_B) || GetKeyboardTrigger(DIK_X))
+	//{
+	//	useMove = (useMove + 1) % 2;
+	//}
 
 	for (int i = 0; i < MAX_STAR; i++)
 	{
@@ -763,17 +763,16 @@ void UpdateStar(void)
 			//	star[i].block[j].use = false;
 			//	star[i].block[j].vtxBuff->Release();
 			//	star[i].block[j].vtxBuff = NULL;
-
+			//
 			//	continue;
 			//}
-
-
+			//
 			//star[i].block[j].vtxBuff->Lock(0, 0, (void**)&vtx, 0);
-
-
+			//
+			//
 			//for (int k = 0; k < star[i].block[j].numVtx; k++)
 			//{
-
+			//
 			//	vtx[k].diffuse = COLOR_VTX - D3DXCOLOR(0.0f, 0.0f, 0.0f, alp);
 			//}
 
@@ -798,20 +797,20 @@ void UpdateStar(void)
 	//VERTEX_3D *vtx;
 
 
-	if (GetKeyboardTrigger(DIK_P) || IsButtonTriggered(0, BUTTON_Z))
-	{
-	//	//if (star[0].numBlock > 1)
-	//	//{
-	//	//	star[0].block[2].vtxBuff->Lock(0, 0, (void**)&vtx, 0);
-	//
-	//
-	//	//	star[0].block[2].vtxBuff->Unlock();
-	//
-	//
-	//	//}
-	//
-		useWire = (useWire + 1) % 2;
-	}
+	//if (GetKeyboardTrigger(DIK_P) || IsButtonTriggered(0, BUTTON_Z))
+	//{
+	////	//if (star[0].numBlock > 1)
+	////	//{
+	////	//	star[0].block[2].vtxBuff->Lock(0, 0, (void**)&vtx, 0);
+	////
+	////
+	////	//	star[0].block[2].vtxBuff->Unlock();
+	////
+	////
+	////	//}
+	////
+	//	useWire = (useWire + 1) % 2;
+	//}
 
 	
 	//if (GetKeyboardPress(DIK_1))
@@ -1129,6 +1128,19 @@ void ClippingStar(PLANE section)
 
 	int numOldBlock;
 	bool useMove;
+	float lengthSection, distance;
+
+	D3DXVECTOR3 wkLength = section.vtx[1] - section.vtx[0];
+	D3DXVECTOR3 wkPos, tmpVec;
+
+
+	lengthSection = D3DXVec3LengthSq(&wkLength);
+
+	tmpVec = section.vtx[2] - section.vtx[0];
+	tmpVec /= 2.0f;
+
+	wkPos = section.vtx[0] + tmpVec;
+	
 
 	for (int cntStar = 0; cntStar < MAX_STAR; cntStar++)
 	{
@@ -1147,6 +1159,17 @@ void ClippingStar(PLANE section)
 			{
 				break;
 			}
+
+			wkLength = star[cntStar].block[cntBlock].pos - wkPos;
+
+			distance = D3DXVec3LengthSq(&wkLength);
+
+
+			if (distance > lengthSection)
+			{
+				break;
+			}
+
 
 			if (ClippingBlock(section, &star[cntStar], &star[cntStar].block[cntBlock]))
 			{
