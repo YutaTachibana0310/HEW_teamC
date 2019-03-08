@@ -592,8 +592,8 @@ void UpdateStar(void)
 #ifdef _DEBUG
 	PLANE clippingPlane;
 	D3DXVECTOR3 vec1, vec2, nor;
-	float radiusPlane = 10000.0f;
-	float setPosWk = 500.0f;
+	float radiusPlane = 500.0f;
+	float setPosWk = 1000.0f;
 	float moveSpdWk = -10.0f;
 
 	if (GetKeyboardTrigger(DIK_1))
@@ -618,7 +618,7 @@ void UpdateStar(void)
 	if (GetKeyboardTrigger(DIK_4))
 	{
 		D3DXVECTOR3 tmpPos = GetLanePos(0);
-		tmpPos.x += 1.0f;
+		//tmpPos.x += 1.0f;
 
 		clippingPlane.vtx[0] = tmpPos;
 		clippingPlane.vtx[1] = tmpPos;
@@ -1128,7 +1128,7 @@ void ClippingStar(PLANE section)
 	//D3DXMATRIX mtxPos, mtxPosInverse;
 
 	int numOldBlock;
-	bool useMove = false;
+	bool useMove;
 
 	for (int cntStar = 0; cntStar < MAX_STAR; cntStar++)
 	{
@@ -1136,6 +1136,8 @@ void ClippingStar(PLANE section)
 		{
 			continue;
 		}
+
+		useMove = false;
 
 		numOldBlock = star[cntStar].numBlock;
 
@@ -1193,11 +1195,12 @@ void SetMoveBlock(STAR* wkStar, PLANE section)
 		D3DXVec3TransformCoord(&wkVtx, &vtxBuff[0].vtx, &mtxTmp);
 
 		wkStar->block[cntBlock].vtxBuff->Unlock();
+
 		wkVec = wkVtx - section.vtx[0];
 
 		dot = D3DXVec3Dot(&section.nor, &wkVec);
 
-		if (dot > 0)
+		if (dot >= 0)
 		{
 			wkStar->block[cntBlock].move += section.nor / VAL_BLOCK_MOVE;
 		}
@@ -1460,7 +1463,7 @@ void SetBlockData(BLOCK* oldBlock, BLOCK* newBlock)
 
 	for (int cntVtx = 0; cntVtx < oldBlock->numVtx; cntVtx++)
 	{
-		if (oldBlock->dotVtx[cntVtx] > 0)
+		if (oldBlock->dotVtx[cntVtx] >= 0)
 		{
 			tmpCntVtx[cntVtx] = cntOldVtx;
 			tmpVtxOld[cntOldVtx] = oldVtx[cntVtx];
@@ -1495,7 +1498,7 @@ void SetBlockData(BLOCK* oldBlock, BLOCK* newBlock)
 	{
 		tmpIdx = oldBlock->surface[cntSurface].idx[0];
 
-		if (oldBlock->dotVtx[tmpIdx] > 0)
+		if (oldBlock->dotVtx[tmpIdx] >= 0)
 		{
 			numOldSurfaceIdx[cntOldSurface] = 0;
 
@@ -1619,7 +1622,7 @@ void CategorizeBlock(BLOCK* block)
 					}
 
 				}
-				else if (block->dotVtx[surface->idx[cntIdx]] > 0)
+				else if (block->dotVtx[surface->idx[cntIdx]] >= 0)
 				{
 					if (block->cntCrossLineSp[cntVtx] == surface->idx[cntIdx])
 					{
@@ -1793,7 +1796,7 @@ void CreateNewSurface(BLOCK* block, PLANE section)
 
 		block->dotVtx[cntNewVtx] = D3DXVec3Dot(&section.nor, &tmpVec);
 
-		if (block->dotVtx[cntNewVtx] > 0)
+		if (block->dotVtx[cntNewVtx] >= 0)
 		{
 			block->surface[cntNewSurfaceOldBlock].idx[block->surface[cntNewSurfaceOldBlock].numIdx] = cntNewVtx;
 			block->surface[cntNewSurfaceOldBlock].numIdx++;
@@ -1805,10 +1808,10 @@ void CreateNewSurface(BLOCK* block, PLANE section)
 			block->surface[cntNewSurfaceNewBlock].numIdx++;
 			block->numVtxNewBlock++;
 		}
-		else if (block->dotVtx[cntNewVtx] == 0)
-		{
-			break;
-		}
+		//else if (block->dotVtx[cntNewVtx] == 0)
+		//{
+		//	break;
+		//}
 	}
 
 	D3DXVECTOR3 cross, vec01, vec02;
@@ -2090,7 +2093,7 @@ void ClippingLine(PLANE section, BLOCK* block, SURFACE* surface)
 
 		checkHit = CheckCalculatedHitCheck(block, sp, ep);
 
-		if (block->dotVtx[sp] * block->dotVtx[ep] > 0)
+		if (block->dotVtx[sp] * block->dotVtx[ep] >= 0)
 		{
 			continue;
 		}
