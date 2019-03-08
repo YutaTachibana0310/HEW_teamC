@@ -349,6 +349,6 @@ void PlayerAttack(int i)
 	//攻撃ボタンのトリガー検知
 	if (GetAttackButtonTrigger(i))
 	{
-		SetSlashBullet(player->pos, i);
+		SetSlashBullet(ptr->pos, i);
 	}
 }
