@@ -12,7 +12,7 @@
 マクロ定義
 ***************************************/
 #define SCROLLSPEEDCONTROLLER_DELTA_VALUE	(0.8f)
-#define SCROLLSPEEDCONTROLLER_DELTA_MAX		(1.0f)
+#define SCROLLSPEEDCONTROLLER_DELTA_MAX		(0.5f)
 
 /**************************************
 構造体定義
@@ -22,6 +22,7 @@
 グローバル変数
 ***************************************/
 static float targetSpeed[TARGETPLAYER_MAX];
+static int cntFrame[TARGETPLAYER_MAX];
 
 /**************************************
 プロトタイプ宣言
@@ -32,7 +33,10 @@ static float targetSpeed[TARGETPLAYER_MAX];
 ***************************************/
 void InitScrollSpeedController(int num)
 {
-	
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		targetSpeed[i] = GetGameParameterAdr(i)->playerSpeed;
+	}
 }
 
 /**************************************
@@ -42,6 +46,23 @@ void UpdateScrollSpeedController(void)
 {
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
+		GAMEPARAMETER *param = GetGameParameterAdr(i);
+		float diff = targetSpeed[i] - param->playerSpeed;
+		float setSpeed = Clampf(-SCROLLSPEEDCONTROLLER_DELTA_MAX, SCROLLSPEEDCONTROLLER_DELTA_MAX, diff * SCROLLSPEEDCONTROLLER_DELTA_VALUE);
+		param->playerSpeed = setSpeed;
 
+		cntFrame[i]++;
+		if (cntFrame[i] == 30)
+		{
+			targetSpeed[i] = 2.0f;
+		}
 	}
+}
+
+/**************************************
+ターゲットスピードセット処理
+***************************************/
+void SetTargetScrollSpeed(int playerID, float targetSpeed)
+{
+
 }

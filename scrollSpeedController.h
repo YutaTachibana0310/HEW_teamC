@@ -21,8 +21,6 @@
 プロトタイプ宣言
 ***************************************/
 void InitScrollSpeedController(int num);
-void UninitScrollSpeedController(int num);
 void UpdateScrollSpeedController(void);
-void DrawScrollSpeedController(void);
 
 #endif
