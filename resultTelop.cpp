@@ -10,9 +10,9 @@
 マクロ定義
 ***************************************/
 #define RESULTTELOP_TEXTURE_NAME		"data/TEXTURE/UI/resultTelop.png"
-#define RESULTTELOP_SIZE_X				(500)
+#define RESULTTELOP_SIZE_X				(800)
 #define RESULTTELOP_SIZE_Y				(RESULTTELOP_SIZE_X/2.6f)
-#define RESULTTELOP_POS					(D3DXVECTOR3(WINDOW_CENTER_X, 300.0f, 0.0f))
+#define RESULTTELOP_POS					(D3DXVECTOR3(WINDOW_CENTER_X, 150.0f, 0.0f))
 
 /**************************************
 構造体定義
