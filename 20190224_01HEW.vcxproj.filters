@@ -237,6 +237,9 @@
     <ClCompile Include="score.cpp">
       <Filter>ソース ファイル\Horiuchi</Filter>
     </ClCompile>
+    <ClCompile Include="star.cpp">
+      <Filter>ソース ファイル\Sangmin</Filter>
+    </ClCompile>
     <ClCompile Include="timeGUI.cpp">
       <Filter>ソース ファイル\Tachibana\GUI</Filter>
     </ClCompile>
@@ -379,6 +382,9 @@
     </ClInclude>
     <ClInclude Include="playerMarker.h">
       <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="star.h">
+      <Filter>ヘッダー ファイル\Sangmin</Filter>
     </ClInclude>
     <ClInclude Include="slashBullet.h">
       <Filter>ヘッダー ファイル\Tachibana</Filter>

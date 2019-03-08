@@ -47,11 +47,11 @@ void UpdateGameControllerRun(GAMECONTROLLER *entity)
 	//テスト用機能
 	if (GetKeyboardPress(DIK_W))
 	{
-		GetGameParameterAdr(0)->playerSpeed += 0.05f;
+		GetGameParameterAdr(0)->playerSpeed -= 0.05f;
 	}
 	if (GetKeyboardPress(DIK_E))
 	{
-		GetGameParameterAdr(1)->playerSpeed += 0.05f;
+		GetGameParameterAdr(1)->playerSpeed -= 0.05f;
 	}
 	if (GetKeyboardTrigger(DIK_K))
 	{
