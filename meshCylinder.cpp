@@ -16,7 +16,7 @@
 #define MESHCYLINDER_CIRCUIT2		"data/TEXTURE/BG/circuit04.png"
 #define MESHCYLINDER_BLOCKNUM		(50)
 #define MESHCYLINDER_BLOCKSIZE		(800.0f)
-#define MESHCYLINDER_RADIUS			(1000.0f)
+#define MESHCYLINDER_RADIUS			(500.0f)
 #define MESHCYLINDER_TEXMAX			(3)
 #define MESHCYLINDER_TEXSIZE		(0.1f)
 //*****************************************************************************
@@ -37,7 +37,7 @@ static int numIndex;
 static float sizeBlockX, sizeBlockZ;
 static int cntFrame;
 
-static float offsetSpeed[MESHCYLINDER_TEXMAX] = { 0.003f, 0.0034f, 0.004f };
+static float offsetSpeed[MESHCYLINDER_TEXMAX] = { 0.0015f, 0.0017f, 0.002f };
 static float rotation[MESHCYLINDER_TEXMAX] = { 0.0f, 1.0f, 2.0f };
 static float textureOffset[TARGETPLAYER_MAX][MESHCYLINDER_TEXMAX];
 
