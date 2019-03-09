@@ -11,7 +11,7 @@
 #include "gameParameter.h"
 #include "countDownGUI.h"
 #include "goalTelop.h"
-
+#include "speedMeter.h"
 /**************************************
 マクロ定義
 ***************************************/
@@ -37,6 +37,7 @@ void InitGameSceneGUI(void)
 	InitProgressMarker(0);
 	InitCountDownGUI(0);
 	InitGoalTelop(0);
+	InitSpeedGUI();
 }
 
 /**************************************
@@ -48,6 +49,7 @@ void UninitGameSceneGUI(void)
 	UninitProgressMarker(0);
 	UninitCountDownGUI(0);
 	UninitGoalTelop(0);
+	UninitSpeedGUI();
 }
 
 /**************************************
@@ -59,6 +61,7 @@ void UpdateGameSceneGUI(void)
 	UpdateProgressMarker();
 	UpdateCountDownGUI();
 	UpdateGoalTelop();
+	UpdateSpeedGUI();
 }
 
 /**************************************
@@ -81,6 +84,17 @@ void DrawGameSceneGUI(void)
 		SetProgressMarker(i, progress);
 		DrawProgressMarker();
 	}
+
+
+	//スピードメーター描画
+	for (int i = 0; i < METER_MAX; i++)
+	{
+		GAMEPARAMETER *param = GetGameParameterAdr(i);
+		float meter = param->playerSpeed / 5;
+		SetVertexMeter(i, meter);
+		DrawSpeedGUI();
+	}
+
 
 	//カウントダウンGUIを描画
 	DrawCountDownGUI();

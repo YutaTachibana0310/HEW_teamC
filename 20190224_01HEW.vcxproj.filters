@@ -228,6 +228,9 @@
     <ClCompile Include="playerMarker.cpp">
       <Filter>ソース ファイル\Tachibana\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="speedMeter.cpp">
+      <Filter>ソース ファイル\Horiuchi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -361,6 +364,9 @@
     </ClInclude>
     <ClInclude Include="playerMarker.h">
       <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="speedMeter.h">
+      <Filter>ヘッダー ファイル\Horiuchi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
