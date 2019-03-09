@@ -23,7 +23,9 @@
 ƒOƒ[ƒoƒ‹•Ï”
 ***************************************/
 static const TCHAR* BgmFileName[BGM_MAX] = {
-	"",
+	_T("data/SOUND/Dusted.wav"),
+	_T("data/SOUND/highway-star.wav"),
+	_T("data/SOUND/colorful-candy-star.wav"),
 };
 
 static BGM bgmData[BGM_MAX];

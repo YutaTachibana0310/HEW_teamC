@@ -23,7 +23,9 @@
 ***************************************/
 enum DEFINE_BGM
 {
-	BGM_NONE,
+	BGM_TITLE,
+	BGM_GAME,
+	BGN_RESULT,
 	BGM_MAX
 };
 
