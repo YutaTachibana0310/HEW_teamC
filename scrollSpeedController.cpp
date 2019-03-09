@@ -62,7 +62,8 @@ void UpdateScrollSpeedController(void)
 /**************************************
 ターゲットスピードセット処理
 ***************************************/
-void SetTargetScrollSpeed(int playerID, float targetSpeed)
+void SetTargetScrollSpeed(int playerID, float setSpeed)
 {
-
+	targetSpeed[playerID] = setSpeed;
+	cntFrame[playerID] = 0;
 }

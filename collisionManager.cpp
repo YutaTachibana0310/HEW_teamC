@@ -7,6 +7,7 @@
 #include "collisionManager.h"
 #include "player.h"
 #include "slashBullet.h"
+#include "scrollSpeedController.h"
 
 /**************************************
 マクロ定義
@@ -49,6 +50,7 @@ void UpdateCollisionManager(void)
 			{
 				//バレットが当たったら減速
 				SetPlayerAcceleration(i, false);
+				SetTargetScrollSpeed(i, 0.0f);
 				bullet->active = false;
 			}
 		}

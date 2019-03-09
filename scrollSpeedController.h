@@ -22,5 +22,5 @@
 ***************************************/
 void InitScrollSpeedController(int num);
 void UpdateScrollSpeedController(void);
-
+void SetTargetScrollSpeed(int playerID, float setSpeed);
 #endif
