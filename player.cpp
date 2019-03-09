@@ -270,6 +270,9 @@ void UpdatePlayer(void)
 
 		//攻撃処理
 		PlayerAttack(i);
+
+		//エフェクトセット処理
+		SetEffect(player[i].pos);
 	}
 }
 
