@@ -18,6 +18,8 @@
 #define BGM_VOLUME_MAX		(100.0f)
 #define BGM_VOLUME_MIN		(0.0f)
 
+#define BGM_FADE_DURATION	(30)
+
 /**************************************
 ç\ë¢ëÃíËã`
 ***************************************/
@@ -25,7 +27,7 @@ enum DEFINE_BGM
 {
 	BGM_TITLE,
 	BGM_GAME,
-	BGN_RESULT,
+	BGM_RESULT,
 	BGM_MAX
 };
 

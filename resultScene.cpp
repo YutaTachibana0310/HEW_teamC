@@ -5,6 +5,8 @@
 //
 //=====================================
 #include "resultScene.h"
+#include "bgmManager.h"
+
 #include "gameParameter.h"
 #include "sceneFade.h"
 #include "gameParameter.h"
@@ -16,9 +18,9 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define RESULTSCENE_DURATION		(300)
-#define RESULTSCENE_SCROLL_SPEED	(1.0f)
-
+#define RESULTSCENE_DURATION			(300)
+#define RESULTSCENE_SCROLL_SPEED		(1.0f)
+#define RESULTSCENE_BGM_FADEDURATION	(60)
 /**************************************
 構造体定義
 ***************************************/
@@ -47,6 +49,10 @@ HRESULT InitResultScene(int num)
 	{
 		GetGameParameterAdr(i)->playerSpeed = RESULTSCENE_SCROLL_SPEED;
 	}
+
+	//BGM再生
+	FadeInBGM(BGM_RESULT, BGM_FADE_DURATION);
+
 	return S_OK;
 }
 
@@ -74,6 +80,7 @@ void UpdateResultScene(void)
 	cntFrame++;
 	if (cntFrame == RESULTSCENE_DURATION)
 	{
+		FadeOutBGM(BGM_RESULT, BGM_FADE_DURATION);
 		SetSceneFade(TitleScene);
 	}
 }

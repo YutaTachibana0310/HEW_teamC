@@ -7,6 +7,7 @@
 #include "titleScene.h"
 #include "input.h"
 #include "sceneFade.h"
+#include "bgmManager.h"
 
 #include "meshCylinder.h"
 #include "rainbowLane.h"
@@ -26,6 +27,7 @@
 グローバル変数
 ***************************************/
 static bool entryState[TARGETPLAYER_MAX];	//エントリー状態
+static bool entryComleterd;
 
 /**************************************
 プロトタイプ宣言
@@ -42,6 +44,7 @@ HRESULT InitTitleScene(int num)
 	{
 		entryState[i] = false;
 	}
+	entryComleterd = false;
 
 	InitGameParameter(num);
 	InitMeshCylinder(num);
@@ -54,6 +57,9 @@ HRESULT InitTitleScene(int num)
 		SetSpeedGameParameter(i, TITLESCENE_SCROLLSPEED_DEFAULT);
 
 	}
+
+	//BGM再生
+	FadeInBGM(BGM_TITLE, BGM_FADE_DURATION);
 
 	return S_OK;
 }
@@ -99,8 +105,11 @@ void UpdateTitleScene(void)
 		entryState[1] = true;
 
 	//エントリーが完了したらシーン遷移
-	if(IsCompleteEntry())
+	if (IsCompleteEntry())
+	{
+		FadeOutBGM(BGM_TITLE, BGM_FADE_DURATION);
 		SetSceneFade(GameScene);
+	}
 }
 
 /**************************************
@@ -126,11 +135,16 @@ bool GetEntryState(int playerID)
 ***************************************/
 bool IsCompleteEntry(void)
 {
+	//一度完了したら以降はreturn false
+	if (entryComleterd)
+		return true;
+
 	if (!entryState[0])
 		return false;
 
 	if (!entryState[1])
 		return false;
 
+	entryComleterd = true;
 	return true;
 }

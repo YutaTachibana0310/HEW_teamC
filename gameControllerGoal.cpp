@@ -5,6 +5,7 @@
 //
 //=====================================
 #include "gameController.h"
+#include "bgmManager.h"
 
 #include "sceneFade.h"
 
@@ -42,6 +43,7 @@ void UpdateGameControllerGoal(GAMECONTROLLER *entity)
 
 	if(entity->cntFrame == GAMECONTROLLER_GOAL_DURATION)
 	{
+		FadeOutBGM(BGM_GAME, BGM_FADE_DURATION);
 		SetSceneFade(ResultScene);
 	}
 }
