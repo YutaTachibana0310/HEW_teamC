@@ -718,6 +718,9 @@ void UpdateStar(void)
 
 	for (int cntStar = 0; cntStar < MAX_STAR; cntStar++)
 	{
+		if (!star[cntStar].use)
+			continue;
+
 		STAR *wkStar = &star[cntStar];
 		for (int cntBlock = 0; cntBlock < MAX_BLOCK; cntBlock++)
 		{
