@@ -57,11 +57,11 @@ void UpdateGameControllerRun(GAMECONTROLLER *entity)
 	}
 	if (GetKeyboardTrigger(DIK_K))
 	{
-		GetPlayer(0)->pos.z += 50.0f;
+		SetPlayerAcceleration(0, true);
 	}
 	if (GetKeyboardTrigger(DIK_L))
 	{
-		GetPlayer(1)->pos.z += 50.0f;
+		SetPlayerAcceleration(1, true);
 	}
 
 	//ƒvƒŒƒCƒ„[‚ÌˆÚ“®‹——£‚ğ‰ÁZ

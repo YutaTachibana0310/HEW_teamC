@@ -51,8 +51,6 @@ void UpdateCollisionManager(void)
 			{
 				//ƒoƒŒƒbƒg‚ª“–‚½‚Á‚½‚çŒ¸‘¬
 				SetPlayerAcceleration(i, false);
-				float currentSpeed = GetGameParameterAdr(i)->playerSpeed;
-				GetGameParameterAdr(i)->playerSpeed = Clampf(GAMEPARAMETER_SPEED_MIN, GAMEPARAMETER_SPEED_MAX, currentSpeed + GAMEPARAMETER_SPEED_DECLVALUE);
 				bullet->active = false;
 			}
 		}

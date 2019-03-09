@@ -10,6 +10,7 @@
 #include "rainbowLane.h"
 #include "Easing.h"
 #include "slashBullet.h"
+#include "gameParameter.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -366,6 +367,11 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 
 		// フラグのセット
 		player[playerId].accelerationFlag = true;
+
+		//ゲームパラメータも加速
+		//ゲームパラメータも減速
+		float setSpeed = GetGameParameterAdr(playerId)->playerSpeed + GAMEPARAMETER_SPEED_ADDVALUE;
+		GetGameParameterAdr(playerId)->playerSpeed = Clampf(GAMEPARAMETER_SPEED_MIN, GAMEPARAMETER_SPEED_MAX, setSpeed);
 	}
 	else if (isAccelerator == false)
 	{
@@ -376,6 +382,10 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 
 		// フラグのセット
 		player[playerId].accelerationFlag = true;
+
+		//ゲームパラメータも減速
+		float setSpeed = GetGameParameterAdr(playerId)->playerSpeed + GAMEPARAMETER_SPEED_DECLVALUE;
+		GetGameParameterAdr(playerId)->playerSpeed = Clampf(GAMEPARAMETER_SPEED_MIN, GAMEPARAMETER_SPEED_MAX, setSpeed);
 	}
 }
 
