@@ -249,6 +249,9 @@
     <ClCompile Include="bullet.cpp">
       <Filter>ソース ファイル\Sangmin</Filter>
     </ClCompile>
+    <ClCompile Include="scrollSpeedController.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -403,6 +406,9 @@
     </ClInclude>
     <ClInclude Include="bullet.h">
       <Filter>ヘッダー ファイル\Sangmin</Filter>
+    </ClInclude>
+    <ClInclude Include="scrollSpeedController.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

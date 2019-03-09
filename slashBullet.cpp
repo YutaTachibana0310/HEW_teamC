@@ -17,7 +17,7 @@
 #define SLASHBULLET_TEX_DIV_Y			(12)
 #define SLASHBULLET_ANIM_PATTERN_MAX	(SLASHBULLET_TEX_DIV_X*SLASHBULLET_TEX_DIV_Y)
 #define SLASHBULLET_MOVE_SPEED			(10.0f)
-
+#define SLASHBULLET_MOVE_BORDER_Z		(5000.0f)
 #define SLASHBULLET_COLLIDER_LENGTH		(D3DXVECTOR3(10.0f, 10.0f, 10.0f))
 
 /**************************************
@@ -83,6 +83,12 @@ void UpdateSlashBullet(void)
 		ptr->cntFrame++;
 
 		ptr->pos.z += SLASHBULLET_MOVE_SPEED;
+
+		//移動可能範囲を超えていたら非アクティブに
+		if (ptr->pos.z > SLASHBULLET_MOVE_BORDER_Z)
+		{
+			ptr->active = false;
+		}
 	}
 
 	SetTextureSlashBullet();
@@ -117,7 +123,8 @@ void DrawSlashBullet(void)
 		D3DXMatrixIdentity(&mtxWorld);
 
 		//回転
-		//D3DXMatrixInverse(&mtxWorld, NULL, &mtxView);
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, ptr->rot.y, ptr->rot.x, ptr->rot.z);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
 		//移動
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
@@ -212,7 +219,7 @@ void SetTextureSlashBullet(void)
 /**************************************
 セット処理
 ***************************************/
-void SetSlashBullet(D3DXVECTOR3 pos, int playerID)
+void SetSlashBullet(D3DXVECTOR3 pos, int playerID, float x, float y)
 {
 	SLASHBULLET *ptr = &bullet[0];
 	for (int i = 0; i < SLASHBULLET_NUM_MAX; i++, ptr++)
@@ -221,6 +228,8 @@ void SetSlashBullet(D3DXVECTOR3 pos, int playerID)
 			continue;
 
 		ptr->pos = pos;
+		ptr->rot.z = atan2f(y, x);
+
 		ptr->active = true;
 		ptr->parentPlayerID = playerID;
 		return;

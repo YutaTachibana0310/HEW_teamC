@@ -33,6 +33,9 @@ typedef struct
 
 	COLLIDER_CUBE	collider;		// 当たり判定
 	int				shotInterbal;	// ショットインターバル
+
+	D3DXVECTOR3 effectPosL;			// エフェクトセット位置左
+	D3DXVECTOR3 effectPosR;			// エフェクトセット位置右
 } PLAYER;
 
 //*****************************************************************************
