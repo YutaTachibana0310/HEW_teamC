@@ -123,7 +123,8 @@ void DrawSlashBullet(void)
 		D3DXMatrixIdentity(&mtxWorld);
 
 		//âÒì]
-		//D3DXMatrixInverse(&mtxWorld, NULL, &mtxView);
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, ptr->rot.y, ptr->rot.x, ptr->rot.z);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
 		//à⁄ìÆ
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
@@ -218,7 +219,7 @@ void SetTextureSlashBullet(void)
 /**************************************
 ÉZÉbÉgèàóù
 ***************************************/
-void SetSlashBullet(D3DXVECTOR3 pos, int playerID)
+void SetSlashBullet(D3DXVECTOR3 pos, int playerID, float x, float y)
 {
 	SLASHBULLET *ptr = &bullet[0];
 	for (int i = 0; i < SLASHBULLET_NUM_MAX; i++, ptr++)
@@ -227,6 +228,8 @@ void SetSlashBullet(D3DXVECTOR3 pos, int playerID)
 			continue;
 
 		ptr->pos = pos;
+		ptr->rot.z = atan2f(y, x);
+
 		ptr->active = true;
 		ptr->parentPlayerID = playerID;
 		return;

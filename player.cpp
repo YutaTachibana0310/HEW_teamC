@@ -440,6 +440,6 @@ void PlayerAttack(int i)
 	if (GetAttackButtonTrigger(i) && ptr->shotInterbal > PLAYER_SHOT_INTERBAL)
 	{
 		ptr->shotInterbal = 0;
-		SetSlashBullet(ptr->pos, i);
+		SetSlashBullet(ptr->pos, i, RandomRangef(-0.5f, 0.5f), RandomRangef(-0.5f, 0.5f));
 	}
 }
