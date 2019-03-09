@@ -10,6 +10,7 @@
 #include "rainbowLane.h"
 #include "Easing.h"
 #include "slashBullet.h"
+#include "gameParameter.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -209,8 +210,8 @@ void UpdatePlayer(void)
 		else if (player[i].moveFlag == true)
 		{
 			//座標と回転の取得
-			D3DXVECTOR3 prevLanePos = GetLanePos(player[i].prevLane) + GetLaneNormal(player[i].prevLane) * PLAYER_DEFAULT_POS_Y;
-			D3DXVECTOR3 currentLanePos = GetLanePos(player[i].currentLane) + GetLaneNormal(player[i].currentLane) * PLAYER_DEFAULT_POS_Y;
+			D3DXVECTOR3 prevLanePos = GetLanePos(player[i].prevLane) + GetLaneNormal(player[i].prevLane);// *PLAYER_DEFAULT_POS_Y;
+			D3DXVECTOR3 currentLanePos = GetLanePos(player[i].currentLane) + GetLaneNormal(player[i].currentLane);// *PLAYER_DEFAULT_POS_Y;
 			D3DXVECTOR3 prevLaneRot = GetLaneRot(player[i].prevLane);
 			D3DXVECTOR3 currentLaneRot = GetLaneRot(player[i].currentLane);
 
@@ -357,6 +358,10 @@ D3DXVECTOR3 GetMovePlayer(void)
 //=============================================================================
 void SetPlayerAcceleration(int playerId, bool isAccelerator)
 {
+	//加減速中は再加減速できない
+	if (player[playerId].accelerationFlag)
+		return;
+
 	if (isAccelerator == true)
 	{
 		//座標の取得
@@ -366,6 +371,10 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 
 		// フラグのセット
 		player[playerId].accelerationFlag = true;
+
+		//ゲームパラメータも加速
+		float setSpeed = GetGameParameterAdr(playerId)->playerSpeed + GAMEPARAMETER_SPEED_ADDVALUE;
+		GetGameParameterAdr(playerId)->playerSpeed = Clampf(GAMEPARAMETER_SPEED_MIN, GAMEPARAMETER_SPEED_MAX, setSpeed);
 	}
 	else if (isAccelerator == false)
 	{
@@ -376,6 +385,10 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 
 		// フラグのセット
 		player[playerId].accelerationFlag = true;
+
+		//ゲームパラメータも減速
+		float setSpeed = GetGameParameterAdr(playerId)->playerSpeed + GAMEPARAMETER_SPEED_DECLVALUE;
+		GetGameParameterAdr(playerId)->playerSpeed = Clampf(GAMEPARAMETER_SPEED_MIN, GAMEPARAMETER_SPEED_MAX, setSpeed);
 	}
 }
 
@@ -384,6 +397,10 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 //=============================================================================
 void PlayerAttack(int i)
 {
+	//移動中は攻撃できない
+	if (player[i].moveFlag)
+		return;
+
 	PLAYER* ptr = &player[i];
 
 	//攻撃ボタンのトリガー検知

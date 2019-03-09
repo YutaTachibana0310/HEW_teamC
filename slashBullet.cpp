@@ -17,7 +17,7 @@
 #define SLASHBULLET_TEX_DIV_Y			(12)
 #define SLASHBULLET_ANIM_PATTERN_MAX	(SLASHBULLET_TEX_DIV_X*SLASHBULLET_TEX_DIV_Y)
 #define SLASHBULLET_MOVE_SPEED			(10.0f)
-
+#define SLASHBULLET_MOVE_BORDER_Z		(5000.0f)
 #define SLASHBULLET_COLLIDER_LENGTH		(D3DXVECTOR3(10.0f, 10.0f, 10.0f))
 
 /**************************************
@@ -83,6 +83,12 @@ void UpdateSlashBullet(void)
 		ptr->cntFrame++;
 
 		ptr->pos.z += SLASHBULLET_MOVE_SPEED;
+
+		//移動可能範囲を超えていたら非アクティブに
+		if (ptr->pos.z > SLASHBULLET_MOVE_BORDER_Z)
+		{
+			ptr->active = false;
+		}
 	}
 
 	SetTextureSlashBullet();

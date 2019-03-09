@@ -246,6 +246,9 @@
     <ClCompile Include="resultTelop.cpp">
       <Filter>ソース ファイル\Tachibana\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="scrollSpeedController.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -397,6 +400,9 @@
     </ClInclude>
     <ClInclude Include="resultTelop.h">
       <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="scrollSpeedController.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
