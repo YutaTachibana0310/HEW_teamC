@@ -11,6 +11,7 @@
 #include "Easing.h"
 #include "slashBullet.h"
 #include "gameParameter.h"
+#include "effect.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -34,7 +35,8 @@
 #define PLAYER_TEXTURE_MAX		(9)
 #define PLAYER_DEFAULTROT_Y		(D3DXToRadian(180.0f))
 #define PLAYER_SHOT_INTERBAL	(30)
-
+#define PLAYER_BODYTEX_INDEX	(5)
+#define PLAYER_SCALE			(2.0f)
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
@@ -52,14 +54,21 @@ static const char* textureName[PLAYER_TEXTURE_MAX] = {
 	NULL,
 	NULL,
 	NULL,
-	"data/TEXTURE/PLAYER/vj2c.jpg",
+	"data/TEXTURE/PLAYER/vj2c_1.jpg",
 	"data/TEXTURE/PLAYER/door_mtl1_diffcol.jpg",
 	NULL,
 	"data/TEXTURE/PLAYER/door_mtl2_diffcol.jpg"
 };
 
+//ボディ用のテクスチャ名
+static const char* BodyTextureName[TARGETPLAYER_MAX] = {
+	"data/TEXTURE/PLAYER/vj2c_2.jpg",
+	"data/TEXTURE/PLAYER/vj2c_1.jpg",
+};
+
 //テクスチャ
 static LPDIRECT3DTEXTURE9 textures[PLAYER_TEXTURE_MAX];
+static LPDIRECT3DTEXTURE9 bodyTexture[TARGETPLAYER_MAX];
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -101,9 +110,15 @@ HRESULT InitPlayer(void)
 	{
 		return E_FAIL;
 	}
+	//テクスチャロード
 	for (int i = 0; i < PLAYER_TEXTURE_MAX; i++)
 	{
 		textures[i] = CreateTextureFromFile((LPSTR)textureName[i], device);
+	}
+	//ボディ用テクスチャロード
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		bodyTexture[i] = CreateTextureFromFile((LPSTR)BodyTextureName[i], device);
 	}
 #endif
 
@@ -264,13 +279,17 @@ void UpdatePlayer(void)
 void DrawPlayer(void)
 {
 	LPDIRECT3DDEVICE9 device = GetDevice();
-	D3DXMATRIX mtxRot, mtxTranslate;
+	D3DXMATRIX mtxRot, mtxTranslate, mtxScale;
 	D3DXMATERIAL *mat;
 
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
 		// ワールドマトリックスの初期化
 		D3DXMatrixIdentity(&mtxWorld);
+
+		//スケーリング
+		D3DXMatrixScaling(&mtxScale, PLAYER_SCALE, PLAYER_SCALE, PLAYER_SCALE);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
 
 		// 回転を反映
 		D3DXMatrixRotationYawPitchRoll(&mtxRot, PLAYER_DEFAULTROT_Y, player[i].rot.x, -player[i].rot.z);
@@ -292,7 +311,10 @@ void DrawPlayer(void)
 			device->SetMaterial(&mat[j].MatD3D);
 
 			// テクスチャの設定
-			device->SetTexture(0, textures[j]);
+			if(j != PLAYER_BODYTEX_INDEX)
+				device->SetTexture(0, textures[j]);
+			else
+				device->SetTexture(0, bodyTexture[i]);
 
 			// 描画
 			mesh->DrawSubset(j);
