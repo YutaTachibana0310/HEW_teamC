@@ -37,6 +37,9 @@
 #define PLAYER_SHOT_INTERBAL	(30)
 #define PLAYER_BODYTEX_INDEX	(5)
 #define PLAYER_SCALE			(2.0f)
+#define PLAYER_EFFECTPOS_L		(D3DXVECTOR3(-3.0f, 2.0f, 10.0f))
+#define PLAYER_EFFECTPOS_R		(D3DXVECTOR3( 3.0f, 2.0f, 10.0f))
+
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
@@ -272,7 +275,8 @@ void UpdatePlayer(void)
 		PlayerAttack(i);
 
 		//エフェクトセット処理
-		SetEffect(player[i].pos);
+		SetEffect(player[i].effectPosL);
+		SetEffect(player[i].effectPosR);
 	}
 }
 
@@ -304,6 +308,10 @@ void DrawPlayer(void)
 
 		// ワールドマトリックスの設定
 		device->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+		//エフェクトセット位置をワールド変換
+		D3DXVec3TransformCoord(&player[i].effectPosL, &PLAYER_EFFECTPOS_L, &mtxWorld);
+		D3DXVec3TransformCoord(&player[i].effectPosR, &PLAYER_EFFECTPOS_R, &mtxWorld);
 
 		// マテリアル情報に対するポインタを取得
 		mat = (D3DXMATERIAL*)matBuff->GetBufferPointer();
