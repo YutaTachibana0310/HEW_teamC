@@ -358,6 +358,10 @@ D3DXVECTOR3 GetMovePlayer(void)
 //=============================================================================
 void SetPlayerAcceleration(int playerId, bool isAccelerator)
 {
+	//加減速中は再加減速できない
+	if (player[playerId].accelerationFlag)
+		return;
+
 	if (isAccelerator == true)
 	{
 		//座標の取得
@@ -369,7 +373,6 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 		player[playerId].accelerationFlag = true;
 
 		//ゲームパラメータも加速
-		//ゲームパラメータも減速
 		float setSpeed = GetGameParameterAdr(playerId)->playerSpeed + GAMEPARAMETER_SPEED_ADDVALUE;
 		GetGameParameterAdr(playerId)->playerSpeed = Clampf(GAMEPARAMETER_SPEED_MIN, GAMEPARAMETER_SPEED_MAX, setSpeed);
 	}
@@ -394,6 +397,10 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 //=============================================================================
 void PlayerAttack(int i)
 {
+	//移動中は攻撃できない
+	if (player[i].moveFlag)
+		return;
+
 	PLAYER* ptr = &player[i];
 
 	//攻撃ボタンのトリガー検知
