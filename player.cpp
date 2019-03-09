@@ -10,6 +10,8 @@
 #include "rainbowLane.h"
 #include "Easing.h"
 #include "slashBullet.h"
+#include "gameParameter.h"
+#include "effect.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -22,7 +24,7 @@
 #define	VALUE_ROTATE_PLAYER		(D3DX_PI * 0.025f)			// 回転速度
 #define	RATE_ROTATE_PLAYER		(0.10f)						// 回転慣性係数
 #define	VALUE_MOVE_BULLET		(7.5f)						// 弾の移動速度
-#define PLAYER_MOVE_DURATION	 (20)						// レーンの移動にかける時間
+#define PLAYER_MOVE_DURATION	(20)						// レーンの移動にかける時間
 #define LANE_LEFT				(0)							// 左レーン
 #define LANE_CENTER				(1)							// 中央レーン
 #define LANE_RIGHT				(2)							// 右レーン
@@ -33,6 +35,10 @@
 #define PLAYER_TEXTURE_MAX		(9)
 #define PLAYER_DEFAULTROT_Y		(D3DXToRadian(180.0f))
 #define PLAYER_SHOT_INTERBAL	(30)
+#define PLAYER_BODYTEX_INDEX	(5)
+#define PLAYER_SCALE			(2.0f)
+#define PLAYER_EFFECTPOS_L		(D3DXVECTOR3(-3.0f, 2.0f, 10.0f))
+#define PLAYER_EFFECTPOS_R		(D3DXVECTOR3( 3.0f, 2.0f, 10.0f))
 
 //*****************************************************************************
 // グローバル変数
@@ -51,14 +57,21 @@ static const char* textureName[PLAYER_TEXTURE_MAX] = {
 	NULL,
 	NULL,
 	NULL,
-	"data/TEXTURE/PLAYER/vj2c.jpg",
+	"data/TEXTURE/PLAYER/vj2c_1.jpg",
 	"data/TEXTURE/PLAYER/door_mtl1_diffcol.jpg",
 	NULL,
 	"data/TEXTURE/PLAYER/door_mtl2_diffcol.jpg"
 };
 
+//ボディ用のテクスチャ名
+static const char* BodyTextureName[TARGETPLAYER_MAX] = {
+	"data/TEXTURE/PLAYER/vj2c_2.jpg",
+	"data/TEXTURE/PLAYER/vj2c_1.jpg",
+};
+
 //テクスチャ
 static LPDIRECT3DTEXTURE9 textures[PLAYER_TEXTURE_MAX];
+static LPDIRECT3DTEXTURE9 bodyTexture[TARGETPLAYER_MAX];
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -100,9 +113,15 @@ HRESULT InitPlayer(void)
 	{
 		return E_FAIL;
 	}
+	//テクスチャロード
 	for (int i = 0; i < PLAYER_TEXTURE_MAX; i++)
 	{
 		textures[i] = CreateTextureFromFile((LPSTR)textureName[i], device);
+	}
+	//ボディ用テクスチャロード
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		bodyTexture[i] = CreateTextureFromFile((LPSTR)BodyTextureName[i], device);
 	}
 #endif
 
@@ -209,8 +228,8 @@ void UpdatePlayer(void)
 		else if (player[i].moveFlag == true)
 		{
 			//座標と回転の取得
-			D3DXVECTOR3 prevLanePos = GetLanePos(player[i].prevLane) + GetLaneNormal(player[i].prevLane) * PLAYER_DEFAULT_POS_Y;
-			D3DXVECTOR3 currentLanePos = GetLanePos(player[i].currentLane) + GetLaneNormal(player[i].currentLane) * PLAYER_DEFAULT_POS_Y;
+			D3DXVECTOR3 prevLanePos = GetLanePos(player[i].prevLane) + GetLaneNormal(player[i].prevLane);// *PLAYER_DEFAULT_POS_Y;
+			D3DXVECTOR3 currentLanePos = GetLanePos(player[i].currentLane) + GetLaneNormal(player[i].currentLane);// *PLAYER_DEFAULT_POS_Y;
 			D3DXVECTOR3 prevLaneRot = GetLaneRot(player[i].prevLane);
 			D3DXVECTOR3 currentLaneRot = GetLaneRot(player[i].currentLane);
 
@@ -254,6 +273,10 @@ void UpdatePlayer(void)
 
 		//攻撃処理
 		PlayerAttack(i);
+
+		//エフェクトセット処理
+		SetEffect(player[i].effectPosL);
+		SetEffect(player[i].effectPosR);
 	}
 }
 
@@ -263,13 +286,17 @@ void UpdatePlayer(void)
 void DrawPlayer(void)
 {
 	LPDIRECT3DDEVICE9 device = GetDevice();
-	D3DXMATRIX mtxRot, mtxTranslate;
+	D3DXMATRIX mtxRot, mtxTranslate, mtxScale;
 	D3DXMATERIAL *mat;
 
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
 		// ワールドマトリックスの初期化
 		D3DXMatrixIdentity(&mtxWorld);
+
+		//スケーリング
+		D3DXMatrixScaling(&mtxScale, PLAYER_SCALE, PLAYER_SCALE, PLAYER_SCALE);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
 
 		// 回転を反映
 		D3DXMatrixRotationYawPitchRoll(&mtxRot, PLAYER_DEFAULTROT_Y, player[i].rot.x, -player[i].rot.z);
@@ -282,6 +309,10 @@ void DrawPlayer(void)
 		// ワールドマトリックスの設定
 		device->SetTransform(D3DTS_WORLD, &mtxWorld);
 
+		//エフェクトセット位置をワールド変換
+		D3DXVec3TransformCoord(&player[i].effectPosL, &PLAYER_EFFECTPOS_L, &mtxWorld);
+		D3DXVec3TransformCoord(&player[i].effectPosR, &PLAYER_EFFECTPOS_R, &mtxWorld);
+
 		// マテリアル情報に対するポインタを取得
 		mat = (D3DXMATERIAL*)matBuff->GetBufferPointer();
 
@@ -291,7 +322,10 @@ void DrawPlayer(void)
 			device->SetMaterial(&mat[j].MatD3D);
 
 			// テクスチャの設定
-			device->SetTexture(0, textures[j]);
+			if(j != PLAYER_BODYTEX_INDEX)
+				device->SetTexture(0, textures[j]);
+			else
+				device->SetTexture(0, bodyTexture[i]);
 
 			// 描画
 			mesh->DrawSubset(j);
@@ -357,6 +391,10 @@ D3DXVECTOR3 GetMovePlayer(void)
 //=============================================================================
 void SetPlayerAcceleration(int playerId, bool isAccelerator)
 {
+	//加減速中は再加減速できない
+	if (player[playerId].accelerationFlag)
+		return;
+
 	if (isAccelerator == true)
 	{
 		//座標の取得
@@ -366,6 +404,10 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 
 		// フラグのセット
 		player[playerId].accelerationFlag = true;
+
+		//ゲームパラメータも加速
+		float setSpeed = GetGameParameterAdr(playerId)->playerSpeed + GAMEPARAMETER_SPEED_ADDVALUE;
+		GetGameParameterAdr(playerId)->playerSpeed = Clampf(GAMEPARAMETER_SPEED_MIN, GAMEPARAMETER_SPEED_MAX, setSpeed);
 	}
 	else if (isAccelerator == false)
 	{
@@ -376,6 +418,10 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 
 		// フラグのセット
 		player[playerId].accelerationFlag = true;
+
+		//ゲームパラメータも減速
+		float setSpeed = GetGameParameterAdr(playerId)->playerSpeed + GAMEPARAMETER_SPEED_DECLVALUE;
+		GetGameParameterAdr(playerId)->playerSpeed = Clampf(GAMEPARAMETER_SPEED_MIN, GAMEPARAMETER_SPEED_MAX, setSpeed);
 	}
 }
 
@@ -384,12 +430,16 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 //=============================================================================
 void PlayerAttack(int i)
 {
+	//移動中は攻撃できない
+	if (player[i].moveFlag)
+		return;
+
 	PLAYER* ptr = &player[i];
 
 	//攻撃ボタンのトリガー検知
 	if (GetAttackButtonTrigger(i) && ptr->shotInterbal > PLAYER_SHOT_INTERBAL)
 	{
 		ptr->shotInterbal = 0;
-		SetSlashBullet(ptr->pos, i);
+		SetSlashBullet(ptr->pos, i, RandomRangef(-0.5f, 0.5f), RandomRangef(-0.5f, 0.5f));
 	}
 }

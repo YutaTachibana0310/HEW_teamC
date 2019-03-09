@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bullet.cpp" />
     <ClCompile Include="collisionManager.cpp" />
     <ClCompile Include="countDownGUI.cpp" />
     <ClCompile Include="entryGUI.cpp" />
@@ -64,6 +65,7 @@
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="screenBG.cpp" />
+    <ClCompile Include="scrollSpeedController.cpp" />
     <ClCompile Include="slashBullet.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="soundEffectManager.cpp" />
@@ -76,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bgmManager.h" />
+    <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="collider.h" />
     <ClInclude Include="collisionManager.h" />
@@ -117,6 +120,7 @@
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="screenBG.h" />
+    <ClInclude Include="scrollSpeedController.h" />
     <ClInclude Include="slashBullet.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="soundEffectManager.h" />

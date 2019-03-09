@@ -7,6 +7,7 @@
 #include "gameController.h"
 
 #include "gameParameter.h"
+#include "scrollSpeedController.h"
 
 /**************************************
 マクロ定義
@@ -35,6 +36,7 @@ void EnterGameControllerRun(GAMECONTROLLER *entity)
 	{
 		SetSpeedGameParameter(i, GAMECONTROLLER_RUN_STARTSPEED);
 	}
+	//InitScrollSpeedController(0);
 }
 
 #include "input.h"
@@ -55,11 +57,11 @@ void UpdateGameControllerRun(GAMECONTROLLER *entity)
 	}
 	if (GetKeyboardTrigger(DIK_K))
 	{
-		GetPlayer(0)->pos.z += 50.0f;
+		SetPlayerAcceleration(0, true);
 	}
 	if (GetKeyboardTrigger(DIK_L))
 	{
-		GetPlayer(1)->pos.z += 50.0f;
+		SetPlayerAcceleration(1, true);
 	}
 
 	//プレイヤーの移動距離を加算

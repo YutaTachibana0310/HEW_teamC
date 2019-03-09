@@ -1,5 +1,14 @@
+//*******************************************************************************************************
+//エフェクト処理
+//*******************************************************************************************************
 #include "effect.h"
 #include "camera.h"
+
+//*******************************************************************************************************
+//マクロ定義
+//*******************************************************************************************************
+#define EFFECT_MOVE_DIR		(D3DXVECTOR3(0.0f, 0.0f, -1.0f))
+#define EFFECT_MOVE_SPEED	(5.0f)
 
 //*******************************************************************************************************
 //グローバル変数
@@ -78,23 +87,12 @@ void UpdateEffect(void)
 		{
 			if (Effect[CntEffect].use)
 			{//使用中
-				Effect[CntEffect].pos.z += Effect[CntEffect].move.z;
-				Effect[CntEffect].pos.y += Effect[CntEffect].move.y;
+				Effect[CntEffect].pos += EFFECT_MOVE_DIR;
 
-				if (Effect[CntEffect].pos.y <= Effect[CntEffect].sizeY / 2)
-				{// 着地した
-					Effect[CntEffect].pos.y = Effect[CntEffect].sizeY / 2;
-					Effect[CntEffect].move.z = -Effect[CntEffect].move.z * MOVE_SPEED;
-				}
-			/*	Effect[CntEffect].move.y -= 0.25f;
-				Effect[CntEffect].move.z += (0.0f - Effect[CntEffect].move.z) * EFFECT_RADIUS;
-*/
 				Effect[CntEffect].life--;
 				if (Effect[CntEffect].life <= 0)
 				{
 					Effect[CntEffect].use = false;
-					/*ReleaseShadow(Effect[CntEffect].nIdxShadow);
-					Effect[CntEffect].nIdxShadow = -1;*/
 				}
 				else
 				{
@@ -126,29 +124,6 @@ void UpdateEffect(void)
 					SetColorEffect(CntEffect, Effect[CntEffect].col);
 				}
 			}
-		}
-
-		{
-			D3DXVECTOR3 pos;
-			D3DXVECTOR3 move;
-			float Angle, Length;
-			float size;
-			int life;
-			pos = PosBase;
-			Angle = (float)(rand() % 620 - 300) / 50.0f;
-			Length = rand() % (int)(WidthBase) / 50.0f - WidthBase;
-
-			move.z = 1.0f;
-
-			life = rand() % 30 + 5;
-
-			size = 15.0f;
-
-			pos.y = size / 2;
-
-			// エフェクトの設定
-			SetEffect(pos);
-
 		}
 	}
 }

@@ -60,5 +60,5 @@ void UninitEffect(void);										//エフェクトの終了処理
 void SetVertexEffect(int IdxEffect, float sizeX, float sizeY);  //エフェクトの頂点のセット
 void SetColorEffect(int IdxEffect, D3DXCOLOR col);				//エフェクトのカラーセット
 
-static int SetEffect(D3DXVECTOR3 pos);
+int SetEffect(D3DXVECTOR3 pos);
 #endif

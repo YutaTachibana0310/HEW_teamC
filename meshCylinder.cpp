@@ -16,7 +16,7 @@
 #define MESHCYLINDER_CIRCUIT2		"data/TEXTURE/BG/circuit04.png"
 #define MESHCYLINDER_BLOCKNUM		(50)
 #define MESHCYLINDER_BLOCKSIZE		(800.0f)
-#define MESHCYLINDER_RADIUS			(1000.0f)
+#define MESHCYLINDER_RADIUS			(500.0f)
 #define MESHCYLINDER_TEXMAX			(3)
 #define MESHCYLINDER_TEXSIZE		(0.1f)
 //*****************************************************************************
@@ -37,8 +37,9 @@ static int numIndex;
 static float sizeBlockX, sizeBlockZ;
 static int cntFrame;
 
-static float offsetSpeed[MESHCYLINDER_TEXMAX] = { 0.003f, 0.0034f, 0.004f };
+static float offsetSpeed[MESHCYLINDER_TEXMAX] = { 0.0015f, 0.0017f, 0.002f };
 static float rotation[MESHCYLINDER_TEXMAX] = { 0.0f, 1.0f, 2.0f };
+static float textureOffset[TARGETPLAYER_MAX][MESHCYLINDER_TEXMAX];
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -52,8 +53,6 @@ void SetTextureOffsetMeshCylinder(int n, int texID);
 //*****************************************************************************
 void InitMeshCylinder(int num)
 {
-	static bool initialized = false;
-
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	pos = D3DXVECTOR3(0.0f, 0.0f, -2500.0f);
@@ -71,15 +70,11 @@ void InitMeshCylinder(int num)
 	sizeBlockX = MESHCYLINDER_BLOCKSIZE;
 	sizeBlockZ = MESHCYLINDER_BLOCKSIZE;
 
-	if (!initialized)
-	{
-		texture[0] = CreateTextureFromFile((LPSTR)MESHCYLINDER_TEXTURE, pDevice);
-		texture[1] = CreateTextureFromFile((LPSTR)MESHCYLINDER_CIRCUIT1, pDevice);
-		texture[2] = CreateTextureFromFile((LPSTR)MESHCYLINDER_CIRCUIT2, pDevice);
-		SetVertexBufferCylinder();
-		SetIndexBufferCylinder();
-		initialized = true;
-	}
+	texture[0] = CreateTextureFromFile((LPSTR)MESHCYLINDER_TEXTURE, pDevice);
+	texture[1] = CreateTextureFromFile((LPSTR)MESHCYLINDER_CIRCUIT1, pDevice);
+	texture[2] = CreateTextureFromFile((LPSTR)MESHCYLINDER_CIRCUIT2, pDevice);
+	SetVertexBufferCylinder();
+	SetIndexBufferCylinder();
 }
 
 //*****************************************************************************
@@ -87,16 +82,12 @@ void InitMeshCylinder(int num)
 //*****************************************************************************
 void UninitMeshCylinder(int num)
 {
-
-	if (num == 0)
+	for (int i = 0; i < MESHCYLINDER_TEXMAX; i++)
 	{
-		for (int i = 0; i < MESHCYLINDER_TEXMAX; i++)
-		{
-			SAFE_RELEASE(texture[i]);
-		}
-		SAFE_RELEASE(vtxBuff);
-		SAFE_RELEASE(idxBuff);
+		SAFE_RELEASE(texture[i]);
 	}
+	SAFE_RELEASE(vtxBuff);
+	SAFE_RELEASE(idxBuff);
 }
 
 //*****************************************************************************
@@ -285,14 +276,14 @@ void SetTextureOffsetMeshCylinder(int n, int texID)
 
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	float offset = cntFrame * offsetSpeed[texID] * param->playerSpeed;
+	textureOffset[n][texID] += offsetSpeed[texID] * param->playerSpeed;
 
 	for (int z = 0; z < (numBlockZ + 1); z++)
 	{
 		for (int x = 0; x < (numBlockX + 1); x++)
 		{
 			pVtx[z * (numBlockX + 1) + x].tex.x = MESHCYLINDER_TEXSIZE * x;
-			pVtx[z * (numBlockX + 1) + x].tex.y = MESHCYLINDER_TEXSIZE * z + offset;
+			pVtx[z * (numBlockX + 1) + x].tex.y = MESHCYLINDER_TEXSIZE * z + textureOffset[n][texID];
 		}
 	}
 

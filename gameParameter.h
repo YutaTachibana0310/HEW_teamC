@@ -14,6 +14,10 @@
 ***************************************/
 #define GAMEPARAMETER_MOVEDIST_MAX		(50000.0f)
 
+#define GAMEPARAMETER_SPEED_MIN			(0.5f)
+#define GAMEPARAMETER_SPEED_MAX			(5.0f)
+#define GAMEPARAMETER_SPEED_ADDVALUE	(0.3f)
+#define GAMEPARAMETER_SPEED_DECLVALUE	(-0.3f)
 /**************************************
 ç\ë¢ëÃíËã`
 ***************************************/

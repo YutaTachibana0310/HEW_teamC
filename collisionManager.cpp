@@ -7,6 +7,8 @@
 #include "collisionManager.h"
 #include "player.h"
 #include "slashBullet.h"
+#include "scrollSpeedController.h"
+#include "gameParameter.h"
 
 /**************************************
 É}ÉNÉçíËã`
