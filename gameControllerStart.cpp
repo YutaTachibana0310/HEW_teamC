@@ -40,7 +40,7 @@ void EnterGameControllerStart(GAMECONTROLLER *entity)
 		SetSpeedGameParameter(i, GAMECONTROLLER_START_SCROLLSPEED);
 	}
 
-	InitScrollSpeedController(0);
+	//InitScrollSpeedController(0);
 	SetCountDownGUI();
 }
 

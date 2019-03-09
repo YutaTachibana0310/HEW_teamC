@@ -36,7 +36,7 @@ void EnterGameControllerRun(GAMECONTROLLER *entity)
 	{
 		SetSpeedGameParameter(i, GAMECONTROLLER_RUN_STARTSPEED);
 	}
-	InitScrollSpeedController(0);
+	//InitScrollSpeedController(0);
 }
 
 #include "input.h"
