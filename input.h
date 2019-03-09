@@ -57,4 +57,8 @@ bool GetKeyboardRelease(int nKey);
 BOOL IsButtonPressed(int padNo, DWORD button);
 BOOL IsButtonTriggered(int padNo, DWORD button);
 BOOL IsButtonReleased(int padNo, DWORD button);
+
+float GetStickAxisX(int padNo);
+float GetStickAxisY(int padNo);
+
 #endif

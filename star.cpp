@@ -722,6 +722,7 @@ void UpdateStar(void)
 			continue;
 
 		STAR *wkStar = &star[cntStar];
+		
 		for (int cntBlock = 0; cntBlock < MAX_BLOCK; cntBlock++)
 		{
 			D3DXVec3TransformCoord(&wkPos, &wkStar->block[cntBlock].pos, &viewMtx);
