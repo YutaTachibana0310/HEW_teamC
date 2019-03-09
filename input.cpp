@@ -72,6 +72,9 @@ static int		lastAxisY[GAMEPADMAX];
 static int		axisXRepeatCnt[GAMEPADMAX];
 static int		axisYRepeatCnt[GAMEPADMAX];
 
+static float	padAxislRx[GAMEPADMAX];
+static float	padAxislRy[GAMEPADMAX];
+
 //=============================================================================
 // 水平方向の入力の取得
 //=============================================================================
@@ -883,6 +886,9 @@ void UpdatePad(void)
 				result = pGamePad[i]->Acquire();
 		}
 
+		padAxislRx[i] = (float)(dijs.lZ + dijs.lRx);
+		padAxislRy[i] = (float)(dijs.lRz + dijs.lRy);
+
 		// ３２の各ビットに意味を持たせ、ボタン押下に応じてビットをオンにする
 		//* y-axis (forward)
 		if (dijs.lY < 0)					padState[i] |= BUTTON_UP;
@@ -1024,4 +1030,28 @@ int GetPadAxisYTriggered(int padNo)
 int GetPadCount(void)
 {
 	return padCount;
+}
+
+// 右スティックのx軸の値を獲得
+float GetStickAxisX(int padNo)
+{
+	if (padNo >= padCount)
+	{
+		return 0.0f;
+	}
+
+	return (padAxislRx[padNo] / 65535.0f) - 0.5f;
+}
+
+
+// 右スティックのy軸の値を獲得
+float GetStickAxisY(int padNo)
+{
+	if (padNo >= padCount)
+	{
+		return 0.0f;
+	}
+
+
+	return (padAxislRy[padNo] / 65535.0f) - 0.5f;
 }

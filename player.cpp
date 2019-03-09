@@ -22,7 +22,7 @@
 #define	VALUE_ROTATE_PLAYER		(D3DX_PI * 0.025f)			// 回転速度
 #define	RATE_ROTATE_PLAYER		(0.10f)						// 回転慣性係数
 #define	VALUE_MOVE_BULLET		(7.5f)						// 弾の移動速度
-#define PLAYER_MOVE_DURATION	 (20)						// レーンの移動にかける時間
+#define PLAYER_MOVE_DURATION	(20)						// レーンの移動にかける時間
 #define LANE_LEFT				(0)							// 左レーン
 #define LANE_CENTER				(1)							// 中央レーン
 #define LANE_RIGHT				(2)							// 右レーン
