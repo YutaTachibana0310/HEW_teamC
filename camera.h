@@ -40,4 +40,6 @@ void GetInvCameraRotMtx(D3DXMATRIX *mtx, const D3DXVECTOR3* objPos = NULL);
 D3DXVECTOR3 GetCameraPos(void);
 CAMERA *GetCameraAdr(void);
 
+D3DXMATRIX GetPlayerMtxView(int targetPlayerID);
+
 #endif

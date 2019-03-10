@@ -32,6 +32,7 @@
 // グローバル変数
 //*****************************************************************************
 CAMERA camera;
+static D3DXMATRIX saveView[TARGETPLAYER_MAX];
 
 //=============================================================================
 // カメラの初期化
@@ -95,7 +96,7 @@ void SetCamera(int targetPlayerID)
 
 	// ビューマトリックスの設定
 	pDevice->SetTransform(D3DTS_VIEW, &camera.view);
-
+	saveView[targetPlayerID] = camera.view;
 
 	// プロジェクションマトリックスの初期化
 	D3DXMatrixIdentity(&camera.projection);
@@ -110,6 +111,14 @@ void SetCamera(int targetPlayerID)
 	// プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &camera.projection);
 }
+//=============================================================================
+// ビューマトリックスの取得(画面分割に対応)
+//=============================================================================
+D3DXMATRIX GetPlayerMtxView(int targetPlayerID)
+{
+	return saveView[targetPlayerID];
+}
+
 
 //=============================================================================
 // カメラの向きの取得

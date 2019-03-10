@@ -74,7 +74,7 @@ typedef struct
 
 
 	D3DXVECTOR3				transPos[MAX_SURFACE * MAX_VTX_SURFACE];
-	float					dotVtx[MAX_SURFACE * MAX_VTX_SURFACE];
+	double					dotVtx[MAX_SURFACE * MAX_VTX_SURFACE];
 
 	LPDIRECT3DVERTEXBUFFER9 vtxBuff = NULL;		// 頂点バッファインターフェースへのポインタ
 
@@ -126,7 +126,7 @@ HRESULT InitStar(void);
 void	UninitStar(void);
 void	UpdateStar(void);
 void	DrawStar(void);
-void	ClippingStar(PLANE section);
+bool	ClippingStar(PLANE section);
 
 int SetStar(D3DXVECTOR3 pos, D3DXVECTOR3 move);
 //
