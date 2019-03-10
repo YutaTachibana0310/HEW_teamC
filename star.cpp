@@ -11,6 +11,7 @@
 //#include "shadow.h"
 #include "input.h"
 #include "rainbowLane.h"
+#include "player.h"
 //#include "debugproc.h"
 
 //*****************************************************************************
@@ -20,7 +21,7 @@
 
 #define	BLOCK_WIDTH				(20.0f)						// íeÇÃîºåaïù
 #define	BLOCK_HEIGHT			(80.0f)						// íeÇÃîºåaïù
-#define BLOCK_DEPTH				(25.0f)
+#define BLOCK_DEPTH				(30.0f)
 #define INIT_NUM_SURFACE_BLOCK	(6)
 #define INIT_NUM_VTX_BLOCK		(5)
 #define INIT_NUM_BLOCK			(5)
@@ -69,6 +70,9 @@ bool	HitCheckTriangle(TRIANGLE p, D3DXVECTOR3 pos0, D3DXVECTOR3 pos1);
 void	SetMoveStar(STAR* star, D3DXVECTOR3 pos, D3DXVECTOR3 move);
 
 void	ResetStar(STAR* wkStar);
+
+double DotProduct(D3DXVECTOR3 vec1, D3DXVECTOR3 vec2);
+
 
 
 
@@ -587,18 +591,23 @@ void UpdateStar(void)
 	//float alp;
 	//float dis;
 	D3DXVECTOR3 vec, wkPos;
-	D3DXMATRIX viewMtx = GetMtxView();
+
 	
 #ifdef _DEBUG
 	PLANE clippingPlane;
 	D3DXVECTOR3 vec1, vec2, nor;
 	float radiusPlane = 500.0f;
-	float setPosWk = 1000.0f;
-	float moveSpdWk = -10.0f;
+	float setPosWk = 300.0f;
+	float moveSpdWk = -1.0f;
+
+	if (GetKeyboardTrigger(DIK_7))
+	{
+		star[0].pos.x = 1.1f;
+	}
 
 	if (GetKeyboardTrigger(DIK_1))
 	{
-		D3DXVECTOR3 tmpPos = GetLanePos(0);
+		D3DXVECTOR3 tmpPos = GetPositionPlayer(0);
 		tmpPos.z += setPosWk;
 		SetStar(tmpPos, D3DXVECTOR3(0.0f, 0.0f, moveSpdWk));
 	}
@@ -614,6 +623,7 @@ void UpdateStar(void)
 		tmpPos.z += setPosWk;
 		SetStar(tmpPos, D3DXVECTOR3(0.0f, 0.0f, moveSpdWk));
 	}
+
 
 	if (GetKeyboardTrigger(DIK_4))
 	{
@@ -713,11 +723,17 @@ void UpdateStar(void)
 
 #endif
 
+	D3DXMATRIX viewMtx[TARGETPLAYER_MAX];
+	D3DXVECTOR3 viewPos[TARGETPLAYER_MAX];
 
+	for (int cntPlayer = 0; cntPlayer < TARGETPLAYER_MAX; cntPlayer++)
+	{
+		viewMtx[cntPlayer] = GetPlayerMtxView(cntPlayer);
+	}
 
 
 	for (int cntStar = 0; cntStar < MAX_STAR; cntStar++)
-	{
+	{// âÊñ äOÇ…èoÇΩÇÃêØÇèâä˙âªÇ∑ÇÈ
 		if (!star[cntStar].use)
 			continue;
 
@@ -725,23 +741,24 @@ void UpdateStar(void)
 		
 		for (int cntBlock = 0; cntBlock < MAX_BLOCK; cntBlock++)
 		{
-			D3DXVec3TransformCoord(&wkPos, &wkStar->block[cntBlock].pos, &viewMtx);
+			if (!wkStar->block[cntBlock].use)
+			{
+				continue;
+			}
 
-			if (wkPos.z < 0.0f)
+			for (int cntPlayer = 0; cntPlayer < TARGETPLAYER_MAX; cntPlayer++)
+			{
+				D3DXVec3TransformCoord(&viewPos[cntPlayer], &wkStar->block[cntBlock].pos, &viewMtx[cntPlayer]);
+			}
+
+			if (viewPos[0].z < 0.0f && viewPos[1].z < 0.0f)
 			{
 				ResetStar(wkStar);
-				
 			}
-			//PrintDebugProc("%f  ", wkPos.z);
 
 		}
-		//PrintDebugProc("%d\n", wkStar->use);
 	}
 
-	//if (IsButtonTriggered(0 ,BUTTON_B) || GetKeyboardTrigger(DIK_X))
-	//{
-	//	useMove = (useMove + 1) % 2;
-	//}
 
 	for (int i = 0; i < MAX_STAR; i++)
 	{
@@ -1104,9 +1121,9 @@ int SetStar(D3DXVECTOR3 pos, D3DXVECTOR3 move)
 //=============================================================================
 void SetMoveStar(STAR* star, D3DXVECTOR3 pos, D3DXVECTOR3 move)
 {
-	for (int cntBlock = 0; cntBlock < MAX_BLOCK; cntBlock++)
+	for (int cntBlock = 0; cntBlock < INIT_NUM_BLOCK; cntBlock++)
 	{
-		if (!star->block[cntBlock].use) { continue; }
+		//if (!star->block[cntBlock].use) { continue; }
 		
 		star->block[cntBlock].pos = pos;
 		star->block[cntBlock].move = move;
@@ -1121,26 +1138,26 @@ void SetMoveStar(STAR* star, D3DXVECTOR3 pos, D3DXVECTOR3 move)
 // ÉuÉçÉbÉNåQëÃÇ∆êÿífñ ÇÃè’ìÀîªíË
 // section	:êÿífñ ÇÃÇSí∏ì_ÇÃç¿ïW
 //=============================================================================
-void ClippingStar(PLANE section)
+bool ClippingStar(PLANE section)
 {
 	if (section.vtx[0] == section.vtx[2])
 	{
-		return;
+		return true;;
 	}
 
 	//D3DXMATRIX mtxPos, mtxPosInverse;
 
 	int numOldBlock;
-	bool useMove;
+	bool useMove, useCheck;
 	float lengthSection, distance;
 
 	D3DXVECTOR3 wkLength = section.vtx[1] - section.vtx[0];
-	D3DXVECTOR3 wkPos, tmpVec;
+	D3DXVECTOR3 wkPos, tmpVec, checkPos;
 
 
 	lengthSection = D3DXVec3LengthSq(&wkLength);
 
-	tmpVec = section.vtx[2] - section.vtx[0];
+	tmpVec = section.vtx[1] - section.vtx[0];
 	tmpVec /= 2.0f;
 
 	wkPos = section.vtx[0] + tmpVec;
@@ -1154,22 +1171,38 @@ void ClippingStar(PLANE section)
 		}
 
 		useMove = false;
-
+		useCheck = false;
 		numOldBlock = star[cntStar].numBlock;
+
+		checkPos = star[cntStar].block[0].pos;
+		for (int cntBlock = 0; cntBlock < numOldBlock; cntBlock++)
+		{
+			if (checkPos != star[cntStar].block[cntBlock].pos)
+			{
+				useCheck = true;
+			}
+		}
+
+		if (useCheck)
+		{
+			continue;
+		}
+		else
+		{
+			wkLength = checkPos - wkPos;
+
+			distance = D3DXVec3LengthSq(&wkLength);
+
+			if (distance > lengthSection)
+			{
+				continue;
+			}
+		}
+
 
 		for (int cntBlock = 0; cntBlock < numOldBlock; cntBlock++)
 		{
 			if (star[cntStar].numBlock >= MAX_BLOCK)
-			{
-				break;
-			}
-
-			wkLength = star[cntStar].block[cntBlock].pos - wkPos;
-
-			distance = D3DXVec3LengthSq(&wkLength);
-
-
-			if (distance > lengthSection)
 			{
 				break;
 			}
@@ -1185,10 +1218,14 @@ void ClippingStar(PLANE section)
 		{// êÿífÇ≥ÇÍÇΩÉuÉçÉbÉNÇÃìÆÇ´ÇåàÇﬂÇÈ
 
 			SetMoveBlock(&star[cntStar], section);
+
+			return true;
 		}
 		//star[cntStar].numBlock += numNewBlock;
 
 	}
+
+	return false;
 }
 
 //=============================================================================
@@ -1201,9 +1238,12 @@ void SetMoveBlock(STAR* wkStar, PLANE section)
 	D3DXMATRIX mtxTranslate, mtxRot, mtxScale, mtxTmp;
 	D3DXVECTOR3 wkVtx, wkVec;
 	float dot;
+	int cntNew, cntOld;
 
 	for (int cntBlock = 0; cntBlock < wkStar->numBlock; cntBlock++)
 	{
+		cntNew = 0;
+		cntOld = 0;
 
 		D3DXMatrixIdentity(&mtxTmp);
 
@@ -1219,15 +1259,29 @@ void SetMoveBlock(STAR* wkStar, PLANE section)
 
 		wkStar->block[cntBlock].vtxBuff->Lock(0, 0, (void**)&vtxBuff, 0);
 
-		D3DXVec3TransformCoord(&wkVtx, &vtxBuff[0].vtx, &mtxTmp);
+		for (int cntVtx = 0; cntVtx < wkStar->block[cntBlock].numVtx; cntVtx++)
+		{
+			D3DXVec3TransformCoord(&wkVtx, &vtxBuff[cntVtx].vtx, &mtxTmp);
+
+			wkVec = wkVtx - section.vtx[0];
+
+			dot = D3DXVec3Dot(&section.nor, &wkVec);
+
+			if (dot >= 0)
+			{
+				cntOld++;
+			}
+			else
+			{
+				cntNew++;
+			}
+
+		}
 
 		wkStar->block[cntBlock].vtxBuff->Unlock();
 
-		wkVec = wkVtx - section.vtx[0];
 
-		dot = D3DXVec3Dot(&section.nor, &wkVec);
-
-		if (dot >= 0)
+		if (cntOld > cntNew)
 		{
 			wkStar->block[cntBlock].move += section.nor / VAL_BLOCK_MOVE;
 		}
@@ -1821,7 +1875,7 @@ void CreateNewSurface(BLOCK* block, PLANE section)
 		tmpVec = block->transPos[cntNewVtx] - section.vtx[0];
 		D3DXVec3Normalize(&tmpVec, &tmpVec);
 
-		block->dotVtx[cntNewVtx] = D3DXVec3Dot(&section.nor, &tmpVec);
+		block->dotVtx[cntNewVtx] = DotProduct(section.nor, tmpVec);
 
 		if (block->dotVtx[cntNewVtx] >= 0)
 		{
@@ -2044,14 +2098,15 @@ void CreateNewVtxPos(BLOCK* block, int cntCp, VERTEX_3D* vtx)
 	tmpSp = block->transPos[sp] - block->cp[cntCp];
 	//tmpEp = block->transPos[ep] - block->cp[cntCp];
 	D3DXVec3Normalize(&length, &tmpSp);
+	length /= 2.0f;
 
 	if (D3DXVec3LengthSq(&length) > D3DXVec3LengthSq(&tmpSp))
 	{
-		length = tmpSp / 10.0f;
+		length = tmpSp / 2.0f;
 	}
 	else
 	{
-		length /= 10.0f;
+		length /= 2.0f;
 	}
 	//tmpÇ™í∑Ç∑Ç¨ÇÈÇ∆Ç´ÇÃó·äOê›íË
 
@@ -2069,14 +2124,15 @@ void CreateNewVtxPos(BLOCK* block, int cntCp, VERTEX_3D* vtx)
 
 	tmpEp = block->transPos[ep] - block->cp[cntCp];
 	D3DXVec3Normalize(&length, &tmpEp);
+	length /= 2.0f;
 
 	if (D3DXVec3LengthSq(&length) > D3DXVec3LengthSq(&tmpEp))
 	{
-		length = tmpEp / 10.0f;
+		length = tmpEp / 2.0f;
 	}
 	else
 	{
-		length /= 10.0f;
+		length /= 2.0f;
 	}
 
 
@@ -2185,7 +2241,7 @@ bool CheckBlockDot(PLANE section, BLOCK* block)
 		tmpVec = block->transPos[cntVtx] - section.vtx[0];
 		D3DXVec3Normalize(&tmpVec, &tmpVec);
 
-		block->dotVtx[cntVtx] = D3DXVec3Dot(&section.nor, &tmpVec);
+		block->dotVtx[cntVtx] = DotProduct(section.nor, tmpVec);
 
 		if (block->dotVtx[cntVtx] > 0)
 		{
@@ -2196,10 +2252,14 @@ bool CheckBlockDot(PLANE section, BLOCK* block)
 			block->numVtxNewBlock++;
 		}
 
-		if (block->dotVtx[cntVtx] == 0)
+#ifdef _DEBUG
+
+		float tmp = D3DXVec3Dot(&section.nor, &tmpVec);
+		if (tmp == 0.0f)
 		{
 			debug = true;
 		}
+#endif
 	}
 
 	if (block->numVtxOldBlock == 0 || block->numVtxNewBlock == 0)
@@ -2450,4 +2510,16 @@ bool HitCheckSurface(D3DXVECTOR3* cp, PLANE section, D3DXVECTOR3 pos0, D3DXVECTO
 		}
 	}
 	return true;
+}
+
+//=============================================================================
+// åÖóéÇøâÒîópÇÃdoubleå^ÇÃì‡êœåvéZä÷êî
+//=============================================================================
+double DotProduct(D3DXVECTOR3 vec1, D3DXVECTOR3 vec2)
+{
+	double dot;
+
+	dot = (double)vec1.x * (double)vec2.x + (double)vec1.y * (double)vec2.y + (double)vec1.z * (double)vec2.z;
+
+	return dot;
 }
