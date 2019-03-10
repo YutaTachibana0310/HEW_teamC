@@ -10,18 +10,20 @@
 #include "star.h"
 #include "player.h"
 #include "bullet.h"
+#include "slashBullet.h"
 
 #define MOVE_SPEED_BULLET	(5.0f)
 #define ATK_RANGE_WIDTH		(SCREEN_WIDTH * 2.0f)
 #define ATK_RANGE_HEIGHT	(SCREEN_HEIGHT * 3.0f)
 #define DEADZONE_STICK		(0.5f)
-#define RANGE_ATK_WIDTH		(200.0f)
+#define RANGE_ATK_WIDTH		(90.0f)
 #define BULLET_SPEED		(6.0f)
 
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
-void SetBullet(int playerNo, float x, float y);
+void SetBullet(BULLET* bulletData, D3DXVECTOR3 posPlayer, float x, float y);
+void SetMoveBullet(BULLET* bulletData, D3DXVECTOR3 posPlayer);
 
 
 //*****************************************************************************
@@ -29,7 +31,7 @@ void SetBullet(int playerNo, float x, float y);
 //*****************************************************************************
 
 //PLANE					atkRange[TARGETPLAYER_MAX];
-static BULLET			bulletData[TARGETPLAYER_MAX];
+static BULLET			bulletData[TARGETPLAYER_MAX][SLASHBULLET_NUM_MAX];
 
 bool					hitCheck;
 
@@ -44,14 +46,16 @@ HRESULT InitBullet(void)
 
 	for (int cntPlayer = 0; cntPlayer < TARGETPLAYER_MAX; cntPlayer++)
 	{
-		bulletData[cntPlayer].range.vtx[0] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		bulletData[cntPlayer].range.vtx[1] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		bulletData[cntPlayer].range.vtx[2] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		bulletData[cntPlayer].range.vtx[3] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		bulletData[cntPlayer].range.nor = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		for (int cntBullet = 0; cntBullet < SLASHBULLET_NUM_MAX; cntBullet++)
+		{
+			bulletData[cntPlayer][cntBullet].range.vtx[0] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			bulletData[cntPlayer][cntBullet].range.vtx[1] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			bulletData[cntPlayer][cntBullet].range.vtx[2] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			bulletData[cntPlayer][cntBullet].range.vtx[3] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			bulletData[cntPlayer][cntBullet].range.nor = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-		bulletData[cntPlayer].use = false;
-
+			bulletData[cntPlayer][cntBullet].use = false;
+		}
 	}
 
 	//stickAxis = D3DXVECTOR2(0.0f, 0.0f);
@@ -69,12 +73,11 @@ HRESULT InitBullet(void)
 void UpdateBullet(void)
 {
 	D3DXVECTOR2	stickAxis;
-	float		depthPlayerPos;
 
 #ifdef _DEBUG
 	if (GetKeyboardTrigger(DIK_Z))
 	{
-		SetBullet(0, 0.0442587733f, 0.5f);
+		SetBullet(0, GetPositionPlayer(0), 0.0442587733f, 0.5f);
 	}
 #endif
 
@@ -85,7 +88,18 @@ void UpdateBullet(void)
 
 		if (fabsf(stickAxis.x) + fabsf(stickAxis.y) > DEADZONE_STICK && useSet)
 		{
-			SetBullet(cntPad, stickAxis.x, stickAxis.y);
+			for (int cntBullet = 0; cntBullet < SLASHBULLET_NUM_MAX; cntBullet++)
+			{
+				if (bulletData[cntPad][cntBullet].use)
+				{
+					continue;
+				}
+
+				//D3DXVECTOR3 posPlayer = GetPositionPlayer(cntPad);
+				SetBullet(&bulletData[cntPad][cntBullet], GetPositionPlayer(cntPad), stickAxis.x, stickAxis.y);
+				break;
+			}
+
 		
 			useSet = false;
 		}
@@ -98,21 +112,11 @@ void UpdateBullet(void)
 
 	for (int cntPlayer = 0; cntPlayer < TARGETPLAYER_MAX; cntPlayer++)
 	{
-		if (bulletData[cntPlayer].use)
+		for (int cntBullet = 0; cntBullet < SLASHBULLET_NUM_MAX; cntBullet++)
 		{
-			bulletData[cntPlayer].length += BULLET_SPEED;
-			depthPlayerPos = GetPositionPlayer(cntPlayer).z;
-			
-
-			bulletData[cntPlayer].range.vtx[0].z = depthPlayerPos;
-			bulletData[cntPlayer].range.vtx[2].z = depthPlayerPos;
-
-			bulletData[cntPlayer].range.vtx[1].z = depthPlayerPos + bulletData[cntPlayer].length;
-			bulletData[cntPlayer].range.vtx[3].z = depthPlayerPos + bulletData[cntPlayer].length;
-
-			if (ClippingStar(bulletData[cntPlayer].range))
+			if (bulletData[cntPlayer][cntBullet].use)
 			{
-				bulletData[cntPlayer].use = false;
+				SetMoveBullet(&bulletData[cntPlayer][cntBullet], GetPositionPlayer(cntPlayer));
 			}
 
 		}
@@ -122,12 +126,35 @@ void UpdateBullet(void)
 }
 
 //=============================================================================
-// 更新処理
+// バレットの移動処理
 //=============================================================================
-void SetBullet(int playerNo, float x, float y)
+void SetMoveBullet(BULLET* bulletData, D3DXVECTOR3 posPlayer)
+{
+	//float		depthPlayerPos;
+
+	bulletData->length += BULLET_SPEED;
+	//depthPlayerPos = GetPositionPlayer(playerNo).z;
+
+	bulletData->range.vtx[0].z = posPlayer.z;
+	bulletData->range.vtx[2].z = posPlayer.z;
+
+	bulletData->range.vtx[1].z = posPlayer.z + bulletData->length;
+	bulletData->range.vtx[3].z = posPlayer.z + bulletData->length;
+
+	if (ClippingStar(bulletData->range))
+	{
+		bulletData->use = false;
+	}
+
+}
+
+
+//=============================================================================
+// バレットのセット処理
+//=============================================================================
+void SetBullet(BULLET* bulletData, D3DXVECTOR3 posPlayer, float x, float y)
 {
 	D3DXVECTOR3 vec1, vec2, cross, nor;
-	D3DXVECTOR3 posPlayer = GetPositionPlayer(playerNo);
 
 	
 	float tmp = 0.0f;
@@ -138,43 +165,43 @@ void SetBullet(int playerNo, float x, float y)
 	tmp /= 10.0f;
 
 	// 切断平面の４頂点の座標を設定
-	bulletData[playerNo].range.vtx[0].x = posPlayer.x + x * RANGE_ATK_WIDTH - tmp;
-	bulletData[playerNo].range.vtx[0].y = posPlayer.y - y * RANGE_ATK_WIDTH + tmp;
-	bulletData[playerNo].range.vtx[0].z = posPlayer.z;
+	bulletData->range.vtx[0].x = posPlayer.x + x * RANGE_ATK_WIDTH - tmp;
+	bulletData->range.vtx[0].y = posPlayer.y - y * RANGE_ATK_WIDTH + tmp;
+	bulletData->range.vtx[0].z = posPlayer.z;
 
-	bulletData[playerNo].range.vtx[1].x = posPlayer.x + x * RANGE_ATK_WIDTH + tmp;
-	bulletData[playerNo].range.vtx[1].y = posPlayer.y - y * RANGE_ATK_WIDTH - tmp;
-	bulletData[playerNo].range.vtx[1].z = posPlayer.z + RANGE_ATK_WIDTH;
+	bulletData->range.vtx[1].x = posPlayer.x + x * RANGE_ATK_WIDTH + tmp;
+	bulletData->range.vtx[1].y = posPlayer.y - y * RANGE_ATK_WIDTH - tmp;
+	bulletData->range.vtx[1].z = posPlayer.z + RANGE_ATK_WIDTH;
 
-	bulletData[playerNo].range.vtx[2].x = posPlayer.x - x * RANGE_ATK_WIDTH - tmp;
-	bulletData[playerNo].range.vtx[2].y = posPlayer.y + y * RANGE_ATK_WIDTH + tmp;
-	bulletData[playerNo].range.vtx[2].z = posPlayer.z;
+	bulletData->range.vtx[2].x = posPlayer.x - x * RANGE_ATK_WIDTH - tmp;
+	bulletData->range.vtx[2].y = posPlayer.y + y * RANGE_ATK_WIDTH + tmp;
+	bulletData->range.vtx[2].z = posPlayer.z;
 
-	bulletData[playerNo].range.vtx[3].x = posPlayer.x - x * RANGE_ATK_WIDTH + tmp;
-	bulletData[playerNo].range.vtx[3].y = posPlayer.y + y * RANGE_ATK_WIDTH - tmp;
-	bulletData[playerNo].range.vtx[3].z = posPlayer.z + RANGE_ATK_WIDTH;
+	bulletData->range.vtx[3].x = posPlayer.x - x * RANGE_ATK_WIDTH + tmp;
+	bulletData->range.vtx[3].y = posPlayer.y + y * RANGE_ATK_WIDTH - tmp;
+	bulletData->range.vtx[3].z = posPlayer.z + RANGE_ATK_WIDTH;
 
-	bulletData[playerNo].length = RANGE_ATK_WIDTH;
+	bulletData->length = RANGE_ATK_WIDTH;
 
 	// 切断平面の法線を設定
-	vec1 = bulletData[playerNo].range.vtx[1] - bulletData[playerNo].range.vtx[0];
+	vec1 = bulletData->range.vtx[1] - bulletData->range.vtx[0];
 
-	vec2 = bulletData[playerNo].range.vtx[2] - bulletData[playerNo].range.vtx[0];
+	vec2 = bulletData->range.vtx[2] - bulletData->range.vtx[0];
 
 	D3DXVec3Cross(&cross, &vec1, &vec2);
 	D3DXVec3Normalize(&nor, &cross);
 
-	if (nor.x == 0.0f || nor.y == 0.0f || nor.z == 0.0f)
-	{
-		bulletData[playerNo].range.nor = nor;
-
-	}
-
-	bulletData[playerNo].range.nor = nor;
+	bulletData->range.nor = nor;
 
 	// バレットを使用状態にする
-	bulletData[playerNo].use = true;
+	bulletData->use = true;
 
-	//ClippingStar(bulletData[playerNo].range);
 }
 
+//=============================================================================
+// バレットのセット処理
+//=============================================================================
+void GetBulletPos(int playerNo, float x, float y)
+{
+
+}

@@ -28,9 +28,9 @@
 //*****************************************************************************
 typedef struct
 {
-	PLANE range;
-	float length;
-	bool use;
+	PLANE	range;
+	float	length;
+	bool	use;
 }BULLET;
 
 
