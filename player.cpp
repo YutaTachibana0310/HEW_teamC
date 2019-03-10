@@ -12,7 +12,7 @@
 #include "slashBullet.h"
 #include "gameParameter.h"
 #include "effect.h"
-
+#include "soundEffectManager.h"
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
@@ -197,6 +197,7 @@ void UpdatePlayer(void)
 					player[i].prevLane = LANE_LEFT;
 					player[i].currentLane = LANE_CENTER;
 					player[i].moveFlag = true;
+					PlaySE(SOUND_LANEMOVE);
 				}
 				break;
 
@@ -206,12 +207,14 @@ void UpdatePlayer(void)
 					player[i].prevLane = LANE_CENTER;
 					player[i].currentLane = LANE_LEFT;
 					player[i].moveFlag = true;
+					PlaySE(SOUND_LANEMOVE);
 				}
 				else if (input == 1)
 				{// 右が入力されたら
 					player[i].prevLane = LANE_CENTER;
 					player[i].currentLane = LANE_RIGHT;
 					player[i].moveFlag = true;
+					PlaySE(SOUND_LANEMOVE);
 				}
 				break;
 
@@ -221,6 +224,7 @@ void UpdatePlayer(void)
 					player[i].prevLane = LANE_RIGHT;
 					player[i].currentLane = LANE_CENTER;
 					player[i].moveFlag = true;
+					PlaySE(SOUND_LANEMOVE);
 				}
 				break;
 			}
@@ -408,6 +412,9 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 		//ゲームパラメータも加速
 		float setSpeed = GetGameParameterAdr(playerId)->playerSpeed + GAMEPARAMETER_SPEED_ADDVALUE;
 		GetGameParameterAdr(playerId)->playerSpeed = Clampf(GAMEPARAMETER_SPEED_MIN, GAMEPARAMETER_SPEED_MAX, setSpeed);
+
+		//SE再生
+		PlaySE(SOUND_ACCEL);
 	}
 	else if (isAccelerator == false)
 	{
@@ -441,5 +448,6 @@ void PlayerAttack(int i)
 	{
 		ptr->shotInterbal = 0;
 		SetSlashBullet(ptr->pos, i, RandomRangef(-0.5f, 0.5f), RandomRangef(-0.5f, 0.5f));
+		PlaySE(SOUIND_BULLET);
 	}
 }

@@ -6,6 +6,7 @@
 //=====================================
 #include "resultScene.h"
 #include "bgmManager.h"
+#include "soundEffectManager.h"
 
 #include "gameParameter.h"
 #include "sceneFade.h"
@@ -53,6 +54,9 @@ HRESULT InitResultScene(int num)
 	//BGMçƒê∂
 	FadeInBGM(BGM_RESULT, BGM_FADE_DURATION);
 
+	//äΩê∫çƒê∂
+	PlaySE(SOUND_CHEER);
+
 	return S_OK;
 }
 
@@ -80,7 +84,7 @@ void UpdateResultScene(void)
 	cntFrame++;
 	if (cntFrame == RESULTSCENE_DURATION)
 	{
-		FadeOutBGM(BGM_RESULT, BGM_FADE_DURATION);
+		FadeOutBGM(BGM_RESULT, RESULTSCENE_BGM_FADEDURATION);
 		SetSceneFade(TitleScene);
 	}
 }

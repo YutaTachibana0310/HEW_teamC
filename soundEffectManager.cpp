@@ -28,7 +28,14 @@
 ***************************************/
 static const TCHAR* soundFileName[SOUND_MAX] =
 {
-	_T("data/SOUND/lockon.wav"),
+	_T("data/SOUND/Countdown06-2.wav"),
+	_T("data/SOUND/decision24.wav"),
+	_T("data/SOUND/sei_ge_hoissuru_ren01.wav"),
+	_T("data/SOUND/speed-up1.wav"),
+	_T("data/SOUND/people_people-stadium-cheer1.wav"),
+	_T("data/SOUND/magic-worp1.wav"),
+	_T("data/SOUND/katana-slash5.wav"),
+	_T("data/SOUND/knife-slash-1.wav"),
 };
 
 static SOUNDEFFECT container[SOUND_MAX];
@@ -146,7 +153,9 @@ void DrawDebugWindowSoundEffect(void)
 	{
 		DebugText("%d", i);
 		DebugSameLine();
-		if (DebugSliderFloat("", &container[i].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX))
+		char str[32];
+		sprintf(str, "%d", i);
+		if (DebugSliderFloat(str, &container[i].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX))
 		{
 			SetSoundVolume(container[i].clip, container[i].volume);
 		}

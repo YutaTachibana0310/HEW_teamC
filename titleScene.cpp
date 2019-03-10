@@ -14,7 +14,7 @@
 #include "gameParameter.h"
 #include "player.h"
 #include "effect.h"
-
+#include "soundEffectManager.h"
 /**************************************
 ƒ}ƒNƒ’è‹`
 ***************************************/
