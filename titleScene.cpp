@@ -142,7 +142,7 @@ bool IsCompleteEntry(void)
 {
 	//ˆê“xŠ®—¹‚µ‚½‚çˆÈ~‚Íreturn false
 	if (entryComleterd)
-		return true;
+		return false;
 
 	if (!entryState[0])
 		return false;
