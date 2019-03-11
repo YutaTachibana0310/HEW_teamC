@@ -11,6 +11,7 @@
 #include "gameParameter.h"
 
 #include "bulletParticle.h"
+#include "soundEffectManager.h"
 
 /**************************************
 マクロ定義
@@ -60,7 +61,9 @@ void UpdateCollisionManager(void)
 				//パーティクルセット
 				for (int cntParticle = 0; cntParticle < BULLRTPARTICLE_SETNUM; cntParticle++)
 					SetBulletParticle(bullet->pos);
-				
+
+				//SE再生
+				PlaySE(SOUND_SLASH);
 			}
 		}
 	}
