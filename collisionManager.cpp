@@ -10,9 +10,13 @@
 #include "scrollSpeedController.h"
 #include "gameParameter.h"
 
+#include "bulletParticle.h"
+#include "soundEffectManager.h"
+
 /**************************************
 マクロ定義
 ***************************************/
+#define BULLRTPARTICLE_SETNUM		(30)
 
 /**************************************
 構造体定義
@@ -51,7 +55,15 @@ void UpdateCollisionManager(void)
 			{
 				//バレットが当たったら減速
 				SetPlayerAcceleration(i, false);
+				SetBulletParticle(bullet->pos);
 				bullet->active = false;
+
+				//パーティクルセット
+				for (int cntParticle = 0; cntParticle < BULLRTPARTICLE_SETNUM; cntParticle++)
+					SetBulletParticle(bullet->pos);
+
+				//SE再生
+				PlaySE(SOUND_SLASH);
 			}
 		}
 	}
