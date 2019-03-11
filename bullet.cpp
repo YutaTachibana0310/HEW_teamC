@@ -11,7 +11,7 @@
 #include "slashBullet.h"
 #include "player.h"
 #include "bullet.h"
-
+#include "bulletParticle.h"
 
 #define MOVE_SPEED_BULLET	(5.0f)
 #define ATK_RANGE_WIDTH		(SCREEN_WIDTH * 2.0f)
@@ -23,6 +23,9 @@
 
 #define INTERVAL_EFFECT_POS	(0.0f)
 
+#define BULLET_COLLIDER_LENGTH	(D3DXVECTOR3(10.0f, 10.0f, 5.0f))
+
+#define BULLET_PARTICLE_EMMITT_NUM	(30)
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
@@ -60,6 +63,8 @@ HRESULT InitBullet(void)
 			bulletData[cntPlayer][cntBullet].idxSlashBullet = -1;
 
 			bulletData[cntPlayer][cntBullet].use = false;
+			bulletData[cntPlayer][cntBullet].collider.length = BULLET_COLLIDER_LENGTH;
+			bulletData[cntPlayer][cntBullet].collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		}
 	}
 
@@ -203,6 +208,10 @@ void SetMoveBullet(BULLET* bulletData, int playerNo)
 		FreeSlashBullet(bulletData->idxSlashBullet);
 		bulletData->idxSlashBullet = -1;
 		SetPlayerAcceleration(playerNo, true);
+
+		//パーティクルセット
+		for (int cntParticle = 0; cntParticle < BULLET_PARTICLE_EMMITT_NUM; cntParticle++)
+			SetBulletParticle(wkPos);
 	}
 	else if (wkPos.z > SLASHBULLET_MOVE_BORDER_Z)
 	{
@@ -273,13 +282,21 @@ void SetBullet(BULLET* bulletData, int playerNo, float x, float y)
 	wkPos.z -= INTERVAL_EFFECT_POS;
 
 	bulletData->idxSlashBullet = SetSlashBullet(wkPos, 0, x, -y);
-
+	bulletData->collider.pos = &GetSlashBulletAdr(bulletData->idxSlashBullet)->pos;
 }
 
 //=============================================================================
-// バレットのセット処理
+// バレットのゲット処理
 //=============================================================================
 void GetBulletPos(int playerNo, float x, float y)
 {
 
+}
+
+//=============================================================================
+// バレットのアドレス取得処理
+//=============================================================================
+BULLET *GetBulletAdr(int playerNo, int id)
+{
+	return &bulletData[playerNo][id];
 }

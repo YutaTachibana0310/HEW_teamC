@@ -13,6 +13,7 @@
 #include "bulletParticle.h"
 #include "soundEffectManager.h"
 
+#include "bullet.h"
 /**************************************
 マクロ定義
 ***************************************/
@@ -39,15 +40,12 @@ void UpdateCollisionManager(void)
 	PLAYER *player = GetPlayer(0);
 	for (int i = 0; i < TARGETPLAYER_MAX; i++, player++)
 	{
-		SLASHBULLET *bullet = GetSlashBulletAdr(0);
-		for (int j = 0; j < SLASHBULLET_NUM_MAX; j++, bullet++)
+		int opponent = WrapAround(0, TARGETPLAYER_MAX, i + 1);
+		BULLET *bullet = GetBulletAdr(opponent, 0);
+		for (int j = 0; j < SLASHBULLET_NUM_MAX/2; j++, bullet++)
 		{
 			//非アクティブのバレットとは判定しない
-			if (!bullet->active)
-				continue;
-
-			//プレイヤー自身が発射したバレットとは判定しない
-			if (bullet->parentPlayerID == i)
+			if (!bullet->use)
 				continue;
 
 			//バウンディングボックスの判定
@@ -55,15 +53,18 @@ void UpdateCollisionManager(void)
 			{
 				//バレットが当たったら減速
 				SetPlayerAcceleration(i, false);
-				SetBulletParticle(bullet->pos);
-				bullet->active = false;
+				SetBulletParticle(*bullet->collider.pos);
+				bullet->use = false;
 
 				//パーティクルセット
 				for (int cntParticle = 0; cntParticle < BULLRTPARTICLE_SETNUM; cntParticle++)
-					SetBulletParticle(bullet->pos);
+					SetBulletParticle(*bullet->collider.pos);
 
 				//SE再生
 				PlaySE(SOUND_SLASH);
+
+				//対応しているスラッシュバレットを非アクティブに
+				GetSlashBulletAdr(bullet->idxSlashBullet)->active = false;
 			}
 		}
 	}

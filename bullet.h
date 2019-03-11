@@ -7,6 +7,7 @@
 #ifndef _BULLET_H_
 #define _BULLET_H_
 
+#include "collider.h"
 //*****************************************************************************
 // É}ÉNÉçíËã`
 //*****************************************************************************
@@ -32,7 +33,7 @@ typedef struct
 	float	length;
 	bool	use;
 	int		idxSlashBullet;
-
+	COLLIDER_CUBE collider;
 }BULLET;
 
 
@@ -44,5 +45,6 @@ void UpdateBullet(void);
 bool GetAttackTrigger(int playerNo);
 void FreeSlashBullet(int bulletID);
 
+BULLET *GetBulletAdr(int playerNo, int id);
 
 #endif
