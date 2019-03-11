@@ -100,6 +100,7 @@ void UpdateTitleScene(void)
 
 		//入力があればエントリー完了状態へ遷移
 		entryState[i] = true;
+		PlaySE(SOUND_ENTRY);
 	}
 
 	//テスト機能
