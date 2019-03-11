@@ -28,9 +28,11 @@
 //*****************************************************************************
 typedef struct
 {
-	PLANE range;
-	float length;
-	bool use;
+	PLANE	range;
+	float	length;
+	bool	use;
+	int		idxSlashBullet;
+
 }BULLET;
 
 
@@ -39,5 +41,8 @@ typedef struct
 //*****************************************************************************
 HRESULT InitBullet(void);
 void UpdateBullet(void);
+bool GetAttackTrigger(int playerNo);
+void FreeSlashBullet(int bulletID);
+
 
 #endif

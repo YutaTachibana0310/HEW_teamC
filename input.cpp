@@ -886,8 +886,18 @@ void UpdatePad(void)
 				result = pGamePad[i]->Acquire();
 		}
 
-		padAxislRx[i] = (float)(dijs.lZ + dijs.lRx);
-		padAxislRy[i] = (float)(dijs.lRz + dijs.lRy);
+		if (dijs.lZ != 0 && dijs.lRx != 0)
+		{
+			padAxislRx[i] = (float)(dijs.lRx);
+			padAxislRy[i] = (float)(dijs.lRy);
+
+		}
+		else
+		{
+			padAxislRx[i] = (float)(dijs.lZ + dijs.lRx);
+			padAxislRy[i] = (float)(dijs.lRz + dijs.lRy);
+
+		}
 
 		// ３２の各ビットに意味を持たせ、ボタン押下に応じてビットをオンにする
 		//* y-axis (forward)

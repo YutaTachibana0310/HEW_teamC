@@ -13,6 +13,8 @@
 #include "gameParameter.h"
 #include "effect.h"
 #include "soundEffectManager.h"
+#include "bullet.h"
+
 //*****************************************************************************
 // ƒ}ƒNƒ’è‹`
 //*****************************************************************************
@@ -437,17 +439,19 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 //=============================================================================
 void PlayerAttack(int i)
 {
-	//ˆÚ“®’†‚ÍUŒ‚‚Å‚«‚È‚¢
-	if (player[i].moveFlag)
-		return;
-
 	PLAYER* ptr = &player[i];
 
+	//ˆÚ“®’†‚ÍUŒ‚‚Å‚«‚È‚¢
+	if (ptr->moveFlag || ptr->shotInterbal < PLAYER_SHOT_INTERBAL)
+		return;
+
+
 	//UŒ‚ƒ{ƒ^ƒ“‚ÌƒgƒŠƒK[ŒŸ’m
-	if (GetAttackButtonTrigger(i) && ptr->shotInterbal > PLAYER_SHOT_INTERBAL)
+	//if (GetAttackButtonTrigger(i) && ptr->shotInterbal > PLAYER_SHOT_INTERBAL)
+	if (GetAttackTrigger(i))
 	{
 		ptr->shotInterbal = 0;
-		SetSlashBullet(ptr->pos, i, RandomRangef(-0.5f, 0.5f), RandomRangef(-0.5f, 0.5f));
+		//SetSlashBullet(ptr->pos, i, RandomRangef(-0.5f, 0.5f), RandomRangef(-0.5f, 0.5f));
 		PlaySE(SOUIND_BULLET);
 	}
 }

@@ -17,7 +17,6 @@
 #define SLASHBULLET_TEX_DIV_Y			(12)
 #define SLASHBULLET_ANIM_PATTERN_MAX	(SLASHBULLET_TEX_DIV_X*SLASHBULLET_TEX_DIV_Y)
 #define SLASHBULLET_MOVE_SPEED			(10.0f)
-#define SLASHBULLET_MOVE_BORDER_Z		(5000.0f)
 #define SLASHBULLET_COLLIDER_LENGTH		(D3DXVECTOR3(10.0f, 10.0f, 10.0f))
 
 /**************************************
@@ -82,13 +81,13 @@ void UpdateSlashBullet(void)
 
 		ptr->cntFrame++;
 
-		ptr->pos.z += SLASHBULLET_MOVE_SPEED;
+		//ptr->pos.z += SLASHBULLET_MOVE_SPEED;
 
-		//移動可能範囲を超えていたら非アクティブに
-		if (ptr->pos.z > SLASHBULLET_MOVE_BORDER_Z)
-		{
-			ptr->active = false;
-		}
+		////移動可能範囲を超えていたら非アクティブに
+		//if (ptr->pos.z > SLASHBULLET_MOVE_BORDER_Z)
+		//{
+		//	ptr->active = false;
+		//}
 	}
 
 	SetTextureSlashBullet();
@@ -161,10 +160,10 @@ void MakeVertexSlashBullet(void)
 	for (int i = 0; i < SLASHBULLET_NUM_MAX; i++, pVtx += NUM_VERTEX)
 	{
 		//頂点座標のセット
-		pVtx[0].vtx = D3DXVECTOR3(-SLASHBULLET_SIZE_X / 2.0f, SLASHBULLET_SIZE_Y / 2.0f, 0.0f);
-		pVtx[1].vtx = D3DXVECTOR3(SLASHBULLET_SIZE_X / 2.0f, SLASHBULLET_SIZE_Y / 2.0f, 0.0f);
-		pVtx[2].vtx = D3DXVECTOR3(-SLASHBULLET_SIZE_X / 2.0f, -SLASHBULLET_SIZE_Y / 2.0f, 0.0f);
-		pVtx[3].vtx = D3DXVECTOR3(SLASHBULLET_SIZE_X / 2.0f, -SLASHBULLET_SIZE_Y / 2.0f, 0.0f);
+		pVtx[0].vtx = D3DXVECTOR3(-SLASHBULLET_SIZE_X / 1.5f, SLASHBULLET_SIZE_Y / 4.0f, 0.0f);
+		pVtx[1].vtx = D3DXVECTOR3(SLASHBULLET_SIZE_X / 1.5f, SLASHBULLET_SIZE_Y / 4.0f, 0.0f);
+		pVtx[2].vtx = D3DXVECTOR3(-SLASHBULLET_SIZE_X / 1.5f, -SLASHBULLET_SIZE_Y / 4.0f, 0.0f);
+		pVtx[3].vtx = D3DXVECTOR3(SLASHBULLET_SIZE_X / 1.5f, -SLASHBULLET_SIZE_Y / 4.0f, 0.0f);
 
 		//UV座標の設定
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -219,8 +218,9 @@ void SetTextureSlashBullet(void)
 /**************************************
 セット処理
 ***************************************/
-void SetSlashBullet(D3DXVECTOR3 pos, int playerID, float x, float y)
+int SetSlashBullet(D3DXVECTOR3 pos, int playerID, float x, float y)
 {
+	int idxSlashBullet = -1;
 	SLASHBULLET *ptr = &bullet[0];
 	for (int i = 0; i < SLASHBULLET_NUM_MAX; i++, ptr++)
 	{
@@ -232,9 +232,32 @@ void SetSlashBullet(D3DXVECTOR3 pos, int playerID, float x, float y)
 
 		ptr->active = true;
 		ptr->parentPlayerID = playerID;
-		return;
+
+		idxSlashBullet = i;
+		return idxSlashBullet;
 	}
+
+	return idxSlashBullet;
 }
+
+/**************************************
+座標のセット処理
+***************************************/
+void SetSlashBulletPos(D3DXVECTOR3 pos, int bulletID)
+{
+	bullet[bulletID].pos = pos;
+}
+
+/**************************************
+座標のセット処理
+***************************************/
+void FreeSlashBullet(int bulletID)
+{
+	bullet[bulletID].cntFrame = 0;
+	bullet[bulletID].active = false;
+}
+
+
 
 /**************************************
 アドレス取得処理

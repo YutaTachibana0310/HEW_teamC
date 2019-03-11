@@ -17,11 +17,11 @@
 //*****************************************************************************
 // ƒ}ƒNƒ’è‹`
 //*****************************************************************************
-#define INIT_BLOCK_SCALE		D3DXVECTOR3(0.2f, 0.2f, 0.2f)
+#define INIT_BLOCK_SCALE		D3DXVECTOR3(0.20f, 0.20f, 0.2f)
 
-#define	BLOCK_WIDTH				(20.0f)						// ’e‚Ì”¼Œa•
+#define	BLOCK_WIDTH				(25.0f)						// ’e‚Ì”¼Œa•
 #define	BLOCK_HEIGHT			(80.0f)						// ’e‚Ì”¼Œa•
-#define BLOCK_DEPTH				(30.0f)
+#define BLOCK_DEPTH				(40.0f)
 #define INIT_NUM_SURFACE_BLOCK	(6)
 #define INIT_NUM_VTX_BLOCK		(5)
 #define INIT_NUM_BLOCK			(5)
@@ -430,8 +430,8 @@ HRESULT InitBlock(LPDIRECT3DDEVICE9 device, STAR* wkStar)
 			vtx[0].vtx = D3DXVECTOR3(0.0f, 0.0f, -wkStar->depth);
 			vtx[1].vtx = D3DXVECTOR3(0.0f, 0.0f, wkStar->depth);
 			vtx[2].vtx = D3DXVECTOR3(0.0f, wkStar->height, 0.0f);
-			vtx[3].vtx = D3DXVECTOR3(-wkStar->width, wkStar->height / 3.0f, 0.0f);
-			vtx[4].vtx = D3DXVECTOR3(wkStar->width, wkStar->height / 3.0f, 0.0f);
+			vtx[3].vtx = D3DXVECTOR3(-wkStar->width, wkStar->height / 2.5f, 0.0f);
+			vtx[4].vtx = D3DXVECTOR3(wkStar->width, wkStar->height / 2.5f, 0.0f);
 
 			D3DXCOLOR R = COLOR_VTX;//D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.8f);
 		//	// ”½ŽËŒõ‚ÌÝ’è
@@ -597,8 +597,8 @@ void UpdateStar(void)
 	PLANE clippingPlane;
 	D3DXVECTOR3 vec1, vec2, nor;
 	float radiusPlane = 500.0f;
-	float setPosWk = 300.0f;
-	float moveSpdWk = -1.0f;
+	float setPosWk = 1000.0f;
+	float moveSpdWk = -10.0f;
 
 	if (GetKeyboardTrigger(DIK_7))
 	{
@@ -1126,6 +1126,10 @@ void SetMoveStar(STAR* star, D3DXVECTOR3 pos, D3DXVECTOR3 move)
 		//if (!star->block[cntBlock].use) { continue; }
 		
 		star->block[cntBlock].pos = pos;
+		//star->block[cntBlock].pos.y -= 5.0f;
+		//star->block[cntBlock].pos.x += 1.0f;
+
+
 		star->block[cntBlock].move = move;
 
 	}
@@ -1156,6 +1160,8 @@ bool ClippingStar(PLANE section)
 
 
 	lengthSection = D3DXVec3LengthSq(&wkLength);
+
+	//lengthSection -= 50.0f;
 
 	tmpVec = section.vtx[1] - section.vtx[0];
 	tmpVec /= 2.0f;
@@ -1206,8 +1212,6 @@ bool ClippingStar(PLANE section)
 			{
 				break;
 			}
-
-
 			if (ClippingBlock(section, &star[cntStar], &star[cntStar].block[cntBlock]))
 			{
 				useMove = true;
@@ -1280,14 +1284,14 @@ void SetMoveBlock(STAR* wkStar, PLANE section)
 
 		wkStar->block[cntBlock].vtxBuff->Unlock();
 
-
+		wkStar->block[cntBlock].move *= 2.0f;
 		if (cntOld > cntNew)
 		{
-			wkStar->block[cntBlock].move += section.nor / VAL_BLOCK_MOVE;
+			wkStar->block[cntBlock].move += section.nor * VAL_BLOCK_MOVE;
 		}
 		else
 		{
-			wkStar->block[cntBlock].move -= section.nor / VAL_BLOCK_MOVE;
+			wkStar->block[cntBlock].move -= section.nor * VAL_BLOCK_MOVE;
 		}
 
 	}
@@ -1302,7 +1306,7 @@ void SetMoveBlock(STAR* wkStar, PLANE section)
 //=============================================================================
 bool ClippingBlock(PLANE section, STAR* star, BLOCK* block)
 {
-	if (!block->use || star->numBlock == MAX_BLOCK)
+	if (!block->use || star->numBlock >= MAX_BLOCK)
 	{
 		return false;
 	}
