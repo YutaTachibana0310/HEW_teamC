@@ -67,8 +67,8 @@ static const char* textureName[PLAYER_TEXTURE_MAX] = {
 
 //ボディ用のテクスチャ名
 static const char* BodyTextureName[TARGETPLAYER_MAX] = {
-	"data/TEXTURE/PLAYER/vj2c_2.jpg",
 	"data/TEXTURE/PLAYER/vj2c_1.jpg",
+	"data/TEXTURE/PLAYER/vj2c_2.jpg",
 };
 
 //テクスチャ
