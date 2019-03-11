@@ -200,7 +200,7 @@ void SetTextureSlashBullet(void)
 
 	SLASHBULLET *ptr = &bullet[0];
 
-	for (int i = 0; i < SLASHBULLET_NUM_MAX; i++, pVtx += 4)
+	for (int i = 0; i < SLASHBULLET_NUM_MAX; i++, pVtx += 4, ptr++)
 	{
 		if (!ptr->active)
 			continue;
