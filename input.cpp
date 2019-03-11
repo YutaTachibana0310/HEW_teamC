@@ -443,9 +443,9 @@ bool GetPauseButtonTrigger(int i)
 {
 #ifndef _DEBUG
 	if (i == 0)
-		return GetKeyboardTrigger(DIK_Q);
+		return GetKeyboardTrigger(DIK_Q) || IsButtonTriggered(i, BUTTON_M) || IsButtonTriggered(i, BUTTON_R);
 	else
-		return IsButtonTriggered(i, BUTTON_M);
+		return IsButtonTriggered(i, BUTTON_M) || IsButtonTriggered(i, BUTTON_R);
 #else
 	if (i == 0)
 		return GetKeyboardTrigger(DIK_Q);
