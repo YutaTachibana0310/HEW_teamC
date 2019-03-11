@@ -26,6 +26,8 @@
 #define BULLET_COLLIDER_LENGTH	(D3DXVECTOR3(10.0f, 10.0f, 5.0f))
 
 #define BULLET_PARTICLE_EMMITT_NUM	(30)
+
+#define BULLET_FORWORD_OFFSET	(-40.0f)
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
@@ -256,7 +258,7 @@ void SetBullet(BULLET* bulletData, int playerNo, float x, float y)
 	bulletData->range.vtx[3].y = posPlayer.y + y * RANGE_ATK_WIDTH;
 	bulletData->range.vtx[3].z = posPlayer.z + RANGE_ATK_WIDTH;
 
-	bulletData->length = RANGE_ATK_WIDTH;
+	bulletData->length = BULLET_FORWORD_OFFSET;
 
 	// 切断平面の法線を設定
 	vec1 = bulletData->range.vtx[1] - bulletData->range.vtx[0];
@@ -281,8 +283,8 @@ void SetBullet(BULLET* bulletData, int playerNo, float x, float y)
 
 	wkPos.z -= INTERVAL_EFFECT_POS;
 
-	bulletData->idxSlashBullet = SetSlashBullet(wkPos, 0, x, -y);
-	bulletData->collider.pos = &GetSlashBulletAdr(bulletData->idxSlashBullet)->pos;
+	bulletData->idxSlashBullet = SetSlashBullet(wkPos, playerNo, x, -y);
+	bulletData->collider.pos = &(GetSlashBulletAdr(bulletData->idxSlashBullet)->pos);
 }
 
 //=============================================================================
