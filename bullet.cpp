@@ -281,8 +281,8 @@ void SetBullet(BULLET* bulletData, int playerNo, float x, float y)
 
 	wkPos.z -= INTERVAL_EFFECT_POS;
 
-	bulletData->idxSlashBullet = SetSlashBullet(wkPos, 0, x, -y);
-	bulletData->collider.pos = &GetSlashBulletAdr(bulletData->idxSlashBullet)->pos;
+	bulletData->idxSlashBullet = SetSlashBullet(wkPos, playerNo, x, -y);
+	bulletData->collider.pos = &(GetSlashBulletAdr(bulletData->idxSlashBullet)->pos);
 }
 
 //=============================================================================

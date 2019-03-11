@@ -264,5 +264,5 @@ void FreeSlashBullet(int bulletID)
 ***************************************/
 SLASHBULLET* GetSlashBulletAdr(int n)
 {
-	return &bullet[0];
+	return &bullet[n];
 }
