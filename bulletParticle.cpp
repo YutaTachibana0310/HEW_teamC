@@ -13,9 +13,12 @@
 マクロ定義
 ***************************************/
 #define BULLETPARTICLE_TEXTURE_NAME		"data/TEXTURE/EFFECT/bulletParticle.png"
-#define BULLETPARTICLE_SIZE_X			(5.0f)
-#define BULLETPARTICLE_SIZE_Y			(5.0f)
+#define BULLETPARTICLE_SIZE_X			(15.0f)
+#define BULLETPARTICLE_SIZE_Y			(15.0f)
 #define BULLETPARTICLE_MAX				(256)
+#define BULLETPARTICLE_LIFE_MIN			(40)
+#define BULLETPARTICLE_LIFE_MAX			(60)
+#define BULLETPARTICLE_INITSPEED		(5.0f)
 
 /**************************************
 構造体定義
@@ -87,6 +90,14 @@ void DrawBulletParticle(void)
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, true);
+	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+
+	DWORD defCmp;
+	pDevice->GetRenderState(D3DRS_ZFUNC, &defCmp);
+	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
+
 	BULLETPARTICLE *ptr = &particle[0];
 	D3DXMATRIX mtxWorld, mtxTranslate, mtxRot;
 	for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++)
@@ -96,8 +107,8 @@ void DrawBulletParticle(void)
 
 		D3DXMatrixIdentity(&mtxWorld);
 
-		GetInvCameraRotMtx(&mtxRot);
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
+		//GetInvCameraRotMtx(&mtxRot);
+		//D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
@@ -109,6 +120,8 @@ void DrawBulletParticle(void)
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
+	pDevice->SetRenderState(D3DRS_ZFUNC, defCmp);
 }
 
 /**************************************
@@ -131,10 +144,10 @@ void MakeVertexBulletParticle(void)
 	BULLETPARTICLE *ptr = &particle[0];
 	for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++, pVtx += 4)
 	{
-		pVtx[0].vtx = D3DXVECTOR3(-BULLETPARTICLE_SIZE_X / 2.0f, -BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
-		pVtx[1].vtx = D3DXVECTOR3(BULLETPARTICLE_SIZE_X / 2.0f, -BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
-		pVtx[2].vtx = D3DXVECTOR3(-BULLETPARTICLE_SIZE_X / 2.0f, BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
-		pVtx[3].vtx = D3DXVECTOR3(BULLETPARTICLE_SIZE_X / 2.0f, BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
+		pVtx[0].vtx = D3DXVECTOR3(-BULLETPARTICLE_SIZE_X / 2.0f, BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
+		pVtx[1].vtx = D3DXVECTOR3(BULLETPARTICLE_SIZE_X / 2.0f, BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
+		pVtx[2].vtx = D3DXVECTOR3(-BULLETPARTICLE_SIZE_X / 2.0f, -BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
+		pVtx[3].vtx = D3DXVECTOR3(BULLETPARTICLE_SIZE_X / 2.0f, -BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
 
 		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
@@ -158,8 +171,8 @@ void MakeVertexBulletParticle(void)
 ***************************************/
 void FadeBulletParticle(void)
 {
-	VERTEX_3D *pVtx;
-	vtxBuff->Lock(0, 0, (void**)vtxBuff, 0);
+	VERTEX_3D *pVtx = NULL;
+	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	BULLETPARTICLE *ptr = &particle[0];
 	for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++, pVtx += 4)
@@ -214,3 +227,26 @@ void CheckLifeBulletParticle(void)
 		}
 	}
 }
+
+/**************************************
+セット処理
+***************************************/
+void SetBulletParticle(D3DXVECTOR3 pos)
+{
+	BULLETPARTICLE *ptr = &particle[0];
+	for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++)
+	{
+		if (ptr->active)
+			continue;
+
+		ptr->active = true;
+		ptr->pos = pos;
+		ptr->cntFrame = 0;
+		ptr->lifeFrame = RandomRange(BULLETPARTICLE_LIFE_MIN, BULLETPARTICLE_MAX);
+		ptr->initSpeed = BULLETPARTICLE_INITSPEED;
+		ptr->moveDir = D3DXVECTOR3(RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f));
+		D3DXVec3Normalize(&ptr->moveDir, &ptr->moveDir);
+		return;
+	}
+}
+
