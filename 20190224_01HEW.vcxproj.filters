@@ -252,6 +252,9 @@
     <ClCompile Include="scrollSpeedController.cpp">
       <Filter>ソース ファイル\Tachibana</Filter>
     </ClCompile>
+    <ClCompile Include="bulletParticle.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -408,6 +411,9 @@
       <Filter>ヘッダー ファイル\Sangmin</Filter>
     </ClInclude>
     <ClInclude Include="scrollSpeedController.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
+    </ClInclude>
+    <ClInclude Include="bulletParticle.h">
       <Filter>ヘッダー ファイル\Tachibana</Filter>
     </ClInclude>
   </ItemGroup>
