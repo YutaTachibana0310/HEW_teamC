@@ -13,6 +13,8 @@
 マクロ定義
 ***************************************/
 #define SLASHBULLET_NUM_MAX		(32)
+#define SLASHBULLET_MOVE_BORDER_Z		(5000.0f)
+
 
 /**************************************
 構造体定義
@@ -35,6 +37,8 @@ void InitSlashBullet(int num);
 void UninitSlashBullet(int num);
 void UpdateSlashBullet(void);
 void DrawSlashBullet(void);
-void SetSlashBullet(D3DXVECTOR3 pos, int playerID, float x, float y);
+int	 SetSlashBullet(D3DXVECTOR3 pos, int playerID, float x, float y);
+void SetSlashBulletPos(D3DXVECTOR3 pos, int bulletID);
+
 SLASHBULLET* GetSlashBulletAdr(int n);
 #endif

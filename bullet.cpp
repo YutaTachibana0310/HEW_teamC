@@ -8,21 +8,24 @@
 #include "input.h"
 #include "camera.h"
 #include "star.h"
+#include "slashBullet.h"
 #include "player.h"
 #include "bullet.h"
-#include "slashBullet.h"
+
 
 #define MOVE_SPEED_BULLET	(5.0f)
 #define ATK_RANGE_WIDTH		(SCREEN_WIDTH * 2.0f)
 #define ATK_RANGE_HEIGHT	(SCREEN_HEIGHT * 3.0f)
 #define DEADZONE_STICK		(0.5f)
-#define RANGE_ATK_WIDTH		(90.0f)
-#define BULLET_SPEED		(6.0f)
+#define RANGE_ATK_WIDTH		(80.0f)
+#define BULLET_SPEED		(16.0f)
+
+#define INTERVAL_EFFECT_POS	(0.0f)
 
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
-void SetBullet(BULLET* bulletData, D3DXVECTOR3 posPlayer, float x, float y);
+void SetBullet(BULLET* bulletData, int playerNo, float x, float y);
 void SetMoveBullet(BULLET* bulletData, D3DXVECTOR3 posPlayer);
 
 
@@ -53,6 +56,7 @@ HRESULT InitBullet(void)
 			bulletData[cntPlayer][cntBullet].range.vtx[2] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 			bulletData[cntPlayer][cntBullet].range.vtx[3] = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 			bulletData[cntPlayer][cntBullet].range.nor = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			bulletData[cntPlayer][cntBullet].idxSlashBullet = -1;
 
 			bulletData[cntPlayer][cntBullet].use = false;
 		}
@@ -77,38 +81,38 @@ void UpdateBullet(void)
 #ifdef _DEBUG
 	if (GetKeyboardTrigger(DIK_Z))
 	{
-		SetBullet(0, GetPositionPlayer(0), 0.0442587733f, 0.5f);
+		SetBullet(&bulletData[0][0], 0, 0.0f, 0.5f);
 	}
 #endif
 
-	for (int cntPad = 0; cntPad < TARGETPLAYER_MAX; cntPad++)
-	{
-		stickAxis.x = GetStickAxisX(cntPad);
-		stickAxis.y = GetStickAxisY(cntPad);
+	//for (int cntPad = 0; cntPad < TARGETPLAYER_MAX; cntPad++)
+	//{
+	//	stickAxis.x = GetStickAxisX(cntPad);
+	//	stickAxis.y = GetStickAxisY(cntPad);
 
-		if (fabsf(stickAxis.x) + fabsf(stickAxis.y) > DEADZONE_STICK && useSet)
-		{
-			for (int cntBullet = 0; cntBullet < SLASHBULLET_NUM_MAX; cntBullet++)
-			{
-				if (bulletData[cntPad][cntBullet].use)
-				{
-					continue;
-				}
+	//	if (fabsf(stickAxis.x) + fabsf(stickAxis.y) > DEADZONE_STICK && useSet)
+	//	{
+	//		for (int cntBullet = 0; cntBullet < SLASHBULLET_NUM_MAX; cntBullet++)
+	//		{
+	//			if (bulletData[cntPad][cntBullet].use)
+	//			{
+	//				continue;
+	//			}
 
-				//D3DXVECTOR3 posPlayer = GetPositionPlayer(cntPad);
-				SetBullet(&bulletData[cntPad][cntBullet], GetPositionPlayer(cntPad), stickAxis.x, stickAxis.y);
-				break;
-			}
+	//			SetBullet(&bulletData[cntPad][cntBullet], cntPad, stickAxis.x, stickAxis.y);
 
-		
-			useSet = false;
-		}
-		else if (fabsf(stickAxis.x) + fabsf(stickAxis.y) < DEADZONE_STICK)
-		{
-			useSet = true;
-		}
+	//			break;
+	//		}
 
-	}
+	//	
+	//		useSet = false;
+	//	}
+	//	else if (fabsf(stickAxis.x) + fabsf(stickAxis.y) < DEADZONE_STICK)
+	//	{
+	//		useSet = true;
+	//	}
+
+	//}
 
 	for (int cntPlayer = 0; cntPlayer < TARGETPLAYER_MAX; cntPlayer++)
 	{
@@ -124,6 +128,43 @@ void UpdateBullet(void)
 
 
 }
+//=============================================================================
+// バレットの移動処理
+//=============================================================================
+bool GetAttackTrigger(int playerNo)
+{
+	D3DXVECTOR2	stickAxis;
+
+	stickAxis.x = GetStickAxisX(playerNo);
+	stickAxis.y = GetStickAxisY(playerNo);
+
+	if (fabsf(stickAxis.x) + fabsf(stickAxis.y) > DEADZONE_STICK)// && useSet)
+	{
+		for (int cntBullet = 0; cntBullet < SLASHBULLET_NUM_MAX; cntBullet++)
+		{
+			if (bulletData[playerNo][cntBullet].use)
+			{
+				continue;
+			}
+
+			SetBullet(&bulletData[playerNo][cntBullet], playerNo, stickAxis.x, stickAxis.y);
+
+			return true;
+			//break;
+		}
+
+
+		//useSet = false;
+	}
+	//else if (fabsf(stickAxis.x) + fabsf(stickAxis.y) < DEADZONE_STICK)
+	//{
+	//	useSet = true;
+	//}
+
+	return false;
+
+}
+
 
 //=============================================================================
 // バレットの移動処理
@@ -131,6 +172,7 @@ void UpdateBullet(void)
 void SetMoveBullet(BULLET* bulletData, D3DXVECTOR3 posPlayer)
 {
 	//float		depthPlayerPos;
+	//D3DXVECTOR3 posSlash;
 
 	bulletData->length += BULLET_SPEED;
 	//depthPlayerPos = GetPositionPlayer(playerNo).z;
@@ -141,9 +183,23 @@ void SetMoveBullet(BULLET* bulletData, D3DXVECTOR3 posPlayer)
 	bulletData->range.vtx[1].z = posPlayer.z + bulletData->length;
 	bulletData->range.vtx[3].z = posPlayer.z + bulletData->length;
 
-	if (ClippingStar(bulletData->range))
+	D3DXVECTOR3 posEffect, wkPos;
+
+	wkPos = bulletData->range.vtx[1] - bulletData->range.vtx[3];
+
+	wkPos /= 2.0f;
+
+	wkPos += bulletData->range.vtx[3];
+
+	wkPos.z -= INTERVAL_EFFECT_POS;
+
+	SetSlashBulletPos(wkPos, bulletData->idxSlashBullet);
+
+	if (ClippingStar(bulletData->range) || wkPos.z > SLASHBULLET_MOVE_BORDER_Z)
 	{
 		bulletData->use = false;
+		FreeSlashBullet(bulletData->idxSlashBullet);
+		bulletData->idxSlashBullet = -1;
 	}
 
 }
@@ -152,17 +208,18 @@ void SetMoveBullet(BULLET* bulletData, D3DXVECTOR3 posPlayer)
 //=============================================================================
 // バレットのセット処理
 //=============================================================================
-void SetBullet(BULLET* bulletData, D3DXVECTOR3 posPlayer, float x, float y)
+void SetBullet(BULLET* bulletData, int playerNo, float x, float y)
 {
 	D3DXVECTOR3 vec1, vec2, cross, nor;
 
-	
+	D3DXVECTOR3 posPlayer = GetPositionPlayer(playerNo);
+
 	float tmp = 0.0f;
 	while (tmp == 0.0f)
 	{
-		tmp = (float)(rand() % 20) - 10.0f;
+		tmp = (float)(rand() % 2000) - 1000.0f;
 	}
-	tmp /= 10.0f;
+	tmp /= 1000.0f;
 
 	// 切断平面の４頂点の座標を設定
 	bulletData->range.vtx[0].x = posPlayer.x + x * RANGE_ATK_WIDTH - tmp;
@@ -195,6 +252,18 @@ void SetBullet(BULLET* bulletData, D3DXVECTOR3 posPlayer, float x, float y)
 
 	// バレットを使用状態にする
 	bulletData->use = true;
+
+	D3DXVECTOR3 posEffect, wkPos;
+
+	wkPos = bulletData->range.vtx[1] - bulletData->range.vtx[3];
+
+	wkPos /= 2.0f;
+
+	wkPos += bulletData->range.vtx[3];
+
+	wkPos.z -= INTERVAL_EFFECT_POS;
+
+	bulletData->idxSlashBullet = SetSlashBullet(wkPos, 0, x, -y);
 
 }
 

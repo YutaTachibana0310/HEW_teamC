@@ -106,11 +106,6 @@ typedef struct
 } STAR;
 
 
-typedef struct
-{
-	D3DXVECTOR3 vtx[4];
-	D3DXVECTOR3 nor;
-}PLANE;
 
 typedef struct
 {

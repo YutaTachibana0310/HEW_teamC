@@ -17,7 +17,7 @@
 //*****************************************************************************
 // ƒ}ƒNƒ’è‹`
 //*****************************************************************************
-#define INIT_BLOCK_SCALE		D3DXVECTOR3(0.2f, 0.2f, 0.2f)
+#define INIT_BLOCK_SCALE		D3DXVECTOR3(0.20f, 0.20f, 0.2f)
 
 #define	BLOCK_WIDTH				(20.0f)						// ’e‚Ì”¼Œa•
 #define	BLOCK_HEIGHT			(80.0f)						// ’e‚Ì”¼Œa•
@@ -597,8 +597,8 @@ void UpdateStar(void)
 	PLANE clippingPlane;
 	D3DXVECTOR3 vec1, vec2, nor;
 	float radiusPlane = 500.0f;
-	float setPosWk = 300.0f;
-	float moveSpdWk = -1.0f;
+	float setPosWk = 1000.0f;
+	float moveSpdWk = -10.0f;
 
 	if (GetKeyboardTrigger(DIK_7))
 	{
@@ -1280,14 +1280,14 @@ void SetMoveBlock(STAR* wkStar, PLANE section)
 
 		wkStar->block[cntBlock].vtxBuff->Unlock();
 
-
+		wkStar->block[cntBlock].move *= 2.0f;
 		if (cntOld > cntNew)
 		{
-			wkStar->block[cntBlock].move += section.nor / VAL_BLOCK_MOVE;
+			wkStar->block[cntBlock].move += section.nor * VAL_BLOCK_MOVE;
 		}
 		else
 		{
-			wkStar->block[cntBlock].move -= section.nor / VAL_BLOCK_MOVE;
+			wkStar->block[cntBlock].move -= section.nor * VAL_BLOCK_MOVE;
 		}
 
 	}
