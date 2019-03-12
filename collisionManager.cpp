@@ -14,6 +14,8 @@
 #include "soundEffectManager.h"
 
 #include "bullet.h"
+#include "goalTape.h"
+#include "goalTelop.h"
 /**************************************
 マクロ定義
 ***************************************/
@@ -30,11 +32,22 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
+void CollisionBulletAndPlayer(void);
+void CollisionGoalAndPlayer(void);
 
 /**************************************
 更新処理
 ***************************************/
 void UpdateCollisionManager(void)
+{
+	CollisionBulletAndPlayer();
+	CollisionGoalAndPlayer();
+}
+
+/**************************************
+バレットとプレイヤーの衝突判定
+***************************************/
+void CollisionBulletAndPlayer(void)
 {
 	//プレイヤーとスラッシュバレットを衝突判定
 	PLAYER *player = GetPlayer(0);
@@ -42,7 +55,7 @@ void UpdateCollisionManager(void)
 	{
 		int opponent = WrapAround(0, TARGETPLAYER_MAX, i + 1);
 		BULLET *bullet = GetBulletAdr(opponent, 0);
-		for (int j = 0; j < SLASHBULLET_NUM_MAX/2; j++, bullet++)
+		for (int j = 0; j < SLASHBULLET_NUM_MAX / 2; j++, bullet++)
 		{
 			//非アクティブのバレットとは判定しない
 			if (!bullet->use)
@@ -66,6 +79,27 @@ void UpdateCollisionManager(void)
 				//対応しているスラッシュバレットを非アクティブに
 				GetSlashBulletAdr(bullet->idxSlashBullet)->active = false;
 			}
+		}
+	}
+}
+
+/**************************************
+ゴールとプレイヤーの衝突判定
+***************************************/
+void CollisionGoalAndPlayer(void)
+{
+	PLAYER *player = GetPlayer(0);
+	for (int i = 0; i < TARGETPLAYER_MAX; i++, player++)
+	{
+		GAMEPARAMETER *param = GetGameParameterAdr(i);
+		if (param->isPlayerGoaled)
+			continue;
+
+		GOALTAPE *tape = GetGoalTapeAdr();
+		if (ChechHitBoundingCube(&player->collider, &tape->collider))
+		{
+			SetGoalTelop(i);
+			param->isPlayerGoaled = true;
 		}
 	}
 }

@@ -19,6 +19,7 @@
 グローバル変数
 ***************************************/
 static GAMEPARAMETER param[TARGETPLAYER_MAX];
+static SYSTEMPARAMETER sysParam;
 
 /**************************************
 プロトタイプ宣言
@@ -34,7 +35,13 @@ void InitGameParameter(int num)
 		param[i].playerSpeed = 0.0f;
 		param[i].playerMoveDist = 0.0f;
 		param[i].isPlayerGoaled = false;
+		param[1].score = 0;
+		param[i].deltaTime = 0.0f;
+		param[i].isPlayerGoaled = false;
 	}
+
+	sysParam.currentProgress = 0.0f;
+	sysParam.winnerID = -1;
 }
 
 /**************************************
@@ -96,4 +103,12 @@ bool CheckPlayerGoaled(int id)
 
 	//未ゴール判定
 	return false;
+}
+
+/**************************************
+システムパラメータ取得処理
+***************************************/
+SYSTEMPARAMETER *GetSystemParameterAdr(void)
+{
+	return &sysParam;
 }
