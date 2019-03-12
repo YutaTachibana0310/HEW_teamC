@@ -593,7 +593,7 @@ void UpdateStar(void)
 	D3DXVECTOR3 vec, wkPos;
 
 	
-#ifdef _DEBUG
+#if 1
 	PLANE clippingPlane;
 	D3DXVECTOR3 vec1, vec2, nor;
 	float radiusPlane = 500.0f;
@@ -608,6 +608,9 @@ void UpdateStar(void)
 	if (GetKeyboardTrigger(DIK_1))
 	{
 		D3DXVECTOR3 tmpPos = GetPositionPlayer(0);
+		tmpPos.z += setPosWk;
+		SetStar(tmpPos, D3DXVECTOR3(0.0f, 0.0f, moveSpdWk));
+		tmpPos = GetPositionPlayer(1);
 		tmpPos.z += setPosWk;
 		SetStar(tmpPos, D3DXVECTOR3(0.0f, 0.0f, moveSpdWk));
 	}
