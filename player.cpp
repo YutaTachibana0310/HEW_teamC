@@ -36,7 +36,7 @@
 #define PLAYER_ACCEL_DURATION	(30)						// 加減速にかける時間
 #define PLAYER_TEXTURE_MAX		(9)
 #define PLAYER_DEFAULTROT_Y		(D3DXToRadian(180.0f))
-#define PLAYER_SHOT_INTERBAL	(30)
+#define PLAYER_SHOT_INTERBAL	(20)
 #define PLAYER_BODYTEX_INDEX	(5)
 #define PLAYER_SCALE			(2.0f)
 #define PLAYER_EFFECTPOS_L		(D3DXVECTOR3(-3.0f, 2.0f, 10.0f))
@@ -419,7 +419,7 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 		PlaySE(SOUND_ACCEL);
 
 		//前進カウント
-		GetGameParameterAdr(playerId)->posOffset++;
+		AddOffsetCount(playerId, true);
 	}
 	else if (isAccelerator == false)
 	{
@@ -436,7 +436,7 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 		GetGameParameterAdr(playerId)->playerSpeed = Clampf(GAMEPARAMETER_SPEED_MIN, GAMEPARAMETER_SPEED_MAX, setSpeed);
 
 		//後退カウント
-		GetGameParameterAdr(playerId)->posOffset--;
+		AddOffsetCount(playerId, false);
 	}
 }
 

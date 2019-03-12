@@ -99,3 +99,14 @@ SYSTEMPARAMETER *GetSystemParameterAdr(void)
 {
 	return &sysParam;
 }
+
+/**************************************
+オフセットカウント増減処理
+***************************************/
+void AddOffsetCount(int playerID, bool isInclement)
+{
+	int addValue = isInclement ? 1 : -1;
+
+	param[playerID].posOffset = Clamp(GAMEPARAMETER_POSOFFSET_MIN, GAMEPARAMETER_SPEED_MAX, param[playerID].posOffset + addValue);
+
+}
