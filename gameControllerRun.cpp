@@ -70,6 +70,7 @@ void UpdateGameControllerRun(GAMECONTROLLER *entity)
 		GAMEPARAMETER *param = GetGameParameterAdr(i);
 		param->playerMoveDist += param->playerSpeed;
 	}
+	GetSystemParameterAdr()->currentProgress += SYSTEMPARAMETER_PROGRESS_VALUE;
 
 	//ゲームパラメータの時間を加算
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)

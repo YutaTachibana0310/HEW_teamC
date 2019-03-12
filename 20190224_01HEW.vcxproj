@@ -39,6 +39,7 @@
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="gameParameter.cpp" />
     <ClCompile Include="gameScene.cpp" />
+    <ClCompile Include="goalTape.cpp" />
     <ClCompile Include="goalTelop.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -95,6 +96,7 @@
     <ClInclude Include="gameController.h" />
     <ClInclude Include="gameParameter.h" />
     <ClInclude Include="gameScene.h" />
+    <ClInclude Include="goalTape.h" />
     <ClInclude Include="goalTelop.h" />
     <ClInclude Include="GUIManager.h" />
     <ClInclude Include="imgui\imconfig.h" />

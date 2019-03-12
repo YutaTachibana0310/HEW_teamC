@@ -19,6 +19,10 @@
 #define GAMEPARAMETER_SPEED_MAX			(5.0f)
 #define GAMEPARAMETER_SPEED_ADDVALUE	(0.3f)
 #define GAMEPARAMETER_SPEED_DECLVALUE	(-0.3f)
+
+#define SYSTEMPARAMETER_PROGRESS_VALUE	(1.0f)
+#define SYSTEMPARAMETER_PROGRESS_MAX	(120.0f)
+
 /**************************************
 構造体定義
 ***************************************/
@@ -29,6 +33,12 @@ typedef struct _GAMEPARAMETER{
 	float deltaTime;			//タイム
 	bool isPlayerGoaled;		//ゴールしているかどうか
 }GAMEPARAMETER;
+
+typedef struct {
+	float currentProgress;
+	int winnerID;
+}SYSTEMPARAMETER;
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -39,4 +49,5 @@ void DrawGameParameter(void);
 GAMEPARAMETER *GetGameParameterAdr(int n);
 void SetSpeedGameParameter(int id, float speed);
 bool CheckPlayerGoaled(int id);
+SYSTEMPARAMETER *GetSystemParameterAdr(void);
 #endif
