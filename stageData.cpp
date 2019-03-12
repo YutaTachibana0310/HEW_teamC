@@ -6,11 +6,16 @@
 //=====================================
 #include "stageData.h"
 #include <stdio.h>
+#include "rainbowLane.h"
+#include "star.h"
 
 /**************************************
 マクロ定義
 ***************************************/
 #define STAGEDATA_FILE_PATH		"data/STAGE/stageData.dat"
+#define STAGEDATA_SETPOS_Z		(4000.0f)
+#define STAGEDATA_SETPOS_MAX	(3)
+#define STAGEDATA_SET_MOVEDIR	(D3DXVECTOR3(0.0f, 0.0f, -1.0f) * 20.0f)
 
 /**************************************
 構造体定義
@@ -24,6 +29,7 @@ static int dataMax;
 static int cntFrame;
 static int currentIndex;
 
+static D3DXVECTOR3 setPos[STAGEDATA_SETPOS_MAX];
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -39,6 +45,12 @@ void InitStageData(int num)
 
 	cntFrame = 0;
 	currentIndex = 0;
+
+	for (int i = 0; i < STAGEDATA_SETPOS_MAX; i++)
+	{
+		setPos[i] = GetLanePos(i);
+		setPos[i].z = STAGEDATA_SETPOS_Z;
+	}
 }
 
 /**************************************
@@ -59,11 +71,10 @@ void UpdateStageData(void)
 
 	cntFrame++;
 	STAGE_STARDATA *ptr = &head[currentIndex];
-	for (; currentIndex < dataMax && cntFrame < ptr->popFrame; ptr++, currentIndex++)
+	for (; currentIndex < dataMax && cntFrame >= ptr->popFrame; ptr++, currentIndex++)
 	{
 		//スター生成
-
-		
+		SetStar(setPos[ptr->laneIndex], STAGEDATA_SET_MOVEDIR);
 	}
 
 }
