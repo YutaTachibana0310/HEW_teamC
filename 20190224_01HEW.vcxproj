@@ -73,6 +73,7 @@
     <ClCompile Include="soundEffectManager.cpp" />
     <ClCompile Include="speedGage.cpp" />
     <ClCompile Include="speedMeter.cpp" />
+    <ClCompile Include="stageData.cpp" />
     <ClCompile Include="star.cpp" />
     <ClCompile Include="timeGUI.cpp" />
     <ClCompile Include="titleLogo.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="soundEffectManager.h" />
     <ClInclude Include="speedGage.h" />
     <ClInclude Include="speedMeter.h" />
+    <ClInclude Include="stageData.h" />
     <ClInclude Include="star.h" />
     <ClInclude Include="timeGUI.h" />
     <ClInclude Include="titleLogo.h" />

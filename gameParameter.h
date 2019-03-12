@@ -20,9 +20,12 @@
 #define GAMEPARAMETER_SPEED_ADDVALUE	(0.3f)
 #define GAMEPARAMETER_SPEED_DECLVALUE	(-0.3f)
 
-#define SYSTEMPARAMETER_PROGRESS_VALUE	(1.0f)
-#define SYSTEMPARAMETER_PROGRESS_MAX	(5000.0f)
+#define SYSTEMPARAMTER_VALUE_MAGNI		(20.0f)
+#define SYSTEMPARAMETER_PROGRESS_VALUE	(1.0f*SYSTEMPARAMTER_VALUE_MAGNI)
+#define SYSTEMPARAMETER_PROGRESS_MAX	(60*60.0f*SYSTEMPARAMTER_VALUE_MAGNI)
 
+#define GAMEPARAMETER_POSOFFSET_MAX		(5)
+#define GAMEPARAMETER_POSOFFSET_MIN		(-5)
 /**************************************
 ç\ë¢ëÃíËã`
 ***************************************/
@@ -51,4 +54,5 @@ GAMEPARAMETER *GetGameParameterAdr(int n);
 void SetSpeedGameParameter(int id, float speed);
 bool CheckPlayerGoaled(int id);
 SYSTEMPARAMETER *GetSystemParameterAdr(void);
+void AddOffsetCount(int playerID, bool isInclement);
 #endif

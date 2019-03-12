@@ -89,20 +89,7 @@ void SetSpeedGameParameter(int id, float speed)
 ***************************************/
 bool CheckPlayerGoaled(int id)
 {
-	//ゴール済みであればreturn true
-	if (param[id].isPlayerGoaled)
-		return true;
-
-	//移動距離をチェックし、ゴールを超えていればテロップをセットしreturn true
-	if (param[id].playerMoveDist >= GAMEPARAMETER_MOVEDIST_MAX)
-	{
-		param[id].isPlayerGoaled = true;
-		SetGoalTelop(id);
-		return true;
-	}
-
-	//未ゴール判定
-	return false;
+	return param[id].isPlayerGoaled;
 }
 
 /**************************************
@@ -111,4 +98,15 @@ bool CheckPlayerGoaled(int id)
 SYSTEMPARAMETER *GetSystemParameterAdr(void)
 {
 	return &sysParam;
+}
+
+/**************************************
+オフセットカウント増減処理
+***************************************/
+void AddOffsetCount(int playerID, bool isInclement)
+{
+	int addValue = isInclement ? 1 : -1;
+
+	param[playerID].posOffset = Clamp(GAMEPARAMETER_POSOFFSET_MIN, GAMEPARAMETER_SPEED_MAX, param[playerID].posOffset + addValue);
+
 }

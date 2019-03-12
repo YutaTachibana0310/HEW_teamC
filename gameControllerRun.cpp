@@ -9,6 +9,7 @@
 #include "gameParameter.h"
 #include "scrollSpeedController.h"
 #include "goalTape.h"
+#include "stageData.h"
 
 /**************************************
 マクロ定義
@@ -65,6 +66,10 @@ void UpdateGameControllerRun(GAMECONTROLLER *entity)
 		SetPlayerAcceleration(1, true);
 	}
 
+	//スター生成処理
+	UpdateStageData();
+
+	//ゴールテープ更新
 	UpdateGoalTape();
 
 	//プレイヤーの移動距離を加算

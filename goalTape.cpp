@@ -11,7 +11,7 @@
 ƒ}ƒNƒ’è‹`
 ***************************************/
 #define GOALTAPE_COLLIDER_LENGTH		(D3DXVECTOR3(1000.0f, 100.0f, 0.0f))
-#define GOALTAPE_SIZE_X					(10000.0f)
+#define GOALTAPE_SIZE_X					(500.0f)
 #define GOALTAPE_SIZE_Y					(10.0f)
 #define GOALTAPE_POS_Y					(-10.0f)
 #define GOALTAPE_TEXTURE_NAME			"data/TEXTURE/BG/goalTape.png"
@@ -65,7 +65,7 @@ void UninitGoalTape(int num)
 ***************************************/
 void UpdateGoalTape(void)
 {
-	entity.pos.z -= SYSTEMPARAMETER_PROGRESS_VALUE * 10;
+	entity.pos.z -= SYSTEMPARAMETER_PROGRESS_VALUE;
 }
 
 /**************************************
@@ -97,6 +97,7 @@ void DrawGoalTape(void)
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 
 #ifdef _DEBUG
 	DrawBoundingCube(&entity.collider);

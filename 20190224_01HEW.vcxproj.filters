@@ -261,6 +261,9 @@
     <ClCompile Include="goalTape.cpp">
       <Filter>ソース ファイル\Tachibana</Filter>
     </ClCompile>
+    <ClCompile Include="stageData.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -426,6 +429,9 @@
       <Filter>ヘッダー ファイル\Tachibana</Filter>
     </ClInclude>
     <ClInclude Include="goalTape.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
+    </ClInclude>
+    <ClInclude Include="stageData.h">
       <Filter>ヘッダー ファイル\Tachibana</Filter>
     </ClInclude>
   </ItemGroup>
