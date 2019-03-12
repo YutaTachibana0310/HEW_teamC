@@ -167,14 +167,14 @@ void DrawBoundingCube(const COLLIDER_CUBE *cube)
 }
 
 /*****************************************************************************
-関数名	：bool CheckHitTriangleAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, TRIANGLE tri, D3DXVECTOR3 *out)
+関数名	：bool CheckHitTriangleAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, POLYGON_TRIANGLE tri, D3DXVECTOR3 *out)
 引数1	：D3DXVECTOR3 start	…　線分の始点
 引数2	：D3DXVECTOR3 end	…　線分の終点
-引数3	：TRIANGLE tri		…　三角形ポリゴン
+引数3	：POLYGON_TRIANGLE tri		…　三角形ポリゴン
 引数4	：D3DXVECTOR3 *out	…　交点を格納するポインタ
 説明	：線分と三角形ポリゴンの当たり判定
 *****************************************************************************/
-bool CheckHitTriangleAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, TRIANGLE tri, D3DXVECTOR3 *out)
+bool CheckHitTriangleAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, POLYGON_TRIANGLE tri, D3DXVECTOR3 *out)
 {
 	//線分の始点、終点とフィールドの法線ベクトルとの内積を計算
 	D3DXVECTOR3 v1 = start - tri.a;
@@ -220,14 +220,14 @@ bool CheckHitTriangleAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, TRIANGLE tri, D
 }
 
 /*****************************************************************************
-関数名	：bool CheckHitTriangleAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, PLANE plane, D3DXVECTOR3 *out)
+関数名	：bool CheckHitTriangleAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, POLYGON_PLANE plane, D3DXVECTOR3 *out)
 引数1	：D3DXVECTOR3 start	…　線分の始点
 引数2	：D3DXVECTOR3 end	…　線分の終点
-引数3	：TRIANGLE tri		…　四角形ポリゴン半径
+引数3	：POLYGON_TRIANGLE tri		…　四角形ポリゴン半径
 引数4	：D3DXVECTOR3 *out	…　交点を格納するポインタ
 説明	：三角形ポリゴンと線分の当たり判定
 *****************************************************************************/
-bool CheckHitPlaneAndLine(D3DXVECTOR3 start, D3DXVECTOR3 goal, PLANE plane, D3DXVECTOR3 *out)
+bool CheckHitPlaneAndLine(D3DXVECTOR3 start, D3DXVECTOR3 goal, POLYGON_PLANE plane, D3DXVECTOR3 *out)
 {
 	//線分の始点、終点とフィールドの法線ベクトルとの内積を計算
 	D3DXVECTOR3 v1 = start - plane.topL;

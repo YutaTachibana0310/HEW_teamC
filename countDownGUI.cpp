@@ -7,6 +7,8 @@
 #include "countDownGUI.h"
 #include "Easing.h"
 
+#include "soundEffectManager.h"
+
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
@@ -162,4 +164,5 @@ void SetCountDownGUI(void)
 	active = true;
 	cntFrame = 0;
 	animPattern = 0;
+	PlaySE(SOUND_COUNTDOWN);
 }

@@ -12,14 +12,21 @@
 /**************************************
 マクロ定義
 ***************************************/
+//#define GAMEPARAMETER_MOVEDIST_MAX		(500.0f)
 #define GAMEPARAMETER_MOVEDIST_MAX		(50000.0f)
 
+#define GAMEPARAMETER_SPEED_MIN			(0.5f)
+#define GAMEPARAMETER_SPEED_MAX			(5.0f)
+#define GAMEPARAMETER_SPEED_ADDVALUE	(0.3f)
+#define GAMEPARAMETER_SPEED_DECLVALUE	(-0.3f)
 /**************************************
 構造体定義
 ***************************************/
 typedef struct _GAMEPARAMETER{
 	float playerSpeed;			//プレイヤーのスピード
 	float playerMoveDist;		//プレイヤーの移動距離
+	int score;					//現在のスコア
+	float deltaTime;			//タイム
 	bool isPlayerGoaled;		//ゴールしているかどうか
 }GAMEPARAMETER;
 /**************************************

@@ -8,12 +8,14 @@
 
 #include "countDownGUI.h"
 #include "gameParameter.h"
+#include "scrollSpeedController.h"
 
 /**************************************
 マクロ定義
 ***************************************/
 #define GAMECONTROLLER_START_DURATION		(180)
 #define GAMECONTROLLER_START_SCROLLSPEED	(0.5f)
+
 /**************************************
 構造体定義
 ***************************************/
@@ -38,6 +40,7 @@ void EnterGameControllerStart(GAMECONTROLLER *entity)
 		SetSpeedGameParameter(i, GAMECONTROLLER_START_SCROLLSPEED);
 	}
 
+	//InitScrollSpeedController(0);
 	SetCountDownGUI();
 }
 

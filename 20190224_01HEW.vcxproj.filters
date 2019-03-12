@@ -231,6 +231,33 @@
     <ClCompile Include="speedMeter.cpp">
       <Filter>ソース ファイル\Horiuchi</Filter>
     </ClCompile>
+    <ClCompile Include="slashBullet.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionManager.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="score.cpp">
+      <Filter>ソース ファイル\Horiuchi</Filter>
+    </ClCompile>
+    <ClCompile Include="star.cpp">
+      <Filter>ソース ファイル\Sangmin</Filter>
+    </ClCompile>
+    <ClCompile Include="timeGUI.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="resultTelop.cpp">
+      <Filter>ソース ファイル\Tachibana\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet.cpp">
+      <Filter>ソース ファイル\Sangmin</Filter>
+    </ClCompile>
+    <ClCompile Include="scrollSpeedController.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
+    </ClCompile>
+    <ClCompile Include="bulletParticle.cpp">
+      <Filter>ソース ファイル\Tachibana</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -353,6 +380,9 @@
     <ClInclude Include="resultGUI.h">
       <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="score.h">
+      <Filter>ヘッダー ファイル\Horiuchi</Filter>
+    </ClInclude>
     <ClInclude Include="gameController.h">
       <Filter>ヘッダー ファイル\Tachibana</Filter>
     </ClInclude>
@@ -367,6 +397,30 @@
     </ClInclude>
     <ClInclude Include="speedMeter.h">
       <Filter>ヘッダー ファイル\Horiuchi</Filter>
+    </ClInclude>
+    <ClInclude Include="star.h">
+      <Filter>ヘッダー ファイル\Sangmin</Filter>
+    </ClInclude>
+    <ClInclude Include="slashBullet.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
+    </ClInclude>
+    <ClInclude Include="collisionManager.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="timeGUI.h">
+      <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="resultTelop.h">
+      <Filter>ヘッダー ファイル\Tachibana\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet.h">
+      <Filter>ヘッダー ファイル\Sangmin</Filter>
+    </ClInclude>
+    <ClInclude Include="scrollSpeedController.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
+    </ClInclude>
+    <ClInclude Include="bulletParticle.h">
+      <Filter>ヘッダー ファイル\Tachibana</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

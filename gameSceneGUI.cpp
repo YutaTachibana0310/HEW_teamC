@@ -9,9 +9,12 @@
 #include "progressGauge.h"
 #include "progressMarker.h"
 #include "gameParameter.h"
+#include "score.h"
 #include "countDownGUI.h"
 #include "goalTelop.h"
 #include "speedMeter.h"
+#include "timeGUI.h"
+
 /**************************************
 マクロ定義
 ***************************************/
@@ -35,9 +38,11 @@ void InitGameSceneGUI(void)
 {
 	InitProgressGauge(0);
 	InitProgressMarker(0);
+	InitScore(0);
 	InitCountDownGUI(0);
 	InitGoalTelop(0);
 	InitSpeedGUI();
+	InitTimeGUI(0);
 }
 
 /**************************************
@@ -47,9 +52,14 @@ void UninitGameSceneGUI(void)
 {
 	UninitProgressGauge(0);
 	UninitProgressMarker(0);
+	UninitScore(0);
 	UninitCountDownGUI(0);
 	UninitGoalTelop(0);
+<<<<<<< HEAD
 	UninitSpeedGUI();
+=======
+	UninitTimeGUI(0);
+>>>>>>> 5dc48cf3603ec8189f0331076ac436f9843a63d5
 }
 
 /**************************************
@@ -59,9 +69,11 @@ void UpdateGameSceneGUI(void)
 {
 	UpdateProgressGauge();
 	UpdateProgressMarker();
+	UpdateScore();
 	UpdateCountDownGUI();
 	UpdateGoalTelop();
 	UpdateSpeedGUI();
+	UpdateTimeGUI();
 }
 
 /**************************************
@@ -85,7 +97,6 @@ void DrawGameSceneGUI(void)
 		DrawProgressMarker();
 	}
 
-
 	//スピードメーター描画
 	for (int i = 0; i < METER_MAX; i++)
 	{
@@ -95,6 +106,10 @@ void DrawGameSceneGUI(void)
 		DrawSpeedGUI();
 	}
 
+	//スコアの描画
+	int score1P = GetGameParameterAdr(0)->score;
+	int score2P = GetGameParameterAdr(1)->score;
+	DrawScore(score1P, score2P);
 
 	//カウントダウンGUIを描画
 	DrawCountDownGUI();
@@ -109,5 +124,11 @@ void DrawGameSceneGUI(void)
 			continue;
 
 		DrawGoalTelop(i);
+	}
+
+	//タイムGUIを描画
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		DrawTimeGUI(GetGameParameterAdr(0)->deltaTime, GetGameParameterAdr(1)->deltaTime);
 	}
 }

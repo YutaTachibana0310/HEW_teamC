@@ -7,6 +7,7 @@
 #include "GUIManager.h"
 
 #include "resultGUI.h"
+#include "resultTelop.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -30,6 +31,7 @@
 void InitResultSceneGUI(void)
 {
 	InitResultGUI(0);
+	InitResultTelop(0);
 }
 
 /**************************************
@@ -38,6 +40,7 @@ void InitResultSceneGUI(void)
 void UninitResultSceneGUI(void)
 {
 	UninitResultGUI(0);
+	UninitResultTelop(0);
 }
 
 /**************************************
@@ -46,6 +49,7 @@ void UninitResultSceneGUI(void)
 void UpdateResultSceneGUI(void)
 {
 	UpdateResultGUI();
+	UpdateResultTelop();
 }
 
 /**************************************
@@ -60,4 +64,7 @@ void DrawResultSceneGUI(void)
 		SetResultGUI(i, i != 0);
 		DrawResultGUI();
 	}
+
+	//ÇØÇ¡Ç©ÇÕÇ¡Ç“ÇÂÇ§Çï`âÊ
+	DrawResultTelop();
 }

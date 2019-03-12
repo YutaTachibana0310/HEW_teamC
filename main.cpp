@@ -53,7 +53,7 @@ bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;
 
 //現在のシーン
-static int currentScene = GameScene;
+static int currentScene = TitleScene;
 
 //各ビューポート
 static D3DVIEWPORT9 viewPort[TARGETPLAYER_MAX] = {
@@ -314,7 +314,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	if ((caps.RasterCaps & D3DPRASTERCAPS_FOGRANGE) != 0)
 	{
 		FLOAT StartPos = 2000;
-		FLOAT EndPos = 10000;
+		FLOAT EndPos = 5000;
 
 		g_pD3DDevice->SetRenderState(D3DRS_FOGENABLE, true);
 		g_pD3DDevice->SetRenderState(D3DRS_FOGCOLOR, backColor);

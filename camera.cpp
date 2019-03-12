@@ -15,13 +15,13 @@
 #define	VIEW_ANGLE					(D3DXToRadian(60.0f))	// 視野角
 #define	VIEW_ASPECT					((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT)	// ビュー平面のアスペクト比
 #define	VIEW_NEAR_Z					(50.0f)					// ビュー平面のNearZ値
-#define	VIEW_FAR_Z					(20000.0f)				// ビュー平面のFarZ値
+#define	VIEW_FAR_Z					(5000.0f)				// ビュー平面のFarZ値
 #define	VALUE_MOVE_CAMERA			(20.0f)					// カメラの移動量
 #define	VALUE_ROTATE_CAMERA			(D3DX_PI * 0.01f)		// カメラの回転量
 
-#define CAMERA_POSITION_OFFSET		(D3DXVECTOR3(0.0f, 50.0f, -70.0f))	//視点の位置
+#define CAMERA_POSITION_OFFSET		(D3DXVECTOR3(0.0f, 30.0f, -150.0f))	//視点の位置
 #define CAMERA_TARGET_OFFSET		(D3DXVECTOR3(0.0f, 10.0f, 50.0f))	//注視点の位置
-#define CAMERA_OFFSET_MAGNI			(0.35f)								//カメラの移動倍率
+#define CAMERA_OFFSET_MAGNI			(0.2f)								//カメラの移動倍率
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -32,6 +32,7 @@
 // グローバル変数
 //*****************************************************************************
 CAMERA camera;
+static D3DXMATRIX saveView[TARGETPLAYER_MAX];
 
 //=============================================================================
 // カメラの初期化
@@ -95,7 +96,7 @@ void SetCamera(int targetPlayerID)
 
 	// ビューマトリックスの設定
 	pDevice->SetTransform(D3DTS_VIEW, &camera.view);
-
+	saveView[targetPlayerID] = camera.view;
 
 	// プロジェクションマトリックスの初期化
 	D3DXMatrixIdentity(&camera.projection);
@@ -110,6 +111,14 @@ void SetCamera(int targetPlayerID)
 	// プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &camera.projection);
 }
+//=============================================================================
+// ビューマトリックスの取得(画面分割に対応)
+//=============================================================================
+D3DXMATRIX GetPlayerMtxView(int targetPlayerID)
+{
+	return saveView[targetPlayerID];
+}
+
 
 //=============================================================================
 // カメラの向きの取得

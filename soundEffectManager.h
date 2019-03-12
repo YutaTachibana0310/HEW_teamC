@@ -23,11 +23,18 @@ using namespace std;
 /**************************************
 構造体定義
 ***************************************/
-enum class  DefineSE : unsigned int
+enum DefineSE
 {
 	//サウンド通しナンバー
-	LOCKON,
-	MAX
+	SOUND_COUNTDOWN,
+	SOUND_ENTRY,
+	SOUND_GOAL,
+	SOUND_ACCEL,
+	SOUND_CHEER,
+	SOUND_LANEMOVE,
+	SOUIND_BULLET,
+	SOUND_SLASH,
+	SOUND_MAX
 };
 
 typedef struct

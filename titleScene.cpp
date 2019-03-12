@@ -7,11 +7,14 @@
 #include "titleScene.h"
 #include "input.h"
 #include "sceneFade.h"
+#include "bgmManager.h"
 
 #include "meshCylinder.h"
 #include "rainbowLane.h"
 #include "gameParameter.h"
-
+#include "player.h"
+#include "effect.h"
+#include "soundEffectManager.h"
 /**************************************
 マクロ定義
 ***************************************/
@@ -25,6 +28,7 @@
 グローバル変数
 ***************************************/
 static bool entryState[TARGETPLAYER_MAX];	//エントリー状態
+static bool entryComleterd;
 
 /**************************************
 プロトタイプ宣言
@@ -41,10 +45,13 @@ HRESULT InitTitleScene(int num)
 	{
 		entryState[i] = false;
 	}
+	entryComleterd = false;
 
 	InitGameParameter(num);
 	InitMeshCylinder(num);
 	InitRainbowLane(num);
+	InitPlayer();
+	InitEffect();
 
 	//背景のスクロールスピードを設定
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
@@ -52,6 +59,9 @@ HRESULT InitTitleScene(int num)
 		SetSpeedGameParameter(i, TITLESCENE_SCROLLSPEED_DEFAULT);
 
 	}
+
+	//BGM再生
+	FadeInBGM(BGM_TITLE, BGM_FADE_DURATION);
 
 	return S_OK;
 }
@@ -64,6 +74,8 @@ void UninitTitleScene(int num)
 	UninitGameParameter(num);
 	UninitMeshCylinder(num);
 	UninitRainbowLane(num);
+	UninitPlayer();
+	UninitEffect();
 }
 
 /**************************************
@@ -75,6 +87,8 @@ void UpdateTitleScene(void)
 
 	UpdateMeshCylinder();
 	UpdateRainbowLane();
+	UpdatePlayer();
+	UpdateEffect();
 
 	//エントリー検出処理
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
@@ -86,6 +100,7 @@ void UpdateTitleScene(void)
 
 		//入力があればエントリー完了状態へ遷移
 		entryState[i] = true;
+		PlaySE(SOUND_ENTRY);
 	}
 
 	//テスト機能
@@ -95,8 +110,11 @@ void UpdateTitleScene(void)
 		entryState[1] = true;
 
 	//エントリーが完了したらシーン遷移
-	if(IsCompleteEntry())
+	if (IsCompleteEntry())
+	{
+		FadeOutBGM(BGM_TITLE, BGM_FADE_DURATION);
 		SetSceneFade(GameScene);
+	}
 }
 
 /**************************************
@@ -106,6 +124,8 @@ void DrawTitleScene(int i)
 {
 	DrawMeshCylinder(i);
 	DrawRainbowLane(i);
+	DrawPlayer();
+	DrawEffect();
 }
 
 /**************************************
@@ -121,11 +141,16 @@ bool GetEntryState(int playerID)
 ***************************************/
 bool IsCompleteEntry(void)
 {
+	//一度完了したら以降はreturn false
+	if (entryComleterd)
+		return false;
+
 	if (!entryState[0])
 		return false;
 
 	if (!entryState[1])
 		return false;
 
+	entryComleterd = true;
 	return true;
 }

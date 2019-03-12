@@ -9,9 +9,6 @@
 #include <tchar.h>
 #include "debugWindow.h"
 #include <stdio.h>
-#include <type_traits>
-
-#include <map>
 
 #pragma comment ( lib, "dxguid.lib" )
 #pragma comment ( lib, "dsound.lib" )
@@ -29,18 +26,19 @@
 /**************************************
 グローバル変数
 ***************************************/
-static const TCHAR* soundFileName[static_cast<unsigned int>(DefineSE::MAX)] =
+static const TCHAR* soundFileName[SOUND_MAX] =
 {
-	_T("data/SOUND/lockon.wav"),
+	_T("data/SOUND/Countdown06-2.wav"),
+	_T("data/SOUND/decision24.wav"),
+	_T("data/SOUND/sei_ge_hoissuru_ren01.wav"),
+	_T("data/SOUND/speed-up1.wav"),
+	_T("data/SOUND/people_people-stadium-cheer1.wav"),
+	_T("data/SOUND/magic-worp1.wav"),
+	_T("data/SOUND/katana-slash5.wav"),
+	_T("data/SOUND/knife-slash-1.wav"),
 };
 
-static const map<DefineSE, string> defSEname = {
-	{ DefineSE::LOCKON, STR(LOCKON)},
-	{ DefineSE::MAX, STR(MAX) },
-};
-
-//static SOUNDEFFECT se[static_cast<unsigned int>(DefineSE::MAX)];
-static map<DefineSE, SOUNDEFFECT> container;
+static SOUNDEFFECT container[SOUND_MAX];
 
 /**************************************
 プロトタイプ宣言
@@ -48,13 +46,6 @@ static map<DefineSE, SOUNDEFFECT> container;
 bool SaveSettingsSoundEffect(void);
 bool LoadSettingsSoundEffect(void);
 void DrawDebugWindowSoundEffect(void);
-
-DefineSE begin(DefineSE) { return DefineSE::LOCKON; }
-DefineSE end(DefineSE) { return DefineSE::MAX; }
-DefineSE operator*(DefineSE se) { return se; }
-DefineSE operator++(DefineSE& se) {
-	return se = DefineSE(underlying_type<DefineSE>::type(se) + 1);
-}
 
 /**************************************
 初期化処理
@@ -66,13 +57,12 @@ void InitSoundEffectManager(int num)
 	if (!initialized)
 	{
 		bool res = LoadSettingsSoundEffect();
-		
-		for (auto i : DefineSE())
+
+		for (int i = 0; i < SOUND_MAX; i++)
 		{
 			container[i].clip = LoadSound(&soundFileName[static_cast<unsigned int>(i)][0]);
 			SetSoundVolume(container[i].clip, container[i].volume);
 		}
-
 		initialized = true;
 	}
 
@@ -86,7 +76,7 @@ void UninitSoundEffectManager(int num)
 {
 	if (num == 0)
 	{
-		for (auto i : DefineSE())
+		for (int i = 0; i < SOUND_MAX; i++)
 		{
 			SAFE_RELEASE(container[i].clip);
 		}
@@ -158,17 +148,23 @@ void SetSEVolume(DefineSE sound, float volume)
 void DrawDebugWindowSoundEffect(void)
 {
 	BeginDebugWindow("SoundEffect");
-	DebugText("SoundNum : %d", container.size());
 
-	for (auto i : DefineSE())
+	for (int i = 0; i < SOUND_MAX; i++)
 	{
-		DebugSliderFloat(&defSEname.at(i), &container[i].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+		DebugText("%d", i);
+		DebugSameLine();
+		char str[32];
+		sprintf(str, "%d", i);
+		if (DebugSliderFloat(str, &container[i].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX))
+		{
+			SetSoundVolume(container[i].clip, container[i].volume);
+		}
 	}
 
 	if (DebugButton("Save Settings"))
 	{
 		SaveSettingsSoundEffect();
-		for (auto i : DefineSE())
+		for (int i = 0; i < SOUND_MAX; i++)
 		{
 			SetSoundVolume(container[i].clip, container[i].volume);
 		}
@@ -178,9 +174,11 @@ void DrawDebugWindowSoundEffect(void)
 
 	BeginDebugWindow("PlaySound");
 
-	for (auto i : DefineSE())
+	for (int i = 0; i < SOUND_MAX; i++)
 	{
-		if (DebugButton(&defSEname.at(i))) { PlaySE(i); }
+		char str[8];
+		sprintf(str, "%d", i);
+		if (DebugButton(str)) { PlaySE((DefineSE)i); }
 	}
 
 	EndDebugWindow("PlaySound");
@@ -199,7 +197,7 @@ bool SaveSettingsSoundEffect(void)
 		return false;
 	}
 
-	for (auto i : DefineSE())
+	for (int i = 0; i < SOUND_MAX; i++)
 	{
 		fwrite(&container[i].volume, sizeof(float), 1, fp);
 	}
@@ -219,7 +217,7 @@ bool LoadSettingsSoundEffect(void)
 
 	if (fp == NULL)
 	{
-		for (auto i : DefineSE())
+		for (int i = 0; i < SOUND_MAX; i++)
 		{
 			container[i].volume = SOUND_VOLUME_INIT;
 		}
@@ -227,7 +225,7 @@ bool LoadSettingsSoundEffect(void)
 		return false;
 	}
 
-	for (auto i : DefineSE())
+	for (int i = 0; i < SOUND_MAX; i++)
 	{
 		int res = fread(&container[i].volume, sizeof(float), 1, fp);
 		if (res == EOF)

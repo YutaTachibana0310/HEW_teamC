@@ -22,7 +22,7 @@ typedef struct
 	D3DXVECTOR3 bottomR;	//右下頂点
 	D3DXVECTOR3 topR;		//右上頂点
 	D3DXVECTOR3 nor;		//法線ベクトル
-}PLANE;
+}POLYGON_PLANE;
 
 /*
 三角形ポリゴンを表す構造体
@@ -33,7 +33,7 @@ typedef struct
 	D3DXVECTOR3 b;			//頂点2
 	D3DXVECTOR3 c;			//頂点3
 	D3DXVECTOR3 nor;		//法線ベクトル
-}TRIANGLE;
+}POLYGON_TRIANGLE;
 
 //スフィアコライダー
 typedef struct
@@ -59,8 +59,8 @@ typedef struct
 void InitCollider(int num);
 void UninitCollider(int num);
 
-bool CheckHitTriangleAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, TRIANGLE tri, D3DXVECTOR3 *out);
-bool CheckHitPlaneAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, PLANE plane, D3DXVECTOR3 *out);
+bool CheckHitTriangleAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, POLYGON_TRIANGLE tri, D3DXVECTOR3 *out);
+bool CheckHitPlaneAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, POLYGON_PLANE plane, D3DXVECTOR3 *out);
 bool CheckHitBoundingSphere(const COLLIDER_SPHERE *s1, const COLLIDER_SPHERE *s2);
 bool ChechHitBoundingCube(const COLLIDER_CUBE *c1, const COLLIDER_CUBE *c2);
 

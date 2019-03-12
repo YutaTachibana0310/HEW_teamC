@@ -5,17 +5,23 @@
 //
 //=====================================
 #include "resultScene.h"
+#include "bgmManager.h"
+#include "soundEffectManager.h"
+
 #include "gameParameter.h"
 #include "sceneFade.h"
+#include "gameParameter.h"
 
 #include "meshCylinder.h"
 #include "rainbowLane.h"
+#include "player.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define RESULTSCENE_DURATION		(300)
-
+#define RESULTSCENE_DURATION			(300)
+#define RESULTSCENE_SCROLL_SPEED		(1.0f)
+#define RESULTSCENE_BGM_FADEDURATION	(60)
 /**************************************
 構造体定義
 ***************************************/
@@ -38,6 +44,19 @@ HRESULT InitResultScene(int num)
 
 	InitMeshCylinder(num);
 	InitRainbowLane(num);
+	InitPlayer();
+
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		GetGameParameterAdr(i)->playerSpeed = RESULTSCENE_SCROLL_SPEED;
+	}
+
+	//BGM再生
+	FadeInBGM(BGM_RESULT, BGM_FADE_DURATION);
+
+	//歓声再生
+	PlaySE(SOUND_CHEER);
+
 	return S_OK;
 }
 
@@ -48,6 +67,7 @@ void UninitResultScene(int num)
 {
 	UninitMeshCylinder(num);
 	UninitRainbowLane(num);
+	UninitPlayer();
 }
 
 /**************************************
@@ -59,10 +79,12 @@ void UpdateResultScene(void)
 
 	UpdateMeshCylinder();
 	UpdateRainbowLane();
+	UpdatePlayer();
 
 	cntFrame++;
 	if (cntFrame == RESULTSCENE_DURATION)
 	{
+		FadeOutBGM(BGM_RESULT, RESULTSCENE_BGM_FADEDURATION);
 		SetSceneFade(TitleScene);
 	}
 }
@@ -74,4 +96,5 @@ void DrawResultScene(int n)
 {
 	DrawMeshCylinder(n);
 	DrawRainbowLane(n);
+	DrawPlayer();
 }

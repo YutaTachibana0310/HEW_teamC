@@ -7,6 +7,7 @@
 #include "goalTelop.h"
 #include "Easing.h"
 
+#include "soundEffectManager.h"
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
@@ -129,4 +130,5 @@ void SetGoalTelop(int playerID)
 	active[playerID] = true;
 	cntFrame[playerID] = 0;
 	scale[playerID] = 0.0f;
+	PlaySE(SOUND_GOAL);
 }
