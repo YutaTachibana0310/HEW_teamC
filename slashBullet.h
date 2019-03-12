@@ -13,7 +13,7 @@
 É}ÉNÉçíËã`
 ***************************************/
 #define SLASHBULLET_NUM_MAX		(32)
-#define SLASHBULLET_MOVE_BORDER_Z		(5000.0f)
+#define SLASHBULLET_MOVE_BORDER_Z		(1250.0f)
 
 
 /**************************************

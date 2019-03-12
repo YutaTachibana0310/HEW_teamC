@@ -215,7 +215,7 @@ void SetMoveBullet(BULLET* bulletData, int playerNo)
 		for (int cntParticle = 0; cntParticle < BULLET_PARTICLE_EMMITT_NUM; cntParticle++)
 			SetBulletParticle(wkPos);
 	}
-	else if (wkPos.z > SLASHBULLET_MOVE_BORDER_Z)
+	else if (wkPos.z > SLASHBULLET_MOVE_BORDER_Z + posPlayer.z)
 	{
 		bulletData->use = false;
 		FreeSlashBullet(bulletData->idxSlashBullet);
