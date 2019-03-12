@@ -12,6 +12,7 @@
 #include "score.h"
 #include "countDownGUI.h"
 #include "goalTelop.h"
+#include "speedMeter.h"
 #include "timeGUI.h"
 
 /**************************************
@@ -40,6 +41,7 @@ void InitGameSceneGUI(void)
 	InitScore(0);
 	InitCountDownGUI(0);
 	InitGoalTelop(0);
+	InitSpeedGUI();
 	InitTimeGUI(0);
 }
 
@@ -53,7 +55,11 @@ void UninitGameSceneGUI(void)
 	UninitScore(0);
 	UninitCountDownGUI(0);
 	UninitGoalTelop(0);
+<<<<<<< HEAD
+	UninitSpeedGUI();
+=======
 	UninitTimeGUI(0);
+>>>>>>> 5dc48cf3603ec8189f0331076ac436f9843a63d5
 }
 
 /**************************************
@@ -66,6 +72,7 @@ void UpdateGameSceneGUI(void)
 	UpdateScore();
 	UpdateCountDownGUI();
 	UpdateGoalTelop();
+	UpdateSpeedGUI();
 	UpdateTimeGUI();
 }
 
@@ -88,6 +95,15 @@ void DrawGameSceneGUI(void)
 		float progress = param->playerMoveDist / GAMEPARAMETER_MOVEDIST_MAX;
 		SetProgressMarker(i, progress);
 		DrawProgressMarker();
+	}
+
+	//スピードメーター描画
+	for (int i = 0; i < METER_MAX; i++)
+	{
+		GAMEPARAMETER *param = GetGameParameterAdr(i);
+		float meter = param->playerSpeed / 5;
+		SetVertexMeter(i, meter);
+		DrawSpeedGUI();
 	}
 
 	//スコアの描画
