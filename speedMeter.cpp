@@ -20,14 +20,14 @@
 #define TEXTURE_METER_SIZE_X		(250.0f)			//ƒ[ƒ^[‚Ì‰¡Ž²ƒTƒCƒY
 #define TEXTURE_METER_SIZE_Y		(250.0f)			//ƒ[ƒ^[‚ÌcŽ²ƒTƒCƒY
 
-#define SPEEDCIRCLE_ZERO_POS_X		(TEXTURE_CIRCLE_SIZE_X)						//¶‚ÌƒT[ƒNƒ‹‚ÌˆÊ’u							
-#define SPEEDCIRCLE_ZERO_POS_Y		(WINDOW_HEIGHT - TEXTURE_METER_SIZE_Y)		//¶‚ÌƒT[ƒNƒ‹‚ÌˆÊ’u
-#define SPEEDCIRCLE_ONE_POS_X		(WINDOW_CENTER_X + TEXTURE_CIRCLE_SIZE_X)	//‰E‚ÌƒT[ƒNƒ‹‚ÌˆÊ’u
-#define SPEEDCIRCLE_ONE_POS_Y		(WINDOW_HEIGHT - TEXTURE_METER_SIZE_Y)		//‰E‚ÌƒT[ƒNƒ‹‚ÌˆÊ’u
+#define SPEEDCIRCLE_ZERO_POS_X		(130)						//¶‚ÌƒT[ƒNƒ‹‚ÌˆÊ’u							
+#define SPEEDCIRCLE_ZERO_POS_Y		(250)		//¶‚ÌƒT[ƒNƒ‹‚ÌˆÊ’u
+#define SPEEDCIRCLE_ONE_POS_X		(WINDOW_WIDTH - 130)	//‰E‚ÌƒT[ƒNƒ‹‚ÌˆÊ’u
+#define SPEEDCIRCLE_ONE_POS_Y		(250)		//‰E‚ÌƒT[ƒNƒ‹‚ÌˆÊ’u
 
-#define SPEEDMETER_ZERO_POS_X		(SPEEDCIRCLE_ZERO_POS_X /2)					//¶‚Ìƒ[ƒ^[‚ÌˆÊ’u
-#define SPEEDMETER_ZERO_POS_Y		(SPEEDCIRCLE_ZERO_POS_Y)					//¶‚Ìƒ[ƒ^[‚ÌˆÊ’u
-#define SPEEDMETER_ONE_POS_X		(WINDOW_CENTER_X + TEXTURE_METER_SIZE_X /2)	//‰E‚Ìƒ[ƒ^[‚ÌˆÊ’u
+#define SPEEDMETER_ZERO_POS_X		(130)					//¶‚Ìƒ[ƒ^[‚ÌˆÊ’u
+#define SPEEDMETER_ZERO_POS_Y		(250)					//¶‚Ìƒ[ƒ^[‚ÌˆÊ’u
+#define SPEEDMETER_ONE_POS_X		(WINDOW_WIDTH - 130)	//‰E‚Ìƒ[ƒ^[‚ÌˆÊ’u
 #define PROGRESMETER_POS_BOTTOM		(D3DXToRadian(-220.0f))						//ƒ[ƒ^[‚Ì‰ñ“]‰ŠúˆÊ’u
 #define PROGRESMETER_POS_TOP		(D3DXToRadian(220.0f))						//ƒ[ƒ^[‚Ì‰ñ“]‚ÌŒÀŠE’l
 
@@ -47,6 +47,8 @@ static LPDIRECT3DTEXTURE9		D3DTextureSpeedMeter = NULL;					// ƒeƒNƒXƒ`ƒƒ‚Ö‚Ìƒ|ƒ
 
 static VERTEX_2D				vertexWkSpeedCircle[CIRCLE_MAX][NUM_VERTEX];	// ’¸“_î•ñŠi”[ƒ[ƒN
 static METER					meterWk[METER_MAX];								// ƒ[ƒ^[\‘¢‘Ì
+
+static float currentSpeed[TARGETPLAYER_MAX];
 
 //=============================================================================
 // ‰Šú‰»ˆ—
@@ -216,8 +218,7 @@ void SetVertexMeter(int meterID, float percent)
 	//int y = meterID / PROGRESMETER_TEXTURE_DIV_Y;
 
 	//UVÀ•WÝ’è
-	meter->pos.x = SPEEDMETER_ZERO_POS_X;
-	meter->pos.x += (meterID == 0) ? SPEEDMETER_ZERO_POS_X : SPEEDMETER_ONE_POS_X;
+	meter->pos.x = (meterID == 0) ? SPEEDMETER_ZERO_POS_X : SPEEDMETER_ONE_POS_X;
 	meter->rot.z = EaseLinear(percent, PROGRESMETER_POS_BOTTOM, PROGRESMETER_POS_TOP);
 
 	meter->vertexWkSpeedMeter[0].tex = D3DXVECTOR2(0.0f, 0.0f);
