@@ -6,6 +6,7 @@
 //=============================================================================
 #include "speedMeter.h"
 #include "Easing.h"
+#include "gameParameter.h"
 
 //*******************************************************************************************************
 //マクロ定義
@@ -31,8 +32,10 @@
 #define PROGRESMETER_POS_BOTTOM		(D3DXToRadian(-220.0f))						//メーターの回転初期位置
 #define PROGRESMETER_POS_TOP		(D3DXToRadian(220.0f))						//メーターの回転の限界値
 
-//#define PROGRESMETER_TEXTURE_DIV_X  (1)				//パターンの数
-//#define PROGRESMETER_TEXTURE_DIV_Y  (1)				//パターンの数
+#define SPEEDMETER_ANGLE_VALUE		(0.05f)
+
+#define SPEEDMETER_ANGLE_MIN		(0.0f)
+#define SPEEDMETER_ANGLE_MAX		(4.5f)
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -116,7 +119,11 @@ void UninitSpeedGUI(void)
 //=============================================================================
 void UpdateSpeedGUI(void)
 {
-
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		float diff = GetGameParameterAdr(i)->playerSpeed - currentSpeed[i];
+		currentSpeed[i] += diff * SPEEDMETER_ANGLE_VALUE;
+	}
 }
 
 //=============================================================================
@@ -219,7 +226,9 @@ void SetVertexMeter(int meterID, float percent)
 
 	//UV座標設定
 	meter->pos.x = (meterID == 0) ? SPEEDMETER_ZERO_POS_X : SPEEDMETER_ONE_POS_X;
-	meter->rot.z = EaseLinear(percent, PROGRESMETER_POS_BOTTOM, PROGRESMETER_POS_TOP);
+	float t = currentSpeed[meterID] / 5.0f;
+	meter->rot.z = EaseLinear(t, SPEEDMETER_ANGLE_MIN, SPEEDMETER_ANGLE_MAX);
+	meter->rot.z += D3DXToRadian(-180.0f);
 
 	meter->vertexWkSpeedMeter[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 	meter->vertexWkSpeedMeter[1].tex = D3DXVECTOR2(0.0f, 1.0f);
