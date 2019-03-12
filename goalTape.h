@@ -28,5 +28,5 @@ void InitGoalTape(int num);
 void UninitGoalTape(int num);
 void UpdateGoalTape(void);
 void DrawGoalTape(void);
-
+GOALTAPE *GetGoalTapeAdr(void);
 #endif

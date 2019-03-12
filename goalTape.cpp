@@ -47,6 +47,10 @@ void InitGoalTape(int num)
 	//entity.pos.z = SYSTEMPARAMETER_PROGRESS_MAX;
 	entity.pos.z = 5000.0f;
 	entity.pos.y = GOALTAPE_POS_Y;
+
+	entity.collider.pos = &entity.pos;
+	entity.collider.length = GOALTAPE_COLLIDER_LENGTH;
+	entity.collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 
 /**************************************
@@ -88,6 +92,10 @@ void DrawGoalTape(void)
 	pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+
+#ifdef _DEBUG
+	DrawBoundingCube(&entity.collider);
+#endif
 }
 
 /**************************************
@@ -127,4 +135,12 @@ void MakeVertexGoalTape(void)
 		pVtx[1].nor =
 		pVtx[2].nor =
 		pVtx[3].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+}
+
+/**************************************
+ÉAÉhÉåÉXéÊìæèàóù
+***************************************/
+GOALTAPE *GetGoalTapeAdr(void)
+{
+	return &entity;
 }

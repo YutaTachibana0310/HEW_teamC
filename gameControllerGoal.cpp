@@ -8,6 +8,7 @@
 #include "bgmManager.h"
 
 #include "sceneFade.h"
+#include "goalTape.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -40,6 +41,8 @@ void EnterGameControllerGoal(GAMECONTROLLER *entity)
 void UpdateGameControllerGoal(GAMECONTROLLER *entity)
 {
 	entity->cntFrame++;
+
+	UpdateGoalTape();
 
 	if(entity->cntFrame == GAMECONTROLLER_GOAL_DURATION)
 	{
