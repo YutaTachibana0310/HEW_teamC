@@ -65,7 +65,7 @@ void UninitGoalTape(int num)
 ***************************************/
 void UpdateGoalTape(void)
 {
-	entity.pos.z -= SYSTEMPARAMETER_PROGRESS_VALUE * 10;
+	entity.pos.z -= SYSTEMPARAMETER_PROGRESS_VALUE;
 }
 
 /**************************************
@@ -97,6 +97,7 @@ void DrawGoalTape(void)
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 
 #ifdef _DEBUG
 	DrawBoundingCube(&entity.collider);
