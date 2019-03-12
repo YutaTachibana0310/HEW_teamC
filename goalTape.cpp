@@ -11,7 +11,7 @@
 É}ÉNÉçíËã`
 ***************************************/
 #define GOALTAPE_COLLIDER_LENGTH		(D3DXVECTOR3(1000.0f, 100.0f, 0.0f))
-#define GOALTAPE_SIZE_X					(10000.0f)
+#define GOALTAPE_SIZE_X					(500.0f)
 #define GOALTAPE_SIZE_Y					(10.0f)
 #define GOALTAPE_POS_Y					(-10.0f)
 #define GOALTAPE_TEXTURE_NAME			"data/TEXTURE/BG/goalTape.png"
