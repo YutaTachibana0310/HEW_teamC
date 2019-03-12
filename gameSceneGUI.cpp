@@ -55,11 +55,8 @@ void UninitGameSceneGUI(void)
 	UninitScore(0);
 	UninitCountDownGUI(0);
 	UninitGoalTelop(0);
-<<<<<<< HEAD
 	UninitSpeedGUI();
-=======
 	UninitTimeGUI(0);
->>>>>>> 5dc48cf3603ec8189f0331076ac436f9843a63d5
 }
 
 /**************************************
