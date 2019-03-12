@@ -14,8 +14,8 @@
 #define GOALTAPE_SIZE_X					(10000.0f)
 #define GOALTAPE_SIZE_Y					(10.0f)
 #define GOALTAPE_POS_Y					(-10.0f)
-#define GOALTAPE_TEXTURE_NAME			"data/TEXTURE/BG/goalTape.jpg"
-#define GOALTAPE_TEXTURE_LOOP_X			(1000)
+#define GOALTAPE_TEXTURE_NAME			"data/TEXTURE/BG/goalTape.png"
+#define GOALTAPE_TEXTURE_LOOP_X			(1)
 #define GOALTAPE_TEXTURE_LOOP_Y			(1)
 
 /**************************************
@@ -44,8 +44,7 @@ void InitGoalTape(int num)
 	texture = CreateTextureFromFile((LPSTR)GOALTAPE_TEXTURE_NAME, pDevice);
 
 	MakeVertexGoalTape();
-	//entity.pos.z = SYSTEMPARAMETER_PROGRESS_MAX;
-	entity.pos.z = 5000.0f;
+	entity.pos.z = SYSTEMPARAMETER_PROGRESS_MAX;
 	entity.pos.y = GOALTAPE_POS_Y;
 
 	entity.collider.pos = &entity.pos;
@@ -92,6 +91,12 @@ void DrawGoalTape(void)
 	pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
 #ifdef _DEBUG
 	DrawBoundingCube(&entity.collider);

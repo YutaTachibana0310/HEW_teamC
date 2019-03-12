@@ -14,6 +14,7 @@
 #include "goalTelop.h"
 #include "speedMeter.h"
 #include "timeGUI.h"
+#include "goalTape.h"
 
 /**************************************
 マクロ定義
@@ -82,17 +83,17 @@ void DrawGameSceneGUI(void)
 
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
-	////プログレスゲージ描画
-	//DrawProgressGauge();
+	//プログレスゲージ描画
+	DrawProgressGauge();
 
-	////プログレスマーカー描画
-	//for (int i = 0; i < TARGETPLAYER_MAX; i++)
-	//{
-	//	GAMEPARAMETER *param = GetGameParameterAdr(i);
-	//	float progress = param->playerMoveDist / GAMEPARAMETER_MOVEDIST_MAX;
-	//	SetProgressMarker(i, progress);
-	//	DrawProgressMarker();
-	//}
+	//プログレスマーカー描画
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		GOALTAPE *tape = GetGoalTapeAdr();
+		float progress = 1.0f - tape->pos.z / SYSTEMPARAMETER_PROGRESS_MAX;
+		SetProgressMarker(i, progress);
+		DrawProgressMarker();
+	}
 
 	//スピードメーター描画
 	for (int i = 0; i < METER_MAX; i++)

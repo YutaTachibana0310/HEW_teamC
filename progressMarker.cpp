@@ -6,6 +6,7 @@
 //=====================================
 #include "progressMarker.h"
 #include "Easing.h"
+#include "gameParameter.h"
 
 /**************************************
 マクロ定義
@@ -18,6 +19,8 @@
 #define PROGRESSMARKER_POS_OFFSET_X		(40)
 #define PROGRESSMARKER_POS_TOP			(100.0f)
 #define PROGRESSMARKER_POS_BOTTOM		(SCREEN_HEIGHT - 30.0f)
+#define PROGRESSMARKER_OFFSET_LENGTH	(-10.0f)
+#define PROGRESSMARKER_TARGET_DELTAVAL	(0.1f)
 
 /**************************************
 構造体定義
@@ -28,6 +31,8 @@
 ***************************************/
 static VERTEX_2D vtxWk[NUM_VERTEX];
 static LPDIRECT3DTEXTURE9 texture;
+
+static float currentOffset[TARGETPLAYER_MAX];
 
 /**************************************
 プロトタイプ宣言
@@ -43,6 +48,8 @@ void InitProgressMarker(int num)
 
 	texture = CreateTextureFromFile((LPSTR)PROGRESSMARKER_TEXTURE_NAME, pDevice);
 	MakeVertexProgressMarker();
+	currentOffset[0] = 0.0f;
+	currentOffset[1] = 0.0f;
 }
 
 /**************************************
@@ -58,7 +65,11 @@ void UninitProgressMarker(int num)
 ***************************************/
 void UpdateProgressMarker(void)
 {
-
+	for (int i = 0; i < TARGETPLAYER_MAX; i++)
+	{
+		float diff = GetGameParameterAdr(i)->posOffset - currentOffset[i];
+		currentOffset[i] += diff * PROGRESSMARKER_TARGET_DELTAVAL;
+	}
 }
 
 /**************************************
@@ -105,6 +116,7 @@ void SetProgressMarker(int targetID, float percent)
 	vtxWk[2].tex = D3DXVECTOR2(x * sizeX, (y + 1) * sizeY);
 	vtxWk[3].tex = D3DXVECTOR2((x + 1) * sizeX, (y + 1) * sizeY);
 
+
 	//頂点座標設定
 	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	pos.x = WINDOW_CENTER_X;
@@ -115,4 +127,11 @@ void SetProgressMarker(int targetID, float percent)
 	vtxWk[1].vtx = pos + D3DXVECTOR3( PROGRESSMARKER_SIZE_X / 2.0f, -PROGRESSMARKER_SIZE_Y / 2.0f, 0.0f);
 	vtxWk[2].vtx = pos + D3DXVECTOR3(-PROGRESSMARKER_SIZE_X / 2.0f,  PROGRESSMARKER_SIZE_Y / 2.0f, 0.0f);
 	vtxWk[3].vtx = pos + D3DXVECTOR3( PROGRESSMARKER_SIZE_X / 2.0f,  PROGRESSMARKER_SIZE_Y / 2.0f, 0.0f);
+
+	//前進/後退の数だけオフセット
+	for (int i = 0; i < NUM_VERTEX; i++)
+	{
+		vtxWk[i].vtx.y += currentOffset[targetID] * PROGRESSMARKER_OFFSET_LENGTH;
+	}
+
 }

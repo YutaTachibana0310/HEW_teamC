@@ -417,6 +417,9 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 
 		//SE再生
 		PlaySE(SOUND_ACCEL);
+
+		//前進カウント
+		GetGameParameterAdr(playerId)->posOffset++;
 	}
 	else if (isAccelerator == false)
 	{
@@ -431,6 +434,9 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 		//ゲームパラメータも減速
 		float setSpeed = GetGameParameterAdr(playerId)->playerSpeed + GAMEPARAMETER_SPEED_DECLVALUE;
 		GetGameParameterAdr(playerId)->playerSpeed = Clampf(GAMEPARAMETER_SPEED_MIN, GAMEPARAMETER_SPEED_MAX, setSpeed);
+
+		//後退カウント
+		GetGameParameterAdr(playerId)->posOffset--;
 	}
 }
 
