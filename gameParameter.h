@@ -55,4 +55,5 @@ void SetSpeedGameParameter(int id, float speed);
 bool CheckPlayerGoaled(int id);
 SYSTEMPARAMETER *GetSystemParameterAdr(void);
 void AddOffsetCount(int playerID, bool isInclement);
+int CheckWinnerPlayer(void);
 #endif

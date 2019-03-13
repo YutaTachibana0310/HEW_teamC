@@ -53,7 +53,7 @@ bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;
 
 //現在のシーン
-static int currentScene = GameScene;
+static int currentScene = TitleScene;
 
 //各ビューポート
 static D3DVIEWPORT9 viewPort[TARGETPLAYER_MAX] = {

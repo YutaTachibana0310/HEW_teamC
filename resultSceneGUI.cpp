@@ -8,6 +8,7 @@
 
 #include "resultGUI.h"
 #include "resultTelop.h"
+#include "gameParameter.h"
 
 /**************************************
 マクロ定義
@@ -58,10 +59,11 @@ void UpdateResultSceneGUI(void)
 void DrawResultSceneGUI(void)
 {
 	//順位を描画
+	int winner = CheckWinnerPlayer();
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
 		//TODO : ゲーム結果をGameParameterから取得してセットする
-		SetResultGUI(i, i != 0);
+		SetResultGUI(i, i == winner);
 		DrawResultGUI();
 	}
 

@@ -38,6 +38,7 @@ void InitGameParameter(int num)
 		param[1].score = 0;
 		param[i].deltaTime = 0.0f;
 		param[i].isPlayerGoaled = false;
+		param[i].posOffset = 0;
 	}
 
 	sysParam.currentProgress = 0.0f;
@@ -109,4 +110,22 @@ void AddOffsetCount(int playerID, bool isInclement)
 
 	param[playerID].posOffset = Clamp(GAMEPARAMETER_POSOFFSET_MIN, GAMEPARAMETER_SPEED_MAX, param[playerID].posOffset + addValue);
 
+}
+
+/**************************************
+Ÿ”s”»’èˆ—
+***************************************/
+int CheckWinnerPlayer(void)
+{
+	if (param[0].deltaTime > param[1].deltaTime)
+		return 1;
+
+	if (param[0].deltaTime < param[1].deltaTime)
+		return 0;
+
+	//“¯’…‚È‚Ì‚ÅƒXƒRƒA‚Å”»’è
+	if (param[0].score > param[1].score)
+		return 0;
+
+	return 1;
 }
