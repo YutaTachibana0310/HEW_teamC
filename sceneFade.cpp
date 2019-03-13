@@ -98,13 +98,14 @@ void ChangeStateSceneFade(SceneFadeState state)
 /**************************************
 シーンフェードセット処理
 ***************************************/
-void SetSceneFade(DefineScene next)
+bool SetSceneFade(DefineScene next)
 {
 	if (currentState != SceneFadeNone)
-		return;
+		return false;
 
 	nextScene = next;
 	ChangeStateSceneFade(SceneFadeIn);
+	return true;
 }
 
 /**************************************

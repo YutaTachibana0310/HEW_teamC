@@ -112,7 +112,11 @@ void UpdateTitleScene(void)
 	//エントリーが完了したらシーン遷移
 	if (IsCompleteEntry())
 	{
-		FadeOutBGM(BGM_TITLE, BGM_FADE_DURATION);
+		if (SetSceneFade(GameScene))
+		{
+			entryComleterd = true;
+			FadeOutBGM(BGM_TITLE, BGM_FADE_DURATION);
+		}
 		SetSceneFade(GameScene);
 	}
 }
@@ -151,6 +155,5 @@ bool IsCompleteEntry(void)
 	if (!entryState[1])
 		return false;
 
-	entryComleterd = true;
 	return true;
 }

@@ -35,5 +35,5 @@ void UpdateSceneFade(void);
 void DrawSceneFade(void);
 
 void ChangeStateSceneFade(SceneFadeState state);
-void SetSceneFade(DefineScene next);
+bool SetSceneFade(DefineScene next);
 #endif
