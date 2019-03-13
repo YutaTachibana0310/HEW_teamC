@@ -20,6 +20,9 @@
 #define BULLETPARTICLE_LIFE_MAX			(60)
 #define BULLETPARTICLE_INITSPEED		(5.0f)
 
+#define BULLETPARTICLE_TEX_NAME_BLUE	"data/TEXTURE/EFFECT/bulletParticle_00.png"
+#define BULLETPARTICLE_TEX_NAME_RED		"data/TEXTURE/EFFECT/bulletParticle_01.png"
+
 /**************************************
 構造体定義
 ***************************************/
@@ -27,9 +30,9 @@
 /**************************************
 グローバル変数
 ***************************************/
-static LPDIRECT3DTEXTURE9 texture;
-static LPDIRECT3DVERTEXBUFFER9 vtxBuff;
-static BULLETPARTICLE particle[BULLETPARTICLE_MAX];
+static LPDIRECT3DTEXTURE9 texture[TARGETPLAYER_MAX];
+static LPDIRECT3DVERTEXBUFFER9 vtxBuff[TARGETPLAYER_MAX];
+static BULLETPARTICLE particle[TARGETPLAYER_MAX][BULLETPARTICLE_MAX];
 
 /**************************************
 プロトタイプ宣言
@@ -45,13 +48,17 @@ void CheckLifeBulletParticle(void);
 void InitBulletParticle(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	texture = CreateTextureFromFile((LPSTR)BULLETPARTICLE_TEXTURE_NAME, pDevice);
+	texture[0] = CreateTextureFromFile((LPSTR)BULLETPARTICLE_TEX_NAME_BLUE, pDevice);
+	texture[1] = CreateTextureFromFile((LPSTR)BULLETPARTICLE_TEX_NAME_RED, pDevice);
 	MakeVertexBulletParticle();
 
-	BULLETPARTICLE *ptr = &particle[0];
-	for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++)
+	for (int j = 0; j < TARGETPLAYER_MAX; j++)
 	{
-		ptr->active = false;
+		BULLETPARTICLE *ptr = &particle[j][0];
+		for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++)
+		{
+			ptr->active = false;
+		}
 	}
 }
 
@@ -60,8 +67,10 @@ void InitBulletParticle(int num)
 ***************************************/
 void UninitBulletParticle(int num)
 {
-	SAFE_RELEASE(texture);
-	SAFE_RELEASE(vtxBuff);
+	SAFE_RELEASE(texture[0]);
+	SAFE_RELEASE(texture[1]);
+	SAFE_RELEASE(vtxBuff[0]);
+	SAFE_RELEASE(vtxBuff[1]);
 }
 
 /**************************************
@@ -83,10 +92,6 @@ void DrawBulletParticle(void)
 
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
-	pDevice->SetTexture(0, texture);
-
-	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
-
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
@@ -98,26 +103,33 @@ void DrawBulletParticle(void)
 	pDevice->GetRenderState(D3DRS_ZFUNC, &defCmp);
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 
-	BULLETPARTICLE *ptr = &particle[0];
-	D3DXMATRIX mtxWorld, mtxTranslate, mtxRot;
-	for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++)
+	for (int j = 0; j < TARGETPLAYER_MAX; j++)
 	{
-		if (!ptr->active)
-			continue;
+		pDevice->SetTexture(0, texture[j]);
 
-		D3DXMatrixIdentity(&mtxWorld);
+		pDevice->SetStreamSource(0, vtxBuff[j], 0, sizeof(VERTEX_3D));
 
-		//GetInvCameraRotMtx(&mtxRot);
-		//D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
-		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
+		BULLETPARTICLE *ptr = &particle[j][0];
+		D3DXMATRIX mtxWorld, mtxTranslate, mtxRot;
+		for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++)
+		{
+			if (!ptr->active)
+				continue;
 
-		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+			D3DXMatrixIdentity(&mtxWorld);
 
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, i * NUM_VERTEX, NUM_POLYGON);
+			//GetInvCameraRotMtx(&mtxRot);
+			//D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
+
+			D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
+			D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
+
+			pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, i * NUM_VERTEX, NUM_POLYGON);
+		}
 	}
-
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
@@ -131,38 +143,41 @@ void MakeVertexBulletParticle(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VERTEX * BULLETPARTICLE_MAX,
-		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_3D,
-		D3DPOOL_MANAGED,
-		&vtxBuff,
-		NULL);
-
-	VERTEX_3D *pVtx;
-	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
-	BULLETPARTICLE *ptr = &particle[0];
-	for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++, pVtx += 4)
+	for (int j = 0; j < TARGETPLAYER_MAX; j++)
 	{
-		pVtx[0].vtx = D3DXVECTOR3(-BULLETPARTICLE_SIZE_X / 2.0f, BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
-		pVtx[1].vtx = D3DXVECTOR3(BULLETPARTICLE_SIZE_X / 2.0f, BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
-		pVtx[2].vtx = D3DXVECTOR3(-BULLETPARTICLE_SIZE_X / 2.0f, -BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
-		pVtx[3].vtx = D3DXVECTOR3(BULLETPARTICLE_SIZE_X / 2.0f, -BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
+		pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VERTEX * BULLETPARTICLE_MAX,
+			D3DUSAGE_WRITEONLY,
+			FVF_VERTEX_3D,
+			D3DPOOL_MANAGED,
+			&vtxBuff[j],
+			NULL);
 
-		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+		VERTEX_3D *pVtx;
+		vtxBuff[j]->Lock(0, 0, (void**)&pVtx, 0);
 
-		pVtx[0].nor =
-			pVtx[1].nor =
-			pVtx[2].nor =
-			pVtx[3].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+		BULLETPARTICLE *ptr = &particle[j][0];
+		for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++, pVtx += 4)
+		{
+			pVtx[0].vtx = D3DXVECTOR3(-BULLETPARTICLE_SIZE_X / 2.0f, BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
+			pVtx[1].vtx = D3DXVECTOR3(BULLETPARTICLE_SIZE_X / 2.0f, BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
+			pVtx[2].vtx = D3DXVECTOR3(-BULLETPARTICLE_SIZE_X / 2.0f, -BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
+			pVtx[3].vtx = D3DXVECTOR3(BULLETPARTICLE_SIZE_X / 2.0f, -BULLETPARTICLE_SIZE_Y / 2.0f, 0.0f);
 
-		pVtx[0].diffuse =
-			pVtx[1].diffuse =
-			pVtx[2].diffuse =
-			pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+			pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+			pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+			pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+
+			pVtx[0].nor =
+				pVtx[1].nor =
+				pVtx[2].nor =
+				pVtx[3].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+
+			pVtx[0].diffuse =
+				pVtx[1].diffuse =
+				pVtx[2].diffuse =
+				pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		}
 	}
 }
 
@@ -171,24 +186,27 @@ void MakeVertexBulletParticle(void)
 ***************************************/
 void FadeBulletParticle(void)
 {
-	VERTEX_3D *pVtx = NULL;
-	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
-	BULLETPARTICLE *ptr = &particle[0];
-	for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++, pVtx += 4)
+	for (int j = 0; j < TARGETPLAYER_MAX; j++)
 	{
-		if (!ptr->active)
-			continue;
+		VERTEX_3D *pVtx = NULL;
+		vtxBuff[j]->Lock(0, 0, (void**)&pVtx, 0);
 
-		float t = (float)ptr->cntFrame / ptr->lifeFrame;
-		float alpha = EaseOutCubic(t, 1.0f, 0.0f);
-		pVtx[0].diffuse =
-			pVtx[1].diffuse =
-			pVtx[2].diffuse =
-			pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
+		BULLETPARTICLE *ptr = &particle[j][0];
+		for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++, pVtx += 4)
+		{
+			if (!ptr->active)
+				continue;
+
+			float t = (float)ptr->cntFrame / ptr->lifeFrame;
+			float alpha = EaseOutCubic(t, 1.0f, 0.0f);
+			pVtx[0].diffuse =
+				pVtx[1].diffuse =
+				pVtx[2].diffuse =
+				pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
+		}
+
+		vtxBuff[j]->Unlock();
 	}
-
-	vtxBuff->Unlock();
 }
 
 /**************************************
@@ -196,15 +214,18 @@ void FadeBulletParticle(void)
 ***************************************/
 void MoveBulletParticle(void)
 {
-	BULLETPARTICLE *ptr = &particle[0];
-	for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++)
+	for (int j = 0; j < TARGETPLAYER_MAX; j++)
 	{
-		if (!ptr->active)
-			continue;
+		BULLETPARTICLE *ptr = &particle[j][0];
+		for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++)
+		{
+			if (!ptr->active)
+				continue;
 
-		float t = (float)ptr->cntFrame / ptr->lifeFrame;
-		float speed = EaseOutCubic(t, ptr->initSpeed, 0.0f);
-		ptr->pos += ptr->moveDir * speed;
+			float t = (float)ptr->cntFrame / ptr->lifeFrame;
+			float speed = EaseOutCubic(t, ptr->initSpeed, 0.0f);
+			ptr->pos += ptr->moveDir * speed;
+		}
 	}
 }
 
@@ -213,17 +234,20 @@ void MoveBulletParticle(void)
 ***************************************/
 void CheckLifeBulletParticle(void)
 {
-	BULLETPARTICLE *ptr = &particle[0];
-	for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++)
+	for (int j = 0; j < TARGETPLAYER_MAX; j++)
 	{
-		if (!ptr->active)
-			continue;
-
-		ptr->cntFrame++;
-
-		if (ptr->cntFrame >= ptr->lifeFrame)
+		BULLETPARTICLE *ptr = &particle[j][0];
+		for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++)
 		{
-			ptr->active = false;
+			if (!ptr->active)
+				continue;
+
+			ptr->cntFrame++;
+
+			if (ptr->cntFrame >= ptr->lifeFrame)
+			{
+				ptr->active = false;
+			}
 		}
 	}
 }
@@ -231,9 +255,9 @@ void CheckLifeBulletParticle(void)
 /**************************************
 セット処理
 ***************************************/
-void SetBulletParticle(D3DXVECTOR3 pos)
+void SetBulletParticle(D3DXVECTOR3 pos, int playerID)
 {
-	BULLETPARTICLE *ptr = &particle[0];
+	BULLETPARTICLE *ptr = &particle[playerID][0];
 	for (int i = 0; i < BULLETPARTICLE_MAX; i++, ptr++)
 	{
 		if (ptr->active)

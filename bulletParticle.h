@@ -31,5 +31,5 @@ void InitBulletParticle(int num);
 void UninitBulletParticle(int num);
 void UpdateBulletParticle(void);
 void DrawBulletParticle(void);
-void SetBulletParticle(D3DXVECTOR3 pos);
+void SetBulletParticle(D3DXVECTOR3 pos, int playerID);
 #endif
