@@ -1287,7 +1287,7 @@ void SetMoveBlock(STAR* wkStar, PLANE section)
 
 		wkStar->block[cntBlock].vtxBuff->Unlock();
 
-		wkStar->block[cntBlock].move *= 2.0f;
+		wkStar->block[cntBlock].move *= 1.5f;
 		if (cntOld > cntNew)
 		{
 			wkStar->block[cntBlock].move += section.nor * VAL_BLOCK_MOVE;

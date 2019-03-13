@@ -34,6 +34,7 @@
 #define PLAYER_DEFAULT_POS_Z	(100.0f)
 #define PLAYER_ACCEL_DIF		(50.0f)						// 移動距離
 #define PLAYER_ACCEL_DURATION	(30)						// 加減速にかける時間
+#define PLAYER_ACCEL_RANDOMRANGE	(10.0f)
 #define PLAYER_TEXTURE_MAX		(9)
 #define PLAYER_DEFAULTROT_Y		(D3DXToRadian(180.0f))
 #define PLAYER_SHOT_INTERBAL	(20)
@@ -43,6 +44,7 @@
 #define PLAYER_EFFECTPOS_R		(D3DXVECTOR3( 3.0f, 2.0f, 10.0f))
 #define PLAYER_EFFECTSCALE_ACCEL	(2.0f)
 #define PLAYER_EFFECTSCALE_NORMAL	(1.0f)
+#define PLAYER_DECCEL_DIF		(80.0f)						//減速距離
 
 //*****************************************************************************
 // グローバル変数
@@ -409,7 +411,7 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 		//座標の取得
 		D3DXVECTOR3 playerPos = GetPositionPlayer(playerId);
 		player[playerId].prevPosZ = playerPos.z;
-		player[playerId].currentPosZ = playerPos.z + PLAYER_ACCEL_DIF;
+		player[playerId].currentPosZ = playerPos.z + PLAYER_ACCEL_DIF + RandomRangef(-PLAYER_ACCEL_RANDOMRANGE, PLAYER_ACCEL_RANDOMRANGE);
 
 		// フラグのセット
 		player[playerId].accelerationFlag = true;
@@ -429,7 +431,7 @@ void SetPlayerAcceleration(int playerId, bool isAccelerator)
 		//座標の取得
 		D3DXVECTOR3 playerPos = GetPositionPlayer(playerId);
 		player[playerId].prevPosZ = playerPos.z;
-		player[playerId].currentPosZ = playerPos.z - PLAYER_ACCEL_DIF;
+		player[playerId].currentPosZ = playerPos.z - PLAYER_DECCEL_DIF + RandomRangef(-PLAYER_ACCEL_RANDOMRANGE, PLAYER_ACCEL_RANDOMRANGE);;
 
 		// フラグのセット
 		player[playerId].accelerationFlag = true;
