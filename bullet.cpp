@@ -220,7 +220,7 @@ void SetMoveBullet(BULLET* bulletData, int playerNo)
 
 		//パーティクルセット
 		for (int cntParticle = 0; cntParticle < BULLET_PARTICLE_EMMITT_NUM; cntParticle++)
-			SetBulletParticle(wkPos);
+			SetBulletParticle(wkPos, playerNo);
 	}
 	else if (wkPos.z > SLASHBULLET_MOVE_BORDER_Z + posPlayer.z)
 	{

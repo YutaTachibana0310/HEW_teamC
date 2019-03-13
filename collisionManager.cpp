@@ -78,7 +78,7 @@ void CollisionBulletAndPlayer(void)
 
 				//パーティクルセット
 				for (int cntParticle = 0; cntParticle < BULLRTPARTICLE_SETNUM; cntParticle++)
-					SetBulletParticle(*bullet->collider.pos);
+					SetBulletParticle(*bullet->collider.pos, opponent);
 
 				//SE再生
 				PlaySE(SOUND_SLASH);
