@@ -19,6 +19,8 @@
 #define SLASHBULLET_MOVE_SPEED			(10.0f)
 #define SLASHBULLET_COLLIDER_LENGTH		(D3DXVECTOR3(10.0f, 10.0f, 10.0f))
 
+#define SLASHBULLET_TEX_NAME_BLUE		"data/TEXTURE/EFFECT/pipo-btleffect130_0.png"
+#define SLASHBULLET_TEX_NAME_RED		"data/TEXTURE/EFFECT/pipo-btleffect130_1.png"
 /**************************************
 構造体定義
 ***************************************/
@@ -29,6 +31,8 @@
 static LPDIRECT3DTEXTURE9 texture;
 static LPDIRECT3DVERTEXBUFFER9 vtxBuff;
 static SLASHBULLET bullet[SLASHBULLET_NUM_MAX];
+
+static LPDIRECT3DTEXTURE9 bulletTex[2];
 
 /**************************************
 プロトタイプ宣言
@@ -44,6 +48,8 @@ void InitSlashBullet(int num)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	texture = CreateTextureFromFile((LPSTR)SLASHBULLET_TEXTURE_NAME, pDevice);
+	bulletTex[0] = CreateTextureFromFile((LPSTR)SLASHBULLET_TEX_NAME_BLUE, pDevice);
+	bulletTex[1] = CreateTextureFromFile((LPSTR)SLASHBULLET_TEX_NAME_RED, pDevice);
 	MakeVertexSlashBullet();
 
 	//パラメータ初期化
@@ -129,10 +135,11 @@ void DrawSlashBullet(void)
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
 
-
 		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
 		//描画
+		int texID = ptr->parentPlayerID;
+		pDevice->SetTexture(0, bulletTex[texID]);
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, i * NUM_VERTEX, NUM_POLYGON);
 
 	}
