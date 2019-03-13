@@ -15,6 +15,9 @@
 #include "player.h"
 #include "effect.h"
 #include "soundEffectManager.h"
+#include "slashBullet.h"
+#include "bullet.h"
+
 /**************************************
 マクロ定義
 ***************************************/
@@ -52,6 +55,8 @@ HRESULT InitTitleScene(int num)
 	InitRainbowLane(num);
 	InitPlayer();
 	InitEffect();
+	InitSlashBullet(num);
+	InitBullet();
 
 	//背景のスクロールスピードを設定
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
@@ -76,6 +81,8 @@ void UninitTitleScene(int num)
 	UninitRainbowLane(num);
 	UninitPlayer();
 	UninitEffect();
+	UninitSlashBullet(num);
+	
 }
 
 /**************************************
@@ -89,6 +96,8 @@ void UpdateTitleScene(void)
 	UpdateRainbowLane();
 	UpdatePlayer();
 	UpdateEffect();
+	UpdateBullet();
+	UpdateSlashBullet();
 
 	//エントリー検出処理
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
@@ -129,6 +138,7 @@ void DrawTitleScene(int i)
 	DrawMeshCylinder(i);
 	DrawRainbowLane(i);
 	DrawPlayer();
+	DrawSlashBullet();
 	DrawEffect();
 }
 
