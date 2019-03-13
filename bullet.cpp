@@ -12,6 +12,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "bulletParticle.h"
+#include "gameParameter.h"
 
 #define MOVE_SPEED_BULLET	(5.0f)
 #define ATK_RANGE_WIDTH		(SCREEN_WIDTH * 2.0f)
@@ -28,6 +29,9 @@
 #define BULLET_PARTICLE_EMMITT_NUM	(30)
 
 #define BULLET_FORWORD_OFFSET	(0.0f)
+
+#define BULLET_HIT_ADDSCORE		(500)
+
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
@@ -210,6 +214,9 @@ void SetMoveBullet(BULLET* bulletData, int playerNo)
 		FreeSlashBullet(bulletData->idxSlashBullet);
 		bulletData->idxSlashBullet = -1;
 		SetPlayerAcceleration(playerNo, true);
+
+		//スコア加算
+		GetGameParameterAdr(playerNo)->score += BULLET_HIT_ADDSCORE;
 
 		//パーティクルセット
 		for (int cntParticle = 0; cntParticle < BULLET_PARTICLE_EMMITT_NUM; cntParticle++)

@@ -20,6 +20,7 @@
 マクロ定義
 ***************************************/
 #define BULLRTPARTICLE_SETNUM		(30)
+#define	HITBULLET_ADDSCORE			(500)
 
 /**************************************
 構造体定義
@@ -69,6 +70,9 @@ void CollisionBulletAndPlayer(void)
 
 				//当てたプレイヤーを加速
 				SetPlayerAcceleration(opponent, true);
+
+				//スコア加算
+				GetGameParameterAdr(i)->score += HITBULLET_ADDSCORE;
 
 				bullet->use = false;
 

@@ -14,7 +14,7 @@
 #define SCORE_TEXTURE_SIZE_Y	(50.0f)
 #define SCORE_BASEPOS_1P		(D3DXVECTOR3(200.0f, 90.0f, 0.0f))
 #define SCORE_BASEPOS_2P		(D3DXVECTOR3(SCREEN_WIDTH + 200.0f, 90.0f, 0.0f))
-#define SCORE_OFFSET			(-50.0f)
+#define SCORE_OFFSET			(-20.0f)
 #define SCORE_TEX_DIV_X			(10)
 #define SCORE_TEX_DIV_Y			(1)
 
