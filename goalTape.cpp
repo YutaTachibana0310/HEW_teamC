@@ -15,8 +15,9 @@
 #define GOALTAPE_SIZE_Y					(10.0f)
 #define GOALTAPE_POS_Y					(-10.0f)
 #define GOALTAPE_TEXTURE_NAME			"data/TEXTURE/BG/goalTape.png"
-#define GOALTAPE_TEXTURE_LOOP_X			(1)
+#define GOALTAPE_TEXTURE_LOOP_X			(20)
 #define GOALTAPE_TEXTURE_LOOP_Y			(1)
+#define GOALTAPE_ANIMATION_VALUE		(0.1f)
 
 /**************************************
 構造体定義
@@ -28,11 +29,12 @@
 static LPDIRECT3DVERTEXBUFFER9 vtxBuff;
 static GOALTAPE entity;
 static LPDIRECT3DTEXTURE9 texture;
-
+static float textureOffset;
 /**************************************
 プロトタイプ宣言
 ***************************************/
 void MakeVertexGoalTape(void);
+void AnimationGoalTape(void);
 
 /**************************************
 初期化処理
@@ -50,6 +52,8 @@ void InitGoalTape(int num)
 	entity.collider.pos = &entity.pos;
 	entity.collider.length = GOALTAPE_COLLIDER_LENGTH;
 	entity.collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	textureOffset = 0.0f;
 }
 
 /**************************************
@@ -65,7 +69,10 @@ void UninitGoalTape(int num)
 ***************************************/
 void UpdateGoalTape(void)
 {
-	entity.pos.z -= SYSTEMPARAMETER_PROGRESS_VALUE;
+	entity.pos.z -= SYSTEMPARAMETER_PROGRESS_VALUE*2;
+
+	textureOffset += GOALTAPE_ANIMATION_VALUE;
+	AnimationGoalTape();
 }
 
 /**************************************
@@ -149,4 +156,21 @@ void MakeVertexGoalTape(void)
 GOALTAPE *GetGoalTapeAdr(void)
 {
 	return &entity;
+}
+
+/**************************************
+アニメーション処理
+***************************************/
+void AnimationGoalTape(void)
+{
+	VERTEX_3D *pVtx;
+
+	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	pVtx[0].tex = D3DXVECTOR2(textureOffset, 0.0f);
+	pVtx[1].tex = D3DXVECTOR2(textureOffset + GOALTAPE_TEXTURE_LOOP_X, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(textureOffset, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(textureOffset + GOALTAPE_TEXTURE_LOOP_X, 1.0f);
+
+	vtxBuff->Unlock();
 }
