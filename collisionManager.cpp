@@ -64,9 +64,12 @@ void CollisionBulletAndPlayer(void)
 			//バウンディングボックスの判定
 			if (ChechHitBoundingCube(&player->collider, &bullet->collider))
 			{
-				//バレットが当たったら減速
+				//当たったプレイヤーを減速
 				SetPlayerAcceleration(i, false);
-				SetBulletParticle(*bullet->collider.pos);
+
+				//当てたプレイヤーを加速
+				SetPlayerAcceleration(opponent, true);
+
 				bullet->use = false;
 
 				//パーティクルセット
