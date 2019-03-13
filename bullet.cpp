@@ -17,7 +17,7 @@
 #define MOVE_SPEED_BULLET	(5.0f)
 #define ATK_RANGE_WIDTH		(SCREEN_WIDTH * 2.0f)
 #define ATK_RANGE_HEIGHT	(SCREEN_HEIGHT * 3.0f)
-#define DEADZONE_STICK		(0.45f)
+#define DEADZONE_STICK		(0.4f)
 #define RANGE_ATK_WIDTH		(80.0f)
 #define BULLET_SPEED		(16.0f)
 #define BULLET_MAX			((int)(SLASHBULLET_NUM_MAX/2))
@@ -244,7 +244,7 @@ void SetBullet(BULLET* bulletData, int playerNo, float x, float y)
 	float tmp = 0.0f;
 	while (tmp == 0.0f)
 	{
-		tmp = (float)(rand() % 200) - 100.0f;
+		tmp = (float)(rand() % 20) - 10.0f;
 	}
 	tmp /= 100.0f;
 
@@ -254,11 +254,11 @@ void SetBullet(BULLET* bulletData, int playerNo, float x, float y)
 	bulletData->range.vtx[0].z = posPlayer.z;
 
 	bulletData->range.vtx[1].x = posPlayer.x + x * RANGE_ATK_WIDTH;
-	bulletData->range.vtx[1].y = posPlayer.y - y * RANGE_ATK_WIDTH;
+	bulletData->range.vtx[1].y = posPlayer.y - y * RANGE_ATK_WIDTH - tmp;
 	bulletData->range.vtx[1].z = posPlayer.z + RANGE_ATK_WIDTH;
 
 	bulletData->range.vtx[2].x = posPlayer.x - x * RANGE_ATK_WIDTH + tmp;
-	bulletData->range.vtx[2].y = posPlayer.y + y * RANGE_ATK_WIDTH - tmp;
+	bulletData->range.vtx[2].y = posPlayer.y + y * RANGE_ATK_WIDTH;
 	bulletData->range.vtx[2].z = posPlayer.z;
 
 	bulletData->range.vtx[3].x = posPlayer.x - x * RANGE_ATK_WIDTH;
