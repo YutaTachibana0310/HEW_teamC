@@ -69,7 +69,7 @@ void UninitGoalTape(int num)
 ***************************************/
 void UpdateGoalTape(void)
 {
-	entity.pos.z -= SYSTEMPARAMETER_PROGRESS_VALUE*2;
+	entity.pos.z -= SYSTEMPARAMETER_PROGRESS_VALUE;
 
 	textureOffset += GOALTAPE_ANIMATION_VALUE;
 	AnimationGoalTape();
