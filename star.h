@@ -17,7 +17,7 @@
 #define MAX_SURFACE			(16)
 #define MAX_IDX_SURFACE		(16)
 #define MAX_VTX_SURFACE		(16)	
-#define VAL_BLOCK_MOVE		(1)
+#define VAL_BLOCK_MOVE		(3)
 
 #define FALSE_FLAG			(-1)
 

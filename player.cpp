@@ -41,6 +41,8 @@
 #define PLAYER_SCALE			(2.0f)
 #define PLAYER_EFFECTPOS_L		(D3DXVECTOR3(-3.0f, 2.0f, 10.0f))
 #define PLAYER_EFFECTPOS_R		(D3DXVECTOR3( 3.0f, 2.0f, 10.0f))
+#define PLAYER_EFFECTSCALE_ACCEL	(2.0f)
+#define PLAYER_EFFECTSCALE_NORMAL	(1.0f)
 
 //*****************************************************************************
 // グローバル変数
@@ -280,9 +282,10 @@ void UpdatePlayer(void)
 		//攻撃処理
 		PlayerAttack(i);
 
-		//エフェクトセット処理
-		SetEffect(player[i].effectPosL);
-		SetEffect(player[i].effectPosR);
+		//エフェクトセット処理(加速中はエフェクトが大きくなる)
+		float effectScale = player[i].accelerationFlag ? PLAYER_EFFECTSCALE_ACCEL : PLAYER_EFFECTSCALE_NORMAL;
+		SetEffect(player[i].effectPosL, effectScale);
+		SetEffect(player[i].effectPosR, effectScale);
 	}
 }
 

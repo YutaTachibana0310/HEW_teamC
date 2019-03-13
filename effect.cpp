@@ -307,7 +307,7 @@ void SetColorEffect(int nIdxEffect, D3DXCOLOR col)
 //=============================================================================
 // エフェクトの設定
 //=============================================================================
-int SetEffect(D3DXVECTOR3 pos)
+int SetEffect(D3DXVECTOR3 pos, float scale)
 {
 	int nIdxEffect = -1;
 
@@ -320,13 +320,13 @@ int SetEffect(D3DXVECTOR3 pos)
 			Effect[CntEffect].scl = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
 			Effect[CntEffect].move = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
 			Effect[CntEffect].col =  EFFECT_COLOR;
-			Effect[CntEffect].sizeX = EFFECT_SIZE_X;
-			Effect[CntEffect].sizeY = EFFECT_SIZE_Y;
+			Effect[CntEffect].sizeX = EFFECT_SIZE_X * scale;
+			Effect[CntEffect].sizeY = EFFECT_SIZE_Y * scale;
 			Effect[CntEffect].life = EFFECT_LIFE;
 			Effect[CntEffect].use = true;
 
 			// 頂点座標の設定
-			SetVertexEffect(CntEffect, EFFECT_SIZE_X, EFFECT_SIZE_Y);
+			SetVertexEffect(CntEffect, Effect[CntEffect].sizeX, Effect[CntEffect].sizeY);
 
 			// 頂点カラーの設定
 			SetColorEffect(CntEffect,
