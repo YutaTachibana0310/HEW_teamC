@@ -35,7 +35,7 @@ void InitGameParameter(int num)
 		param[i].playerSpeed = 0.0f;
 		param[i].playerMoveDist = 0.0f;
 		param[i].isPlayerGoaled = false;
-		param[1].score = 0;
+		param[i].score = 0;
 		param[i].deltaTime = 0.0f;
 		param[i].isPlayerGoaled = false;
 		param[i].posOffset = 0;
