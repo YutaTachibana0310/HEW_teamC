@@ -82,7 +82,10 @@ void InitScene(int num)
 ***************************************/
 void UninitSceneManager(int num)
 {
-	Uninit[*currentSceneId](num);
+	for (int i = 0; i < DefineSceneMax; i++)
+	{
+		Uninit[*currentSceneId](num);
+	}
 }
 
 /**************************************
@@ -90,7 +93,7 @@ void UninitSceneManager(int num)
 ***************************************/
 void UninitScene(int num)
 {
-
+	Uninit[*currentSceneId](num);
 }
 
 /**************************************
