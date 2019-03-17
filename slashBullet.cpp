@@ -72,6 +72,10 @@ void UninitSlashBullet(int num)
 {
 	SAFE_RELEASE(texture);
 	SAFE_RELEASE(vtxBuff);
+	for (int i = 0; i < 2; i++)
+	{
+		SAFE_RELEASE(bulletTex[i]);
+	}
 }
 
 /**************************************
