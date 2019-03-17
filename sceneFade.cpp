@@ -175,7 +175,7 @@ void MakeVertexSceneFade(void)
 	vtxWk[0].diffuse =
 		vtxWk[1].diffuse =
 		vtxWk[2].diffuse =
-		vtxWk[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		vtxWk[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f);
 
 	vtxWk[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 	vtxWk[1].tex = D3DXVECTOR2(1.0f, 0.0f);

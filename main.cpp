@@ -418,6 +418,7 @@ void Update(void)
 	// “ü—ÍXV
 	UpdateInput();
 
+	UpdateSceneFade();
 	UpdateDebugWindow();
 	UpdateBgmManager();
 	UpdateSoundEffectManager();
@@ -428,7 +429,6 @@ void Update(void)
 	UpdatePostEffectManager();
 	UpdateGUIManager(currentScene);
 
-	UpdateSceneFade();
 }
 
 //=============================================================================
@@ -459,8 +459,8 @@ void Draw(void)
 	{
 		DrawGUIManager(currentScene);
 		DrawDebugWindowMain();
-		DrawDebugWindow();
 		DrawSceneFade();
+		DrawDebugWindow();
 		g_pD3DDevice->EndScene();
 	}
 
