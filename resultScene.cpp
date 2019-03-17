@@ -15,6 +15,7 @@
 #include "meshCylinder.h"
 #include "rainbowLane.h"
 #include "player.h"
+#include "effect.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -45,6 +46,7 @@ HRESULT InitResultScene(int num)
 	InitMeshCylinder(num);
 	InitRainbowLane(num);
 	InitPlayer();
+	InitEffect();
 
 	for (int i = 0; i < TARGETPLAYER_MAX; i++)
 	{
@@ -68,6 +70,7 @@ void UninitResultScene(int num)
 	UninitMeshCylinder(num);
 	UninitRainbowLane(num);
 	UninitPlayer();
+	UninitEffect();
 }
 
 /**************************************
@@ -80,6 +83,7 @@ void UpdateResultScene(void)
 	UpdateMeshCylinder();
 	UpdateRainbowLane();
 	UpdatePlayer();
+	UpdateEffect();
 
 	cntFrame++;
 	if (cntFrame == RESULTSCENE_DURATION)
@@ -97,4 +101,5 @@ void DrawResultScene(int n)
 	DrawMeshCylinder(n);
 	DrawRainbowLane(n);
 	DrawPlayer();
+	DrawEffect();
 }
