@@ -126,7 +126,6 @@ void UpdateTitleScene(void)
 			entryComleterd = true;
 			FadeOutBGM(BGM_TITLE, BGM_FADE_DURATION);
 		}
-		SetSceneFade(GameScene);
 	}
 }
 
