@@ -10,7 +10,7 @@
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
-#define GOALTAPE_COLLIDER_LENGTH		(D3DXVECTOR3(1000.0f, 100.0f, 0.0f))
+#define GOALTAPE_COLLIDER_LENGTH		(D3DXVECTOR3(1000.0f, 100.0f, 50.0f))
 #define GOALTAPE_SIZE_X					(500.0f)
 #define GOALTAPE_SIZE_Y					(10.0f)
 #define GOALTAPE_POS_Y					(-10.0f)
@@ -51,7 +51,7 @@ void InitGoalTape(int num)
 
 	entity.collider.pos = &entity.pos;
 	entity.collider.length = GOALTAPE_COLLIDER_LENGTH;
-	entity.collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	entity.collider.offset = D3DXVECTOR3(0.0f, 0.0f, GOALTAPE_COLLIDER_LENGTH.z / 2.0f);
 
 	textureOffset = 0.0f;
 }
