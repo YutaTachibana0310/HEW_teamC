@@ -97,35 +97,6 @@ void UpdateBullet(void)
 	}
 #endif
 
-	//for (int cntPad = 0; cntPad < TARGETPLAYER_MAX; cntPad++)
-	//{
-	//	stickAxis.x = GetStickAxisX(cntPad);
-	//	stickAxis.y = GetStickAxisY(cntPad);
-
-	//	if (fabsf(stickAxis.x) + fabsf(stickAxis.y) > DEADZONE_STICK && useSet)
-	//	{
-	//		for (int cntBullet = 0; cntBullet < SLASHBULLET_NUM_MAX; cntBullet++)
-	//		{
-	//			if (bulletData[cntPad][cntBullet].use)
-	//			{
-	//				continue;
-	//			}
-
-	//			SetBullet(&bulletData[cntPad][cntBullet], cntPad, stickAxis.x, stickAxis.y);
-
-	//			break;
-	//		}
-
-	//	
-	//		useSet = false;
-	//	}
-	//	else if (fabsf(stickAxis.x) + fabsf(stickAxis.y) < DEADZONE_STICK)
-	//	{
-	//		useSet = true;
-	//	}
-
-	//}
-
 	for (int cntPlayer = 0; cntPlayer < TARGETPLAYER_MAX; cntPlayer++)
 	{
 		for (int cntBullet = 0; cntBullet < BULLET_MAX; cntBullet++)
@@ -162,17 +133,8 @@ bool GetAttackTrigger(int playerNo)
 			SetBullet(&bulletData[playerNo][cntBullet], playerNo, stickAxis.x, stickAxis.y);
 
 			return true;
-			//break;
 		}
-
-
-		//useSet = false;
 	}
-	//else if (fabsf(stickAxis.x) + fabsf(stickAxis.y) < DEADZONE_STICK)
-	//{
-	//	useSet = true;
-	//}
-
 	return false;
 
 }
@@ -183,12 +145,9 @@ bool GetAttackTrigger(int playerNo)
 //=============================================================================
 void SetMoveBullet(BULLET* bulletData, int playerNo)
 {
-	//float		depthPlayerPos;
-	//D3DXVECTOR3 posSlash;
 	D3DXVECTOR3	posPlayer = GetPositionPlayer(playerNo);
 
 	bulletData->length += BULLET_SPEED;
-	//depthPlayerPos = GetPositionPlayer(playerNo).z;
 
 	bulletData->range.vtx[0].z = posPlayer.z;
 	bulletData->range.vtx[2].z = posPlayer.z;
@@ -292,14 +251,6 @@ void SetBullet(BULLET* bulletData, int playerNo, float x, float y)
 
 	bulletData->idxSlashBullet = SetSlashBullet(wkPos, playerNo, x, -y);
 	bulletData->collider.pos = &(GetSlashBulletAdr(bulletData->idxSlashBullet)->pos);
-}
-
-//=============================================================================
-// バレットのゲット処理
-//=============================================================================
-void GetBulletPos(int playerNo, float x, float y)
-{
-
 }
 
 //=============================================================================

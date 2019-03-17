@@ -144,12 +144,6 @@ HRESULT InitPlayer(void)
 		player[i].collider.length = D3DXVECTOR3(PLAYER_RADIUS, PLAYER_RADIUS, PLAYER_RADIUS);
 		player[i].collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
-#if 0
-		// テクスチャの読み込み
-		D3DXCreateTextureFromFile(pDevice,	// デバイスへのポインタ
-			TEXTURE_FILENAME,				// ファイルの名前
-			&texture);						// 読み込むメモリー
-#endif
 		//プレイヤーのパラメータを初期化
 		int laneIndex = i == 0 ? LANE_LEFT : LANE_RIGHT;
 		player[i].pos = GetLanePos(laneIndex);
@@ -458,11 +452,9 @@ void PlayerAttack(int i)
 
 
 	//攻撃ボタンのトリガー検知
-	//if (GetAttackButtonTrigger(i) && ptr->shotInterbal > PLAYER_SHOT_INTERBAL)
 	if (GetAttackTrigger(i))
 	{
 		ptr->shotInterbal = 0;
-		//SetSlashBullet(ptr->pos, i, RandomRangef(-0.5f, 0.5f), RandomRangef(-0.5f, 0.5f));
 		PlaySE(SOUIND_BULLET);
 	}
 }

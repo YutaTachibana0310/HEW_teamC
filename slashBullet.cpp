@@ -32,7 +32,7 @@ static LPDIRECT3DTEXTURE9 texture;
 static LPDIRECT3DVERTEXBUFFER9 vtxBuff;
 static SLASHBULLET bullet[SLASHBULLET_NUM_MAX];
 
-static LPDIRECT3DTEXTURE9 bulletTex[2];
+static LPDIRECT3DTEXTURE9 bulletTex[TARGETPLAYER_MAX];
 
 /**************************************
 プロトタイプ宣言

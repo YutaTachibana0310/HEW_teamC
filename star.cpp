@@ -1,18 +1,16 @@
 //=============================================================================
 //
 // 木処理 [star.cpp]
-// Author : 
+// Author : 李尚ミン 
 //
 //=============================================================================
 
 #include "main.h"
 #include "star.h"
 #include "camera.h"
-//#include "shadow.h"
 #include "input.h"
 #include "rainbowLane.h"
 #include "player.h"
-//#include "debugproc.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -28,18 +26,10 @@
 #define NUM_SECTION_VTX			(4)
 #define NUM_NEW_IDX				(2)
 #define COLOR_VTX				D3DXCOLOR(1.0f, 1.0f, 0.50f, 1.0f)
-//#define NEW_SURFACE_COLOR		D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.9f)
-//#define CENTER_BLOCK			D3DXVECTOR3(0.0f, BLOCK_HEIGHT / 2.0f, 0.0f)
-
-
-#define SWITCH_SPHERE           (0)
 
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
-//HRESULT MakeVertexStar(LPDIRECT3DDEVICE9 device);
-//void	SetVertexStar(int idxStar, float width, float height);
-//void	SetColorStar(int idxStar, D3DXCOLOR col);
 HRESULT InitBlock(LPDIRECT3DDEVICE9 device, STAR* wkStar);
 HRESULT InitSurface(LPDIRECT3DDEVICE9 device, BLOCK* wkBlock);
 
@@ -65,19 +55,12 @@ int		CheckCalculatedHitCheck(BLOCK* block, int sp, int ep);
 int		GetEndPointOutLine(int sp, int numVtx);
 bool	HitCheckSurface(D3DXVECTOR3* cp, PLANE section, D3DXVECTOR3 pos0, D3DXVECTOR3 pos1);
 bool	HitCheckTriangle(TRIANGLE p, D3DXVECTOR3 pos0, D3DXVECTOR3 pos1);
-//void	InitNewSurface(SURFACE* oldBlockSurface, SURFACE* newBlockSurface);
 
 void	SetMoveStar(STAR* star, D3DXVECTOR3 pos, D3DXVECTOR3 move);
 
 void	ResetStar(STAR* wkStar);
 
 double DotProduct(D3DXVECTOR3 vec1, D3DXVECTOR3 vec2);
-
-
-
-
-
-
 
 //*****************************************************************************
 // グローバル変数
@@ -89,26 +72,9 @@ bool	useMove = true;
 
 STAR	star[MAX_STAR];				// 木ワーク
 
-#if SWITCH_SPHERE
-
-#define INIT_SPHERE_DVD_A			(12)
-#define INIT_SPHERE_DVD_S			(INIT_SPHERE_DVD_A * 2)
-#define NUM_VTX_SPHERE				((INIT_SPHERE_DVD_A-1) * INIT_SPHERE_DVD_S + 2)
-#define NUM_SRUFACE_SPHERE          (INIT_SPHERE_DVD_S * INIT_SPHERE_DVD_A)
-#define RADIUS_SPHERE				(50.0f)
-
-D3DXVECTOR3		vtxS[NUM_VTX_SPHERE];
-WORD			idxS[NUM_SRUFACE_SPHERE][4];
-int				numIdxS[NUM_SRUFACE_SPHERE];
-
-#endif
-
 int		blockIdxNo[6][3] =
 {
 	{ 0, 4, 1 },{ 0, 1, 3 },{ 0, 2, 4 },{ 0, 3, 2 },{ 1, 4, 2 },{ 1, 2, 3 }
-	//{2, 0, 3, 1}, {4, 5, 6, 7}, {1, 4, 3, 6}, {3, 6, 2, 7}, {2, 7, 0, 5}, {0, 5, 1, 4}
-	//{0, 1, 3, 2}, {4, 5, 7, 6}, {1, 4, 6, 3}, {3, 6, 7, 2}, {2, 7, 5, 0}, {0, 5, 4, 1}
-
 };
 
 
@@ -121,91 +87,6 @@ HRESULT InitStar(void)
 	useMove = true;
 
 	// 頂点情報の作成
-	//MakeVertexStar(device);
-#if SWITCH_SPHERE
-
-	int y = INIT_SPHERE_DVD_A;
-	int x = INIT_SPHERE_DVD_S;
-
-	float rA = D3DX_PI / y;
-	float rS = D3DX_PI * 2.0f / x;
-
-	int cnt;
-
-	int tmpCnt = 0;
-	for (size_t i = 0; i < NUM_SRUFACE_SPHERE; i++)
-	{
-		numIdxS[i] = 0;
-	}
-	for (int a = 1; a < y; a++)
-	{
-		for (int s = 0; s < x; s++)
-		{
-			cnt = (a-1) * x + s;
-			vtxS[cnt].x = cosf(s * rS) * cosf(a * rA - D3DX_PI / 2.0f) * RADIUS_SPHERE;
-			vtxS[cnt].y = sinf(a * rA - D3DX_PI / 2.0f) * RADIUS_SPHERE;
-			vtxS[cnt].z = sinf(s * rS) * cosf(a * rA - D3DX_PI / 2.0f) * RADIUS_SPHERE;
-			tmpCnt++;
-		}
-	}
-	int numSurface = x * (y - 1) + 1;
-
-	int cntA, cntS;
-	int cntIdx = 0;
-	for (int i = 0; i < NUM_SRUFACE_SPHERE - INIT_SPHERE_DVD_S * 2; i++)
-	{
-		cntA = i / x;
-		cntS = i % x;
-
-		idxS[cntIdx][0] = cntA * x + cntS;
-		idxS[cntIdx][1] = idxS[cntIdx][0] + x;
-		idxS[cntIdx][2] = idxS[cntIdx][1] + 1;
-		idxS[cntIdx][3] = idxS[cntIdx][0] + 1;
-		numIdxS[cntIdx] = 4;
-
-		if (cntS + 1 == x)
-		{
-			idxS[cntIdx][2] = cntA * x + x;
-			idxS[cntIdx][3] = cntA * x;
-		}
-		cntIdx++;
-	}
-
-	vtxS[tmpCnt] = D3DXVECTOR3(0.0f, -RADIUS_SPHERE, 0.0f);
-
-	for (int i = 0; i < INIT_SPHERE_DVD_S; i++)
-	{
-		idxS[cntIdx][0] = tmpCnt;
-		idxS[cntIdx][1] = i;
-		idxS[cntIdx][2] = i + 1;
-
-		if (i + 1 == INIT_SPHERE_DVD_S)
-		{
-			idxS[cntIdx][2] = 0;
-		}
-		numIdxS[cntIdx] = 3;
-		cntIdx++;
-	}
-
-	tmpCnt++;
-	vtxS[tmpCnt] = D3DXVECTOR3(0.0f, RADIUS_SPHERE, 0.0f);
-	for (int i = 0; i < INIT_SPHERE_DVD_S; i++)
-	{
-		idxS[cntIdx][0] = tmpCnt;
-		idxS[cntIdx][1] = NUM_SRUFACE_SPHERE - INIT_SPHERE_DVD_S - i - 1;
-		idxS[cntIdx][2] = NUM_SRUFACE_SPHERE - INIT_SPHERE_DVD_S - i - 2;
-
-		if (i + 1 == INIT_SPHERE_DVD_S)
-		{
-			idxS[cntIdx][2] = NUM_SRUFACE_SPHERE - INIT_SPHERE_DVD_S - 1;
-		}
-		numIdxS[cntIdx] = 3;
-		cntIdx++;
-	}
-
-#endif
-
-
 	for (int i = 0; i < MAX_STAR; i++)
 	{
 
@@ -261,20 +142,7 @@ HRESULT InitBlock(LPDIRECT3DDEVICE9 device, STAR* wkStar)
 			wkStar->block[i].dotVtx[j] = 0;
 		}
 
-		wkStar->block[i].pos = D3DXVECTOR3(0.0f , 100.0f, 0.0f);
-
-		//switch (cntStar % 2)
-		//{
-		//case 0:
-		//	wkStar->block[i].pos = D3DXVECTOR3(0.0f - 60.0f * (MAX_STAR - 1) + cntStar * 120.0f, 100.0f, 0.0f);
-		//	break;
-
-		//case 1:
-		//	wkStar->block[i].pos = D3DXVECTOR3(0.0f - 60.0f * (MAX_STAR - 1) + cntStar * 120.0f, 100.0f, 0.0f);
-		//	break;
-		//default:
-		//	break;
-		//}
+		wkStar->block[i].pos = D3DXVECTOR3(0.0f, 100.0f, 0.0f);
 
 		wkStar->block[i].scl = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
 		wkStar->block[i].move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -299,134 +167,20 @@ HRESULT InitBlock(LPDIRECT3DDEVICE9 device, STAR* wkStar)
 	//for (int i = 0; i < wkStar->numBlock; i++)
 	for (int i = 0; i < INIT_NUM_BLOCK; i++)
 	{
-
-#if SWITCH_SPHERE
-		//switch (cntStar % 2)
-		//{
-		//case 0:
-		//	// オブジェクトの頂点バッファを生成
-		//	if (FAILED(device->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VTX_SPHERE * 5,	// 頂点データ用に確保するバッファサイズ(バイト単位)
-		//		D3DUSAGE_WRITEONLY,												// 頂点バッファの使用法
-		//		FVF_VERTEX_3D,															// 使用する頂点フォーマット
-		//		D3DPOOL_MANAGED,												// リソースのバッファを保持するメモリクラスを指定
-		//		&wkStar->block[i].vtxBuff,							// 頂点バッファインターフェースへのポインタ
-		//		NULL)))															// NULLに設定
-		//	{
-		//		return E_FAIL;
-		//	}
-
-		//	{
-		//		D3DXVECTOR3 nor;
-
-		//		wkStar->block[i].vtxBuff->Lock(0, 0, (void**)&vtx, 0);
-
-		//		for (int cntVtx = 0; cntVtx < NUM_VTX_SPHERE; cntVtx++)
-		//		{
-		//			vtx[cntVtx].vtx = vtxS[cntVtx];
-		//			vtx[cntVtx].diffuse = COLOR_VTX;
-		//			nor = vtxS[cntVtx];
-		//			D3DXVec3Normalize(&nor, &nor);
-		//			vtx[cntVtx].nor = nor;
-
-		//		}
-
-		//		wkStar->block[i].vtxBuff->Unlock();
-		//	}
-
-		//	wkStar->block[i].numSurface = NUM_SRUFACE_SPHERE;
-		//	wkStar->block[i].numVtx = NUM_VTX_SPHERE;
-		//	wkStar->block[i].use = true;
-
-		//	break;
-
-		//case 1:
-		//	// オブジェクトの頂点バッファを生成
-		//	if (FAILED(device->CreateVertexBuffer(sizeof(VERTEX_3D) * MAX_SURFACE * MAX_VTX_SURFACE,	// 頂点データ用に確保するバッファサイズ(バイト単位)
-		//		D3DUSAGE_WRITEONLY,												// 頂点バッファの使用法
-		//		FVF_VERTEX_3D,															// 使用する頂点フォーマット
-		//		D3DPOOL_MANAGED,												// リソースのバッファを保持するメモリクラスを指定
-		//		&wkStar->block[i].vtxBuff,							// 頂点バッファインターフェースへのポインタ
-		//		NULL)))															// NULLに設定
-		//	{
-		//		return E_FAIL;
-		//	}
-
-		//	{
-		//		wkStar->block[i].vtxBuff->Lock(0, 0, (void**)&vtx, 0);
-		//		// 頂点座標の設定
-		//		vtx[0].vtx = D3DXVECTOR3(-wkStar->width / 2.0f, -wkStar->height / 2.0f, wkStar->width / 2.0f);
-		//		vtx[1].vtx = D3DXVECTOR3(-wkStar->width / 2.0f, -wkStar->height / 2.0f, -wkStar->width / 2.0f);
-		//		vtx[2].vtx = D3DXVECTOR3(wkStar->width / 2.0f, -wkStar->height / 2.0f, -wkStar->width / 2.0f);
-		//		vtx[3].vtx = D3DXVECTOR3(wkStar->width / 2.0f, -wkStar->height / 2.0f, wkStar->width / 2.0f);
-		//		vtx[4].vtx = D3DXVECTOR3(-wkStar->width / 2.0f, wkStar->height / 2.0f, -wkStar->width / 2.0f);
-		//		vtx[5].vtx = D3DXVECTOR3(-wkStar->width / 2.0f, wkStar->height / 2.0f, wkStar->width / 2.0f);
-		//		vtx[6].vtx = D3DXVECTOR3(wkStar->width / 2.0f, wkStar->height / 2.0f, wkStar->width / 2.0f);
-		//		vtx[7].vtx = D3DXVECTOR3(wkStar->width / 2.0f, wkStar->height / 2.0f, -wkStar->width / 2.0f);
-
-		//		D3DXCOLOR R = COLOR_VTX;//D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.8f);
-		//								// 反射光の設定
-		//		vtx[0].diffuse = R;//D3DXCOLOR(0.0f, 1.0f, 0.0f, 0.5f);
-		//		vtx[1].diffuse = R;//
-		//		vtx[2].diffuse = R;
-		//		vtx[3].diffuse = R;//D3DXCOLOR(0.0f, 1.0f, 0.0f, 0.5f);
-		//		vtx[4].diffuse = R;
-		//		vtx[5].diffuse = R;//D3DXCOLOR(0.0f, 1.0f, 0.0f, 0.5f);
-		//		vtx[6].diffuse = R;//D3DXCOLOR(0.0f, 1.0f, 0.0f, 0.5f);
-		//		vtx[7].diffuse = R;
-
-		//		D3DXVECTOR3 nor;
-		//		for (int j = 0; j < INIT_NUM_VTX_BLOCK; j++)
-		//		{
-		//			nor = vtx[j].vtx;
-		//			D3DXVec3Normalize(&nor, &nor);
-		//			vtx[j].nor = nor;
-
-		//		}
-
-
-		//		//vtx[1].nor = nor;
-		//		//vtx[2].nor = nor;
-		//		//vtx[3].nor = nor;
-		//		//vtx[4].nor = nor;
-		//		//vtx[5].nor = nor;
-		//		//vtx[6].nor = nor;
-		//		//vtx[7].nor = nor;
-
-
-		//		wkStar->block[i].vtxBuff->Unlock();
-		//	}
-
-
-
-		//	wkStar->block[i].numSurface = INIT_NUM_SURFACE_BLOCK;
-		//	wkStar->block[i].numVtx = INIT_NUM_VTX_BLOCK;
-		//	wkStar->block[i].use = true;
-
-		//	break;
-
-		//default:
-
-		//	break;
-
-		//}
-
-
-
-#else
 		// オブジェクトの頂点バッファを生成
 		if (FAILED(device->CreateVertexBuffer(sizeof(VERTEX_3D) * MAX_SURFACE * MAX_VTX_SURFACE,	// 頂点データ用に確保するバッファサイズ(バイト単位)
-												D3DUSAGE_WRITEONLY,												// 頂点バッファの使用法
-												FVF_VERTEX_3D,															// 使用する頂点フォーマット
-												D3DPOOL_MANAGED,												// リソースのバッファを保持するメモリクラスを指定
-												&wkStar->block[i].vtxBuff,							// 頂点バッファインターフェースへのポインタ
-												NULL)))															// NULLに設定
+			D3DUSAGE_WRITEONLY,												// 頂点バッファの使用法
+			FVF_VERTEX_3D,															// 使用する頂点フォーマット
+			D3DPOOL_MANAGED,												// リソースのバッファを保持するメモリクラスを指定
+			&wkStar->block[i].vtxBuff,							// 頂点バッファインターフェースへのポインタ
+			NULL)))															// NULLに設定
 		{
 			return E_FAIL;
 		}
 
 		{
 			wkStar->block[i].vtxBuff->Lock(0, 0, (void**)&vtx, 0);
-		//	// 頂点座標の設定
+			//	// 頂点座標の設定
 			vtx[0].vtx = D3DXVECTOR3(0.0f, 0.0f, -wkStar->depth);
 			vtx[1].vtx = D3DXVECTOR3(0.0f, 0.0f, wkStar->depth);
 			vtx[2].vtx = D3DXVECTOR3(0.0f, wkStar->height, 0.0f);
@@ -458,7 +212,6 @@ HRESULT InitBlock(LPDIRECT3DDEVICE9 device, STAR* wkStar)
 		wkStar->block[i].numVtx = INIT_NUM_VTX_BLOCK;
 		wkStar->block[i].use = true;
 
-#endif
 		InitSurface(device, &wkStar->block[i]);
 
 	}
@@ -586,14 +339,8 @@ void ResetStar(STAR* wkStar)
 //=============================================================================
 void UpdateStar(void)
 {
-	//VERTEX_3D *vtx;
-	//float tmpY;
-	//float alp;
-	//float dis;
 	D3DXVECTOR3 vec, wkPos;
 
-	
-#if 1
 	PLANE clippingPlane;
 	D3DXVECTOR3 vec1, vec2, nor;
 	float radiusPlane = 500.0f;
@@ -724,8 +471,6 @@ void UpdateStar(void)
 
 	}
 
-#endif
-
 	D3DXMATRIX viewMtx[TARGETPLAYER_MAX];
 	D3DXVECTOR3 viewPos[TARGETPLAYER_MAX];
 
@@ -741,7 +486,7 @@ void UpdateStar(void)
 			continue;
 
 		STAR *wkStar = &star[cntStar];
-		
+
 		for (int cntBlock = 0; cntBlock < MAX_BLOCK; cntBlock++)
 		{
 			if (!wkStar->block[cntBlock].use)
@@ -776,97 +521,13 @@ void UpdateStar(void)
 				continue;
 			}
 
-			//vec = star[i].block[j].pos - star[i].pos;
-			//
-			//dis = D3DXVec3LengthSq(&vec);
-			//
-			//alp = dis / VAL_ALPHA_DIS;
-			//
-			//if (alp > 1.0f)
-			//{
-			//	star[i].block[j].use = false;
-			//	star[i].block[j].vtxBuff->Release();
-			//	star[i].block[j].vtxBuff = NULL;
-			//
-			//	continue;
-			//}
-			//
-			//star[i].block[j].vtxBuff->Lock(0, 0, (void**)&vtx, 0);
-			//
-			//
-			//for (int k = 0; k < star[i].block[j].numVtx; k++)
-			//{
-			//
-			//	vtx[k].diffuse = COLOR_VTX - D3DXCOLOR(0.0f, 0.0f, 0.0f, alp);
-			//}
-
-			if (/*star[i].block[j].pos.y + vtx[0].vtx.y > 0.0f &&*/ useMove)
+			if (useMove)
 			{
 				star[i].block[j].pos += star[i].block[j].move;
 			}
 
-
-			//star[i].block[j].vtxBuff->Unlock();
-
 		}
 	}
-	//STAR *tmpStar;
-	
-	//if (GetKeyboardTrigger(DIK_H) || IsButtonTriggered(0, BUTTON_R))
-	//{
-	//	UninitStar();
-	//	InitStar();
-	//}
-
-	//VERTEX_3D *vtx;
-
-
-	//if (GetKeyboardTrigger(DIK_P) || IsButtonTriggered(0, BUTTON_Z))
-	//{
-	////	//if (star[0].numBlock > 1)
-	////	//{
-	////	//	star[0].block[2].vtxBuff->Lock(0, 0, (void**)&vtx, 0);
-	////
-	////
-	////	//	star[0].block[2].vtxBuff->Unlock();
-	////
-	////
-	////	//}
-	////
-	//	useWire = (useWire + 1) % 2;
-	//}
-
-	
-	//if (GetKeyboardPress(DIK_1))
-	//{
-	//	for (int i = 0; i < MAX_STAR; i++)
-	//	{
-	//		for (int j = 0; j < MAX_BLOCK; j++)
-	//		{
-	//			if (!star[i].block[j].use)
-	//			{
-	//				break;
-	//			}
-	//			
-	//			star[i].block[j].rot.z += 0.1f;
-	//		}
-	//	}
-	//}
-
-	//if (debug)
-	//{
-	//	//PrintDebugProc("debugggggggggg : %d \n ", debug);
-	//
-	//}
-	//
-	//D3DXVECTOR3 a, b, c;
-	//a = D3DXVECTOR3(0.0f, 1000.0f, 0.0f);
-	//b = D3DXVECTOR3(0.0f, 1000.0f, 0.0f);
-	//
-	//D3DXVec3Cross(&c, &a, &b);
-	//
-	//PrintDebugProc("x: %f, y: %f, z: %f\n", c.x, c.y, c.z);
-
 }
 
 //=============================================================================
@@ -876,28 +537,7 @@ void DrawStar(void)
 {
 	LPDIRECT3DDEVICE9 device = GetDevice();
 
-	//device->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);				// Z比較あり
-
-	// ラインティングを無効にする
-	//device->SetRenderState(D3DRS_LIGHTING, FALSE);
-	//device->SetRenderState(D3DRS_LIGHTING, TRUE);
-	//device->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);			// Z比較なし
-																// テクスチャの設定
-	//if (useWire)
-	//{
-	//	device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-	//	device->SetRenderState(D3DRS_LIGHTING, FALSE);
-
-	//}
-	//else
-	//{
-	//	device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-
-	//}
-
-	//device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-
-	for(int cntStar = 0; cntStar < MAX_STAR; cntStar++)
+	for (int cntStar = 0; cntStar < MAX_STAR; cntStar++)
 	{
 		if (!star[cntStar].use)
 		{
@@ -909,15 +549,6 @@ void DrawStar(void)
 			DrawBlock(device, &star[cntStar].block[cntBlock]);
 		}
 	}
-
-	// ラインティングを有効にする
-	//device->SetRenderState(D3DRS_LIGHTING, TRUE);
-	//device->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);				// Z比較あり
-	//device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-
-
-	//device->SetRenderState(D3DRS_FOGENABLE, TRUE);
-
 }
 
 //=============================================================================
@@ -981,105 +612,6 @@ void DrawSurface(LPDIRECT3DDEVICE9 device, SURFACE* surface)
 }
 
 
-
-//=============================================================================
-// 頂点情報の作成
-//=============================================================================
-//HRESULT MakeVertexStar(LPDIRECT3DDEVICE9 device)
-//{
-//	// オブジェクトの頂点バッファを生成
-//	if(FAILED(device->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VERTEX * MAX_BLOCK,	// 頂点データ用に確保するバッファサイズ(バイト単位)
-//												D3DUSAGE_WRITEONLY,						// 頂点バッファの使用法　
-//												FVF_VERTEX_3D,							// 使用する頂点フォーマット
-//												D3DPOOL_MANAGED,						// リソースのバッファを保持するメモリクラスを指定
-//												&D3DVtxBuffStar,						// 頂点バッファインターフェースへのポインタ
-//												NULL)))									// NULLに設定
-//	{
-//		return E_FAIL;
-//	}
-//
-//	{//頂点バッファの中身を埋める
-//		VERTEX_3D *vtx;
-//
-//		// 頂点データの範囲をロックし、頂点バッファへのポインタを取得
-//		D3DVtxBuffStar->Lock(0, 0, (void**)&vtx, 0);
-//
-//		for(int cntStar = 0; cntStar < MAX_BLOCK; cntStar++, vtx += 4)
-//		{
-//			// 頂点座標の設定
-//			vtx[0].vtx = D3DXVECTOR3(-BLOCK_WIDTH / 2.0f, 0.0f, 0.0f);
-//			vtx[1].vtx = D3DXVECTOR3(-BLOCK_WIDTH / 2.0f, BLOCK_HEIGHT, 0.0f);
-//			vtx[2].vtx = D3DXVECTOR3(BLOCK_WIDTH / 2.0f, 0.0f, 0.0f);
-//			vtx[3].vtx = D3DXVECTOR3(BLOCK_WIDTH / 2.0f, BLOCK_HEIGHT, 0.0f);
-//
-//			// 反射光の設定
-//			vtx[0].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-//			vtx[1].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-//			vtx[2].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-//			vtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-//
-//			// テクスチャ座標の設定
-//			vtx[0].tex = D3DXVECTOR2(0.0f, 1.0f);
-//			vtx[1].tex = D3DXVECTOR2(0.0f, 0.0f);
-//			vtx[2].tex = D3DXVECTOR2(1.0f, 1.0f);
-//			vtx[3].tex = D3DXVECTOR2(1.0f, 0.0f);
-//		}
-//
-//		// 頂点データをアンロックする
-//		D3DVtxBuffStar->Unlock();
-//	}
-//
-//	return S_OK;
-//}
-
-//=============================================================================
-// 頂点座標の設定
-//=============================================================================
-//void SetVertexStar(int idxStar, float width, float height)
-//{
-//	{//頂点バッファの中身を埋める
-//		VERTEX_3D *vtx;
-//
-//		// 頂点データの範囲をロックし、頂点バッファへのポインタを取得
-//		D3DVtxBuffStar->Lock(0, 0, (void**)&vtx, 0);
-//
-//		vtx += (idxStar * 4);
-//
-//		// 頂点座標の設定
-//		vtx[0].vtx = D3DXVECTOR3(-width / 2.0f, 0.0f, 0.0f);
-//		vtx[1].vtx = D3DXVECTOR3(-width / 2.0f, height, 0.0f);
-//		vtx[2].vtx = D3DXVECTOR3(width / 2.0f, 0.0f, 0.0f);
-//		vtx[3].vtx = D3DXVECTOR3(width / 2.0f, height, 0.0f);
-//
-//		// 頂点データをアンロックする
-//		D3DVtxBuffStar->Unlock();
-//	}
-//}
-
-//=============================================================================
-// 頂点カラーの設定
-//=============================================================================
-//void SetColorStar(int idxStar, D3DXCOLOR col)
-//{
-//	{//頂点バッファの中身を埋める
-//		VERTEX_3D *vtx;
-//
-//		// 頂点データの範囲をロックし、頂点バッファへのポインタを取得
-//		D3DVtxBuffStar->Lock(0, 0, (void**)&vtx, 0);
-//
-//		vtx += (idxStar * 4);
-//
-//		// 頂点座標の設定
-//		vtx[0].diffuse = col;
-//		vtx[1].diffuse = col;
-//		vtx[2].diffuse = col;
-//		vtx[3].diffuse = col;
-//
-//		// 頂点データをアンロックする
-//		D3DVtxBuffStar->Unlock();
-//	}
-//}
-
 //=============================================================================
 // ★を設定
 //=============================================================================
@@ -1087,29 +619,14 @@ int SetStar(D3DXVECTOR3 pos, D3DXVECTOR3 move)
 {
 	int idxStar = -1;
 
-	for(int cntStar = 0; cntStar < MAX_STAR; cntStar++)
+	for (int cntStar = 0; cntStar < MAX_STAR; cntStar++)
 	{
-		if(!star[cntStar].use)
+		if (!star[cntStar].use)
 		{
 			star[cntStar].use = true;
 			star[cntStar].numBlock = INIT_NUM_BLOCK;
-			//star[cntStar].pos = pos;
 
 			SetMoveStar(&star[cntStar], pos, move);
-
-
-			//Star[cntStar].pos = pos;
-			//Star[cntStar].scl = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
-			//Star[cntStar].width = width;
-			//Star[cntStar].height = height;
-			//Star[cntStar].bUse = true;
-			//// 頂点座標の設定
-			//SetVertexStar(cntStar, width, height);
-			//// 頂点カラーの設定
-			//SetColorStar(cntStar, col);
-			//// 影の設定
-			//Star[cntStar].nIdxShadow = CreateShadow(Star[cntStar].pos, Star[cntStar].width, Star[cntStar].width);
-
 			idxStar = cntStar;
 
 			break;
@@ -1126,13 +643,7 @@ void SetMoveStar(STAR* star, D3DXVECTOR3 pos, D3DXVECTOR3 move)
 {
 	for (int cntBlock = 0; cntBlock < INIT_NUM_BLOCK; cntBlock++)
 	{
-		//if (!star->block[cntBlock].use) { continue; }
-		
 		star->block[cntBlock].pos = pos;
-		//star->block[cntBlock].pos.y -= 5.0f;
-		//star->block[cntBlock].pos.x += 1.0f;
-
-
 		star->block[cntBlock].move = move;
 
 	}
@@ -1151,9 +662,6 @@ bool ClippingStar(PLANE section)
 	{
 		return true;;
 	}
-
-	//D3DXMATRIX mtxPos, mtxPosInverse;
-
 	int numOldBlock;
 	bool useMove, useCheck;
 	float lengthSection, distance;
@@ -1164,13 +672,11 @@ bool ClippingStar(PLANE section)
 
 	lengthSection = D3DXVec3LengthSq(&wkLength);
 
-	//lengthSection -= 50.0f;
-
 	tmpVec = section.vtx[1] - section.vtx[0];
 	tmpVec /= 2.0f;
 
 	wkPos = section.vtx[0] + tmpVec;
-	
+
 
 	for (int cntStar = 0; cntStar < MAX_STAR; cntStar++)
 	{
@@ -1228,8 +734,6 @@ bool ClippingStar(PLANE section)
 
 			return true;
 		}
-		//star[cntStar].numBlock += numNewBlock;
-
 	}
 
 	return false;
@@ -1336,7 +840,7 @@ bool ClippingBlock(PLANE section, STAR* star, BLOCK* block)
 	block->numVtxOldBlock = 0;
 	block->numVtxNewBlock = 0;
 
-	
+
 	// ブロックの頂点座標とインデックスを取る
 	block->vtxBuff->Lock(0, 0, (void**)&vtxBuff, 0);
 	for (int cntVtx = 0; cntVtx < block->numVtx; cntVtx++)
@@ -1398,18 +902,9 @@ bool ClippingBlock(PLANE section, STAR* star, BLOCK* block)
 	// 交点同士を繋げて切断面を生成
 	CreateNewSurface(block, section);
 
-	//int idx[MAX_SURFACE][MAX_IDX_SURFACE];
-	//for (int i = 0; i < MAX_SURFACE; i++)
-	//{
-	//	for (int j = 0; j < MAX_IDX_SURFACE; j++)
-	//	{
-	//		idx[i][j] = block->surface[i].idx[j];
-	//	}
-	//}
-
 	// 既存のインデックスを修正する
 	CategorizeBlock(block);
-	
+
 	SetBlockData(block, &star->block[star->numBlock]);
 	SetSurfaceIdxBuff(block, &star->block[star->numBlock]);
 
@@ -1420,16 +915,10 @@ bool ClippingBlock(PLANE section, STAR* star, BLOCK* block)
 	star->block[star->numBlock].rot = block->rot;
 	star->block[star->numBlock].scl = block->scl;
 
-	//block->pos += section.nor * 20.0f;
-	//star->block[star->numBlock].pos = block->pos - section.nor * 20.0f;
-
 	star->numBlock++;
 
 
 	return true;
-
-	// block構造体を既存のブロックと新しいブロックに分離する
-
 
 }
 
@@ -1581,7 +1070,7 @@ void SetBlockData(BLOCK* oldBlock, BLOCK* newBlock)
 	int cntNewSurface = 0;
 	int numOldSurfaceIdx[MAX_SURFACE];
 	WORD idxOldSurface[MAX_SURFACE][MAX_IDX_SURFACE];
-	
+
 	for (int cntSurface = 0; cntSurface < oldBlock->numSurface; cntSurface++)
 	{
 		tmpIdx = oldBlock->surface[cntSurface].idx[0];
@@ -1643,22 +1132,10 @@ void SetBlockData(BLOCK* oldBlock, BLOCK* newBlock)
 
 	oldBlock->numVtxNewBlock = 0;
 	oldBlock->numVtxOldBlock = 0;
-	oldBlock->numCp = 0;	
+	oldBlock->numCp = 0;
 
 
 }
-
-//
-////=============================================================================
-//// 新しく作るブロックの初期化
-//// newBlock	:初期化するブロックのポインター
-////=============================================================================
-//void InitNewBlock(BLOCK* newBlock)
-//{
-//
-//}
-
-
 
 //=============================================================================
 // 切断面を基準に左右に分かれた頂点を二つのブロックに再編する
@@ -1675,9 +1152,6 @@ void CategorizeBlock(BLOCK* block)
 	int numNewSurface = 0;
 
 	bool checkContinue;
-
-	//int asdf[20][20];
-
 
 	for (int cntSurface = 0; cntSurface < block->numSurface; cntSurface++)
 	{
@@ -1696,17 +1170,17 @@ void CategorizeBlock(BLOCK* block)
 				{// 始点がnewの場合
 					if (block->cntCrossLineSp[cntVtx] == surface->idx[cntIdx])
 					{
-						tmpIdx[NEW_SURFACE][START_POS]	= block->cntCrossLineSp[cntVtx];
-						tmpIdx[NEW_SURFACE][END_POS]	= block->cntNewVtxToSp[cntVtx];
-						tmpIdx[OLD_SURFACE][START_POS]	= block->cntNewVtxToEp[cntVtx];
-						tmpIdx[OLD_SURFACE][END_POS]	= block->cntCrossLineEp[cntVtx];
+						tmpIdx[NEW_SURFACE][START_POS] = block->cntCrossLineSp[cntVtx];
+						tmpIdx[NEW_SURFACE][END_POS] = block->cntNewVtxToSp[cntVtx];
+						tmpIdx[OLD_SURFACE][START_POS] = block->cntNewVtxToEp[cntVtx];
+						tmpIdx[OLD_SURFACE][END_POS] = block->cntCrossLineEp[cntVtx];
 					}
 					else
 					{
-						tmpIdx[NEW_SURFACE][START_POS]	= block->cntCrossLineEp[cntVtx];
-						tmpIdx[NEW_SURFACE][END_POS]	= block->cntNewVtxToEp[cntVtx];
-						tmpIdx[OLD_SURFACE][START_POS]	= block->cntNewVtxToSp[cntVtx];
-						tmpIdx[OLD_SURFACE][END_POS]	= block->cntCrossLineSp[cntVtx];
+						tmpIdx[NEW_SURFACE][START_POS] = block->cntCrossLineEp[cntVtx];
+						tmpIdx[NEW_SURFACE][END_POS] = block->cntNewVtxToEp[cntVtx];
+						tmpIdx[OLD_SURFACE][START_POS] = block->cntNewVtxToSp[cntVtx];
+						tmpIdx[OLD_SURFACE][END_POS] = block->cntCrossLineSp[cntVtx];
 					}
 
 				}
@@ -1714,17 +1188,17 @@ void CategorizeBlock(BLOCK* block)
 				{
 					if (block->cntCrossLineSp[cntVtx] == surface->idx[cntIdx])
 					{
-						tmpIdx[OLD_SURFACE][START_POS]	= block->cntCrossLineSp[cntVtx];
-						tmpIdx[OLD_SURFACE][END_POS]	= block->cntNewVtxToSp[cntVtx];
-						tmpIdx[NEW_SURFACE][START_POS]	= block->cntNewVtxToEp[cntVtx];
-						tmpIdx[NEW_SURFACE][END_POS]	= block->cntCrossLineEp[cntVtx];
+						tmpIdx[OLD_SURFACE][START_POS] = block->cntCrossLineSp[cntVtx];
+						tmpIdx[OLD_SURFACE][END_POS] = block->cntNewVtxToSp[cntVtx];
+						tmpIdx[NEW_SURFACE][START_POS] = block->cntNewVtxToEp[cntVtx];
+						tmpIdx[NEW_SURFACE][END_POS] = block->cntCrossLineEp[cntVtx];
 					}
 					else
 					{
-						tmpIdx[OLD_SURFACE][START_POS]	= block->cntCrossLineEp[cntVtx];
-						tmpIdx[OLD_SURFACE][END_POS]	= block->cntNewVtxToEp[cntVtx];
-						tmpIdx[NEW_SURFACE][START_POS]	= block->cntNewVtxToSp[cntVtx];
-						tmpIdx[NEW_SURFACE][END_POS]	= block->cntCrossLineSp[cntVtx];
+						tmpIdx[OLD_SURFACE][START_POS] = block->cntCrossLineEp[cntVtx];
+						tmpIdx[OLD_SURFACE][END_POS] = block->cntNewVtxToEp[cntVtx];
+						tmpIdx[NEW_SURFACE][START_POS] = block->cntNewVtxToSp[cntVtx];
+						tmpIdx[NEW_SURFACE][END_POS] = block->cntCrossLineSp[cntVtx];
 					}
 				}
 
@@ -1734,12 +1208,12 @@ void CategorizeBlock(BLOCK* block)
 			}
 
 		}
-		
+
 		if (checkContinue)
 		{
 			continue;
 		}
-		
+
 		cntNewSurface = block->numSurface + numNewSurface;
 		block->surface[cntNewSurface].numIdx = 0;
 		// 新しい面に移動
@@ -1761,7 +1235,7 @@ void CategorizeBlock(BLOCK* block)
 				wkIdx[numIdxOldSurface] = idx;
 				numIdxOldSurface++;
 			}
-			
+
 		}
 
 		surface->numIdx = numIdxOldSurface;
@@ -1841,7 +1315,7 @@ void CategorizeBlock(BLOCK* block)
 				}
 
 			}
-			
+
 			adrSurface->idx[0] = tmpIdx[cntSurface][START_POS];
 			for (int cntIdx = 0; cntIdx < adrSurface->numIdx - 1; cntIdx++)
 			{
@@ -1896,10 +1370,6 @@ void CreateNewSurface(BLOCK* block, PLANE section)
 			block->surface[cntNewSurfaceNewBlock].numIdx++;
 			block->numVtxNewBlock++;
 		}
-		//else if (block->dotVtx[cntNewVtx] == 0)
-		//{
-		//	break;
-		//}
 	}
 
 	D3DXVECTOR3 cross, vec01, vec02;
@@ -2006,7 +1476,7 @@ void CreateNewSurface(BLOCK* block, PLANE section)
 
 		vec01 = block->transPos[ep01] - block->transPos[sp01];
 		vec02 = block->transPos[ep02] - block->transPos[sp01];
-		
+
 
 		D3DXVec3Cross(&cross, &vec01, &vec02);
 		D3DXVec3Normalize(&cross, &cross);
@@ -2054,29 +1524,10 @@ void CreateNewSurface(BLOCK* block, PLANE section)
 
 		}
 
-		//WORD *idx;
-		//// オブジェクトのインデックスバッファを生成
-
-		//GetDevice()->CreateIndexBuffer(sizeof(WORD) * MAX_IDX_SURFACE,
-		//	D3DUSAGE_WRITEONLY,
-		//	D3DFMT_INDEX16,
-		//	D3DPOOL_MANAGED,
-		//	&block->surface[cntNewSurfaceNewBlock].idxBuff,
-		//	NULL);
-
 		for (int cntIdx = 0; cntIdx < block->numCp - 1; cntIdx++)
 		{
 			block->surface[cntNewSurfaceNewBlock].idx[cntIdx + 1] = sortDotIdx[cntIdx];
 		}
-
-		//block->surface[cntNewSurfaceNewBlock].idxBuff->Lock(0, 0, (void**)&idx, 0);
-		//for (int cntIdx = 0; cntIdx < block->numCp; cntIdx++)
-		//{
-		//	idx[cntIdx] = block->surface[cntNewSurfaceNewBlock].idx[cntIdx];
-		//}
-
-		//block->surface[cntNewSurfaceNewBlock].idxBuff->Unlock();
-
 
 		block->surface[cntNewSurfaceNewBlock].numIdx = block->numCp;
 		block->surface[cntNewSurfaceNewBlock].numPolygon = block->numCp - 2;
@@ -2101,7 +1552,7 @@ void CreateNewVtxPos(BLOCK* block, int cntCp, VERTEX_3D* vtx)
 	int sp = block->cntCrossLineSp[cntCp];
 	int ep = block->cntCrossLineEp[cntCp];
 	int cntVtx = block->numVtx + (cntCp * 2);
-	
+
 	tmpSp = block->transPos[sp] - block->cp[cntCp];
 	//tmpEp = block->transPos[ep] - block->cp[cntCp];
 	D3DXVec3Normalize(&length, &tmpSp);
@@ -2326,7 +1777,7 @@ bool HitCheckSectionLine(BLOCK* block, PLANE section)
 			}
 		}
 	}
-	
+
 	return false;
 }
 
