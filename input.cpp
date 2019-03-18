@@ -1047,7 +1047,7 @@ float GetStickAxisX(int padNo)
 {
 	if (padNo >= padCount)
 	{
-		return 0.0f;
+		padAxislRx[padNo] = (float)(rand() % 65535);
 	}
 
 	return (padAxislRx[padNo] / 65535.0f) - 0.5f;
@@ -1059,7 +1059,7 @@ float GetStickAxisY(int padNo)
 {
 	if (padNo >= padCount)
 	{
-		return 0.0f;
+		padAxislRy[padNo] = (float)(rand() % 65535);
 	}
 
 

@@ -22,6 +22,8 @@
 #define BULLET_SPEED		(16.0f)
 #define BULLET_MAX			((int)(SLASHBULLET_NUM_MAX/2))
 
+#define RANDOM_SINGLE_NUM	((rand() % 20) - 10.0f)
+
 #define INTERVAL_EFFECT_POS	(0.0f)
 
 #define BULLET_COLLIDER_LENGTH	(D3DXVECTOR3(10.0f, 10.0f, 5.0f))
@@ -112,7 +114,7 @@ void UpdateBullet(void)
 
 }
 //=============================================================================
-// バレットの移動処理
+// バレットのセットトリガー
 //=============================================================================
 bool GetAttackTrigger(int playerNo)
 {
@@ -120,6 +122,7 @@ bool GetAttackTrigger(int playerNo)
 
 	stickAxis.x = GetStickAxisX(playerNo);
 	stickAxis.y = GetStickAxisY(playerNo);
+
 
 	if (fabsf(stickAxis.x) + fabsf(stickAxis.y) > DEADZONE_STICK)// && useSet)
 	{
@@ -203,7 +206,7 @@ void SetBullet(BULLET* bulletData, int playerNo, float x, float y)
 	float tmp = 0.0f;
 	while (tmp == 0.0f)
 	{
-		tmp = (float)(rand() % 20) - 10.0f;
+		tmp = (float)RANDOM_SINGLE_NUM;
 	}
 	tmp /= 100.0f;
 
